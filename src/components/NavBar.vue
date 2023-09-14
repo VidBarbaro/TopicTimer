@@ -2,9 +2,9 @@
     <nav>
         <img src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
         <section>
-            <RouterLink class="link" to="/">Subjects</RouterLink>
-            <RouterLink class="link" to="/about">History</RouterLink>
-            <RouterLink class="link" to="/about">User</RouterLink>
+            <RouterLink class="link" to="/subjects">Subjects</RouterLink>
+            <RouterLink class="link" to="/history">History</RouterLink>
+            <RouterLink class="link" to="/">User</RouterLink>
         </section>
     </nav>
 </template>
