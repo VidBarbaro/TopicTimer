@@ -1,19 +1,11 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager NavigationManager
-@{
-    string uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-    if (String.IsNullOrEmpty(uri))
-    {
-        uri = "index";    
-    }
-}
+
 <div class="page">
     <div>
-        <NavMenu URL=   />
+        <NavMenu/>
     </div>
     <main>
         <article >
-            @uri
             @Body
         </article>
     </main>

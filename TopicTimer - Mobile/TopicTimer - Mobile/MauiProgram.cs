@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using TopicTimer___Mobile.Data;
 
 namespace TopicTimer___Mobile
 {
@@ -22,7 +21,7 @@ namespace TopicTimer___Mobile
 		builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
+            
 
 
             return builder.Build();

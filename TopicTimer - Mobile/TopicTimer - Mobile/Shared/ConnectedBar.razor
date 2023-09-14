@@ -1,0 +1,15 @@
+﻿<div class="tt-secondary">
+    @if (this.connected)
+    {
+        <i class="fas fa-angles-right"></i>
+        <h1 id="" class="text-center">Connected</h1>
+    }
+    else
+    {
+        <h1 id="" class="text-center">Disconnected</h1>
+    }
+</div>
+
+@code {
+    private bool connected = false;
+}

@@ -1,4 +1,27 @@
-﻿
+﻿@inject NavigationManager NavigationManager
+
+@code {
+    string uri = null;
+
+    protected override Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+        uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        return base.OnInitializedAsync();
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (String.IsNullOrEmpty(uri))
+        {
+            uri = "index";
+        }
+        StateHasChanged();
+    }
+}
+
+
 
 <div class="tt-primary fixed-bottom">
     <NavLink href="/">
@@ -8,25 +31,54 @@
  </NavLink>
  <br/>
     <div class="d-flex justify-content-around">
-      <div class="mt-4 mb-2">
-          <NavLink href="counter">
-            <button class="h6 border-0 rounded-pill tt-sub p-3">Subjects @URL <span class="oi oi-justify-left"></span></button>
-            </NavLink>
-      </div>
+        @if(uri == "subjects")
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="subjects">
+                    <button class="h6 border-0 rounded-pill tt-secondary p-3">Subjects <span class="oi oi-justify-left"></span></button>
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="subjects">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">Subjects <span class="oi oi-justify-left"></span></button>
+                </NavLink>
+            </div>
+        }
+        @if(uri == "history")
+        {
         <div class="mt-4 mb-2">
-            <NavLink href="fetchdata">
-                <button class="h6 border-0 rounded-pill tt-sub p-3">History <span class="oi oi-bar-chart"></span></button>
+            <NavLink href="history">
+                <button class="h6 border-0 rounded-pill tt-secondary p-3">History <span class="oi oi-bar-chart"></span></button>
             </NavLink>
         </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="history">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">History <span class="oi oi-bar-chart"></span></button>
+                </NavLink>
+            </div>
+        }
+        @if(uri == "personal")
+        {
         <div class="mt-4 mb-2">
-            <NavLink href="counter">
-            <button class="h6 border-0 rounded-pill tt-sub p-3">Personal <span class="oi oi-person"></span></button>
+            <NavLink href="personal">
+            <button class="h6 border-0 rounded-pill tt-secondary p-3">Personal <span class="oi oi-person"></span></button>
             </NavLink>
         </div>
-  </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="personal">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">Personal <span class="oi oi-person"></span></button>
+                </NavLink>
+            </div>
+        }
+    </div>
 </div>
 
-@code {
-    [Parameter]
-    public string URL { get; set; }
-}

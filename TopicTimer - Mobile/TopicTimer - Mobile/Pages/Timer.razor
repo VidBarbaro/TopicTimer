@@ -1,34 +1,24 @@
-﻿@page "/counter"
+﻿@page "/"
+
 <div class="d-flex justify-content-around tt-primary pt-3 pb-2">
     <p class="display-1 p-1 " @onclick="SwitchSubjectLeft">
-    <span class="oi oi-arrow-circle-left pt-3 w-75 tt-icon-white"></span>
-</p>
+        <span class="oi oi-arrow-circle-left pt-3 w-75 tt-icon-white"></span>
+    </p>
 
     <h1 class="pt-4 tt-sub w-50 text-center">@currentSubject.ToString()</h1>
 
     <p class="display-1 p-1 " @onclick="SwitchSubjectRight">
-    <span class="oi oi-arrow-circle-right pt-3 tt-icon-white"></span>
-</p>
+        <span class="oi oi-arrow-circle-right pt-3 tt-icon-white"></span>
+    </p>
 </div>
+<ConnectedBar />
 
-<div class="tt-secondary">
-    @if(this.connected)
-    {
-        <i class="fas fa-angles-right"></i>
-        <h1 id="" class="text-center">Connected</h1>
-    }
-    else
-    {
-        <h1 id="" class="text-center">Disconnected</h1>
-    }
-</div>
 
 <img src="watch_connected.svg" alt="Yeet" />
 
 
 @code {
     private int currentCount = 0;
-    private bool connected = false;
 
     enum Subjects
     {
@@ -49,7 +39,7 @@
     {
         currentSubject--;
         currentCount++;
-        if(currentSubject < Subjects.None)
+        if (currentSubject < Subjects.None)
         {
             currentSubject = Subjects.Sports;
         }
@@ -59,9 +49,10 @@
     {
         currentSubject++;
         currentCount++;
-        if(currentSubject > Subjects.Sports)
+        if (currentSubject > Subjects.Sports)
         {
             currentSubject = Subjects.None;
         }
     }
 }
+
