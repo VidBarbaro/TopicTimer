@@ -57,4 +57,6 @@
       <Folder Include="Resources\Images\Icons\" />
     </ItemGroup>
 
+    <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarTopicTimerMobileHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
 </Project>

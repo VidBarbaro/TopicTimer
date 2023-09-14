@@ -1,16 +1,51 @@
 ﻿@page "/counter"
+<div class="d-flex justify-content-around tt-primary pt-3 pb-2">
+    <p class="display-1 p-1 " @onclick="SwitchSubjectLeft">
+    <span class="oi oi-arrow-circle-left pt-3 w-75 tt-icon-white"></span>
+</p>
 
-<h1>Counter</h1>
+    <h1 class="pt-4 tt-sub w-50 text-center">@currentSubject.ToString()</h1>
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    <p class="display-1 p-1 " @onclick="SwitchSubjectRight">
+    <span class="oi oi-arrow-circle-right pt-3 tt-icon-white"></span>
+</p>
+</div>
 
 @code {
     private int currentCount = 0;
 
+    enum Subjects
+    {
+        None,
+        Math,
+        Biology,
+        Sports
+    };
+
+    private Subjects currentSubject = Subjects.Math;
+
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private void SwitchSubjectLeft()
+    {
+        currentSubject--;
+        currentCount++;
+        if(currentSubject < Subjects.None)
+        {
+            currentSubject = Subjects.Sports;
+        }
+    }
+
+    private void SwitchSubjectRight()
+    {
+        currentSubject++;
+        currentCount++;
+        if(currentSubject > Subjects.Sports)
+        {
+            currentSubject = Subjects.None;
+        }
     }
 }
