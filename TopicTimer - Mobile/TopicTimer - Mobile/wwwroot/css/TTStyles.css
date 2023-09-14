@@ -1,19 +1,23 @@
 .tt-primary {
-    color:#009688;
+    background-color:#009688;
 }
 
 .tt-secondary {
-    color: #FFC107;
+    background-color: #FFC107;
+    color: white;
 }
 
 .tt-tertiary {
-    color: #03A9F4;
+    background-color: #03A9F4;
 }
 
 .tt-sub {
-    color: #F5F5F5;
+    background-color: #F5F5F5;
+    color: #333333;
 }
 
 .tt-sub2 {
-    color: #333333;
+    background-color: #333333;
+    color: #F5F5F5;
 }
+
