@@ -1,39 +1,27 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">TopicTimer - Mobile</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+﻿
+
+<div class="tt-primary fixed-bottom">
+    <NavLink href="/">
+ <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-secondary">
+        <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
+ </span>
+ </NavLink>
+ <br/>
+    <div class="d-flex justify-content-around">
+      <div class="mt-4 mb-2">
+          <NavLink href="counter">
+            <button class="h6 border-0 rounded-pill tt-sub p-3">Subjects <span class="oi oi-justify-left"></span></button>
+            </NavLink>
+      </div>
+        <div class="mt-4 mb-2">
+            <NavLink href="fetchdata">
+                <button class="h6 border-0 rounded-pill tt-sub p-3">History <span class="oi oi-bar-chart"></span></button>
+            </NavLink>
+        </div>
+        <div class="mt-4 mb-2">
+            <NavLink href="counter">
+            <button class="h6 border-0 rounded-pill tt-sub p-3">Personal <span class="oi oi-person"></span></button>
+            </NavLink>
+        </div>
+  </div>
 </div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

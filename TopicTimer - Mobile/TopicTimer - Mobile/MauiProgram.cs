@@ -24,6 +24,7 @@ namespace TopicTimer___Mobile
 
             builder.Services.AddSingleton<WeatherForecastService>();
 
+
             return builder.Build();
         }
     }
