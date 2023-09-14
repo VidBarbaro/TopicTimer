@@ -10,7 +10,7 @@
     <div class="d-flex justify-content-around">
       <div class="mt-4 mb-2">
           <NavLink href="counter">
-            <button class="h6 border-0 rounded-pill tt-sub p-3">Subjects <span class="oi oi-justify-left"></span></button>
+            <button class="h6 border-0 rounded-pill tt-sub p-3">Subjects @URL <span class="oi oi-justify-left"></span></button>
             </NavLink>
       </div>
         <div class="mt-4 mb-2">
@@ -25,3 +25,8 @@
         </div>
   </div>
 </div>
+
+@code {
+    [Parameter]
+    public string URL { get; set; }
+}
