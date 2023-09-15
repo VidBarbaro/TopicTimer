@@ -9,6 +9,7 @@
     "test:unit": "vitest"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^6.1.0",
     "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.11.0",
     "bootstrap-vue": "^2.23.1",
