@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "name": "Math",
+        "shortName": "M",
+        "color": "#E3E807",
+        "info": "This subject is not editable as it is a mandatory part of the student curriculum",
+        "editable": false,
+        "trackTimes": [{
+            "start": "31 - 01 - 2023 12: 30: 15",
+            "end": "31 - 01 - 2023 13: 30: 45"
+        }, {
+            "start": "31-01-2023 17:30:45",
+            "end": "31 - 01 - 2023 19: 00: 25"
+        }, {
+            "start": "01-02-2023 09:15:10",
+            "end": "01-02-2023 10:00:37"
+        }]
+    },
+    {
+        "id": 2,
+        "name": "Biology",
+        "shortName": "B",
+        "color": "#07E846",
+        "info": "This subject is not editable as it is a mandatory part of the student curriculum",
+        "editable": false,
+        "trackTimes": [{
+            "start": "31 - 01 - 2023 12: 30: 15",
+            "end": "31 - 01 - 2023 13: 30: 45"
+        }, {
+            "start": "31-01-2023 17:30:45",
+            "end": "31 - 01 - 2023 19: 00: 25"
+        }, {
+            "start": "01-02-2023 09:15:10",
+            "end": "01-02-2023 10:00:37"
+        }]
+    },
+    {
+        "id": 3,
+        "name": "Cleaning my room",
+        "shortName": "C",
+        "color": "#E80707",
+        "info": "",
+        "editable": true,
+        "trackTimes": [{
+            "start": "31 - 01 - 2023 12: 30: 15",
+            "end": "31 - 01 - 2023 13: 30: 45"
+        }, {
+            "start": "31-01-2023 17:30:45",
+            "end": "31 - 01 - 2023 19: 00: 25"
+        }, {
+            "start": "01-02-2023 09:15:10",
+            "end": "01-02-2023 10:00:37"
+        }]
+    },
+    {
+        "id": 4,
+        "name": "Break",
+        "shortName": "BR",
+        "color": "#FF7EDB",
+        "info": "",
+        "editable": true,
+        "trackTimes": [{
+            "start": "31 - 01 - 2023 12: 30: 15",
+            "end": "31 - 01 - 2023 13: 30: 45"
+        }, {
+            "start": "31-01-2023 17:30:45",
+            "end": "31 - 01 - 2023 19: 00: 25"
+        }, {
+            "start": "01-02-2023 09:15:10",
+            "end": "01-02-2023 10:00:37"
+        }]
+    }
+]
