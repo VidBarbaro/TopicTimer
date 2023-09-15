@@ -99,6 +99,7 @@ data() {
         		position: 'bottom',
       		},
             tooltip: {
+                xAlign: 'left',
                 callbacks: {
 					title: function(tooltipItem) {
 						return `${tooltipItem[0].label} - ${tooltipItem[0].dataset.label}`
