@@ -13,20 +13,20 @@
 </div>
 
 <ConnectedBar />
-<SubjectBar SubjectName=@Subject1 />
-<SubjectBar SubjectName=@Subject2 />
-<RestrictedSubjectBar SubjectName=@Subject3 />
-<RestrictedSubjectBar SubjectName=@Subject4 />
+<SubjectBar SubjectName=@Subject1 SubjectColour="blue" />
+<SubjectBar SubjectName=@Subject2 SubjectColour="green"/>
+<RestrictedSubjectBar SubjectName=@Subject3 SubjectColour="yellow" />
+<RestrictedSubjectBar SubjectName=@Subject4 SubjectColour="red" />
 
 @code {
+    //Dummy data of course 
     private string Subject1 = "Gaming";
     private string Subject2 = "Sports";
     private string Subject3 = "Math";
     private string Subject4 = "English";
 
-
     private void AddNewSubject()
     {
-        
+        throw new NotImplementedException("Not yet implemented");
     }
 }
