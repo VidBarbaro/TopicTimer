@@ -5,6 +5,7 @@
 
 <template>
 	<div class="w-75 m-auto">
-		<Chart chartType="bar" :trackedData="jsonData"/>
+		<input type="button" value="date" />
+		<Chart chartType="bar" selectedWeekDay="09-10-2023" :trackedData="jsonData"/>
 	</div>
 </template>

@@ -3,6 +3,7 @@ import moment from 'moment'
 import { BarChart } from 'vue-chart-3'
 import { Chart, registerables } from "chart.js"
 import 'chartjs-adapter-moment'
+import humanizeDuration from 'humanize-duration'
 
 moment.locale('nl')
 Chart.register(...registerables)
@@ -19,15 +20,22 @@ props: {
         type: String,
         required: true,
     },
+    selectedWeekDay: {
+        type: String,
+        required: true,
+    },
     trackedData: {
         type: Object,
         required: true,
     }
 },
 computed: {
+    selectedWeekDayMomentObj() {
+        return moment(new Date(this.selectedWeekDay))
+    },
     chartData() {
       let formatedData = {
-        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+        labels: [`Monday`, 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
         datasets : []
       }
 
@@ -40,7 +48,10 @@ computed: {
         }
 
         dataset.trackTimes.forEach(trackedTime => {
-            console.log(trackedTime)
+            if (moment(new Date(trackedTime.start)).isoWeek() != this.selectedWeekDayMomentObj.isoWeek()) {
+                return
+            }
+
             const startTime = moment(new Date(trackedTime.start))
             const endTime = moment(new Date(trackedTime.end))
 
@@ -52,8 +63,6 @@ computed: {
 
         formatedData['datasets'].push(datasetDataObject)
       })
-
-      console.log(formatedData)
 
       return formatedData
     }
@@ -92,7 +101,6 @@ data() {
             tooltip: {
                 callbacks: {
 					title: function(tooltipItem) {
-						console.log(tooltipItem)
 						return `${tooltipItem[0].label} - ${tooltipItem[0].dataset.label}`
 					},
                     label: function(context) {
@@ -101,7 +109,7 @@ data() {
 							const startTime = moment(new Date(context.parsed._custom.barStart))
 							const endTime = moment(new Date(context.parsed._custom.barEnd))
 							const duration = moment.duration(endTime.diff(startTime))
-                            label = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}: ${duration.humanize()}`
+                            label = `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}: ${humanizeDuration(duration, { language: 'en', units: ['h', 'm'] })}`
                         }
                         return label;
                     }
