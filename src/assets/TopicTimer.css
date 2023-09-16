@@ -3,21 +3,21 @@ html body {
 }
 
 .bg-tt-green {
-  background: #009688 !important ;
+  background-color: #009688 !important ;
 }
 
 .bg-tt-yellow {
-  background: #FFC107 !important ;
+  background-color: #FFC107 !important ;
 }
 
 .bg-tt-blue {
-  background: #03A9F4 !important ;
+  background-color: #03A9F4 !important ;
 }
 
 .bg-tt-offwhite {
-  background: #F5F5F5 !important ;
+  background-color: #F5F5F5 !important ;
 }
 
 .bg-tt-offblack {
-  background: #333333 !important ;
+  background-color: #333333 !important ;
 }
