@@ -10,7 +10,6 @@
             <i class="bi bi-trash-fill"></i>
         </span>
     </section>
-    <hr>
 </template>
 
 <style scoped>
@@ -19,6 +18,7 @@ section {
     justify-content: space-between;
     align-items: center;
     padding: 20px; /* Increased padding */
+    width: 100%;
 }
 
 span {
@@ -47,11 +47,6 @@ p {
 i {
     font-size: 24px; /* Increased font size for icons */
     margin-left: 20px; /* Adjusted spacing between icons */
-}
-
-hr {
-    width: 85%;
-    margin: auto;
 }
 </style>
 
