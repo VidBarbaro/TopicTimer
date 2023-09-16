@@ -1,42 +1,30 @@
 <template>
-    <nav>
-        <img src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
-        <section>
-            <RouterLink class="link" to="/subjects">Subjects</RouterLink>
-            <RouterLink class="link" to="/history">History</RouterLink>
-            <RouterLink class="link" to="/">User</RouterLink>
+    <nav class="d-flex align-items-center justify-content-between bg-tt-green">
+        <img class="nav-logo" src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
+        <section class="w-25 d-flex justify-content-around">
+            <RouterLink class="link text-white" to="/subjects">Subjects</RouterLink>
+            <RouterLink class="link text-white" to="/history">History</RouterLink>
+            <RouterLink class="link text-white" to="/">User</RouterLink>
         </section>
     </nav>
 </template>
 
 <style scoped>
-template {
-    margin: 0;
-    padding: 0;
-}
-
-nav {
-    background-color: #009688;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content:space-between;
-}
-
-img {
-    width: 13rem;
+.nav-logo {
+    width: 6.5rem;
     margin: 1rem 3rem;
 }
 
-section {
-    display: flex;
-    justify-content: space-evenly;
-    width: 50%;
-    font-size: 1.5rem;
+.link {
+    text-decoration: underline transparent;
+    transition: text-decoration 300ms ease;
 }
 
-.link {
-    color: #F5F5F5;
-    text-decoration: none;
+.link:hover {
+    text-decoration-color: rgba(255, 255, 255, 1);
+}
+
+.router-link-active {
+    font-weight: bold;
 }
 </style>
