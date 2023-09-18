@@ -10,7 +10,7 @@ Chart.register(...registerables)
 </script>
 
 <template>
-    <BarChart v-if="chartType.toUpperCase() == 'BAR'" :chart-data="chartData" :options="barChartOptions"/>
+    <BarChart v-if="chartType.toUpperCase() == 'BAR'" :chart-data="barChartData" :options="barChartOptions"/>
 </template>
 
 <script>
@@ -33,7 +33,7 @@ computed: {
     selectedWeekDayMomentObj() {
         return moment(new Date(this.selectedWeekDay))
     },
-    chartData() {
+    barChartData() {
       let formatedData = {
         labels: [`Monday`, 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
         datasets : []
