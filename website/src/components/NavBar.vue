@@ -5,7 +5,7 @@ import router from '../router'
 <template>
     <nav class="d-flex align-items-center justify-content-between bg-tt-green">
         <div @click="router.push('/subjects')">
-            <img class="nav-logo" src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
+            <img role="button" class="nav-logo" src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
         </div>
         <section class="d-flex">
             <RouterLink class="link text-white" to="/">Home</RouterLink>
