@@ -7,6 +7,10 @@
     {
         NavigationManager.LocationChanged += LocationChanged;
         uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (String.IsNullOrEmpty(uri))
+        {
+            uri = "index";
+        }
         return base.OnInitializedAsync();
     }
 
@@ -25,13 +29,23 @@
 
 <div class="tt-primary fixed-bottom">
     <NavLink href="/">
- <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-secondary">
-        <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
- </span>
+        @if (uri == "index" || uri == "index?")
+        {
+            <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-secondary">
+                <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
+            </span>
+        }
+        else
+        {
+            <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-sub" style="border-style: solid; border-color:#009688; border-width: medium;">
+                <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
+            </span>
+        }
+
  </NavLink>
  <br/>
     <div class="d-flex justify-content-around">
-        @if(uri == "subjects")
+        @if(uri == "subjects" || uri == "subjects?")
         {
             <div class="mt-4 mb-2">
                 <NavLink href="subjects">
@@ -47,7 +61,7 @@
                 </NavLink>
             </div>
         }
-        @if(uri == "history")
+        @if (uri == "history" || uri == "history?")
         {
         <div class="mt-4 mb-2">
             <NavLink href="history">
@@ -63,7 +77,7 @@
                 </NavLink>
             </div>
         }
-        @if(uri == "personal")
+        @if (uri == "personal" || uri == "personal?")
         {
         <div class="mt-4 mb-2">
             <NavLink href="personal">
