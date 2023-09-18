@@ -1,12 +1,12 @@
 <template>
     <section>
         <span>
-            <div class="circle" v-bind:style="{ 'background-color': subject.color }">{{ subject.shortName }}</div>
-            <p>{{ subject.name }}</p>
+            <div class="circle" v-bind:style="{ 'background-color': topic.color }">{{ topic.shortName }}</div>
+            <p>{{ topic.name }}</p>
         </span>
         <span>
-            <i class="bi bi-pencil-square" @click="$emit('edit', subject)"></i>
-            <i v-if="!subject.editable" class="bi bi-info-circle-fill" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
+            <i class="bi bi-pencil-square" @click="$emit('edit', topic)"></i>
+            <i v-if="!topic.editable" class="bi bi-info-circle-fill" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
             <i v-else class="bi bi-trash-fill"></i>
         </span>
     </section>
@@ -52,16 +52,14 @@ i {
 </style>
 
 <script>
-import SubjectModal from '../components/SubjectModal.vue';
 export default {
     props: {
-        subject: {
+        topic: {
             type: Object,
         }
     },
     mounted() {
-        console.log(this.subject);
+        console.log(this.topic);
     },
-    components: { SubjectModal }
 }
 </script>

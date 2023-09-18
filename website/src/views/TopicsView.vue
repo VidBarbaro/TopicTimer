@@ -1,24 +1,24 @@
 <script setup>
-import SubjectListItem from '../components/SubjectListItem.vue';
-import SubjectModal from '../components/SubjectModal.vue';
+import topicListItem from '../components/topicsListItem.vue';
+import topicModal from '../components/topicsModal.vue';
 import data from '../assets/data.json';
 </script>
 
 <template>
   <div class="d-flex flex-column w-75 m-auto">
     <div class="w-100 mt-4 d-flex justify-content-between">
-      <h2>Your subjects: </h2>
+      <h2>Your topics: </h2>
       <button class="btn bg-tt-yellow text-white">Add+</button>
     </div>
     <div class="w-100 mt-4">
-      <div v-for="subject, index in data">
-        <SubjectListItem :subject="subject" @edit="value => startEditing(value)"/>
+      <div v-for="topic, index in data">
+        <topicListItem :topic="topic" @edit="value => startEditing(value)"/>
         <hr v-if="index != data.length - 1" class="m-auto" />
       </div>
     </div>
   </div>
   <div>
-    <SubjectModal id="modal" v-if="editValue" :subject="editValue" @close="stopEditing" />
+    <topicModal id="modal" v-if="editValue" :topic="editValue" @close="stopEditing" />
   </div>
 </template>
 

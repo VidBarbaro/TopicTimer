@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SubjectsView from '../views/SubjectsView.vue'
+import topicsView from '../views/topicsView.vue'
 import HistoryView from '../views/HistoryView.vue'
 
 const router = createRouter({
@@ -7,12 +7,12 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/subjects'
+      redirect: '/topics'
     },
     {
-      path: '/subjects',
-      name: 'subjects',
-      component: SubjectsView
+      path: '/topics',
+      name: 'topics',
+      component: topicsView
     },
     {
       path: '/history',

@@ -4,12 +4,12 @@ import router from '../router'
 
 <template>
     <nav class="d-flex align-items-center justify-content-between bg-tt-green">
-        <div @click="router.push('/subjects')">
+        <div @click="router.push('/topics')">
             <img role="button" class="nav-logo" src="../assets/images/TopicTimerWhiteLogo.png" alt="topic timer logo">
         </div>
         <section class="d-flex">
             <RouterLink class="link text-white" to="/">Home</RouterLink>
-            <RouterLink class="link text-white" to="/subjects">Subjects</RouterLink>
+            <RouterLink class="link text-white" to="/topics">Topics</RouterLink>
             <RouterLink class="link text-white" to="/history">History</RouterLink>
             <RouterLink class="link text-white" to="/">User</RouterLink>
         </section>

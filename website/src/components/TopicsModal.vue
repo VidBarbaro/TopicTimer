@@ -3,7 +3,7 @@
 
         <div class="modal-content">
             <span class="close" @click="$emit('close')">&times;</span>
-            <p>{{ subject.name }}</p>
+            <p>Under construction, soon you will be able to edit your topics here!</p>
         </div>
 
     </div>
@@ -52,7 +52,7 @@
 <script>
 export default {
     props: {
-        subject: {
+        topic: {
             type: Object
         }
     },
