@@ -13,18 +13,18 @@
 </div>
 
 <ConnectedBar />
-<RestrictedSubjectBar SubjectName=@Subject3 SubjectColour="yellow" />
-<RestrictedSubjectBar SubjectName=@Subject4 SubjectColour="red" />
+<RestrictedSubjectBar SubjectName=@Subject3 SubjectColour="red" />
+<RestrictedSubjectBar SubjectName=@Subject4 SubjectColour="green" />
 
 <SubjectBar SubjectName=@Subject1 SubjectColour="blue" />
-<SubjectBar SubjectName=@Subject2 SubjectColour="green"/>
+<SubjectBar SubjectName=@Subject2 SubjectColour="black"/>
 
 @code {
     //Dummy data of course 
-    private string Subject1 = "Gaming";
-    private string Subject2 = "Sports";
+    private string Subject1 = "Sports";
+    private string Subject2 = "Gaming";
     private string Subject3 = "Math";
-    private string Subject4 = "English";
+    private string Subject4 = "Biology";
 
     private void AddNewSubject()
     {

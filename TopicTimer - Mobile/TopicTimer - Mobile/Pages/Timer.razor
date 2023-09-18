@@ -5,7 +5,7 @@
         <span class="oi oi-arrow-circle-left pt-3 w-75 tt-icon-white"></span>
     </p>
 
-    <h1 class="pt-4 tt-sub w-50 text-center">@currentSubject.ToString()</h1>
+    <h1 class="pt-4 tt-sub w-50 text-center"><span class="oi oi-media-record" style="color: @currentSubjectColor.ToString();"></span> @currentSubject.ToString()</h1>
 
     <p class="display-1 p-1 " @onclick="SwitchSubjectRight">
         <span class="oi oi-arrow-circle-right pt-3 tt-icon-white"></span>
@@ -13,8 +13,10 @@
 </div>
 <ConnectedBar />
 
-<div class="p-5">
-<div class="tt-sub p-5 text-center display-1">@today.ToLongTimeString()</div>
+<div class="p-4" >
+    <div class="p-2" style="background-color: @currentSubjectColor.ToString();">
+    <div class="tt-sub p-4 text-center display-1"><br/>@today.ToLongTimeString()<br/>&nbsp;</div>
+</div>
 </div>
 
 <div class="d-flex justify-content-around tt-icon-black px-5">
@@ -43,13 +45,22 @@
 
     enum Subjects
     {
-        None,
+        Gaming,
         Math,
         Biology,
         Sports
     };
 
+    enum SubjectsColor
+    {
+        black,
+        red,
+        green,
+        blue
+    };
+
     private Subjects currentSubject = Subjects.Math;
+    private SubjectsColor currentSubjectColor = SubjectsColor.red;
 
     private async Task PlayTimer()
     {
@@ -73,9 +84,14 @@
     private void SwitchSubjectLeft()
     {
         currentSubject--;
-        if (currentSubject < Subjects.None)
+        if (currentSubject < Subjects.Gaming)
         {
             currentSubject = Subjects.Sports;
+        }
+        currentSubjectColor--;
+        if (currentSubjectColor < SubjectsColor.black)
+        {
+            currentSubjectColor = SubjectsColor.blue;
         }
     }
 
@@ -84,7 +100,12 @@
         currentSubject++;
         if (currentSubject > Subjects.Sports)
         {
-            currentSubject = Subjects.None;
+            currentSubject = Subjects.Gaming;
+        }
+        currentSubjectColor++;
+        if (currentSubjectColor > SubjectsColor.blue)
+        {
+            currentSubjectColor = SubjectsColor.black;
         }
     }
 }
