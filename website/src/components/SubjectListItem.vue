@@ -5,9 +5,9 @@
             <p>{{ subject.name }}</p>
         </span>
         <span>
-            <i v-if="subject.editable" class="bi bi-pencil-square"></i>
-            <i v-else class="bi bi-info-circle-fill"></i>
-            <i class="bi bi-trash-fill"></i>
+            <i class="bi bi-pencil-square"></i>
+            <i v-if="!subject.editable" class="bi bi-info-circle-fill" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
+            <i v-else class="bi bi-trash-fill"></i>
         </span>
     </section>
 </template>
