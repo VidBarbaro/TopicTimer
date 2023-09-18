@@ -48,7 +48,7 @@ computed: {
         }
 
         dataset.trackTimes.forEach(trackedTime => {
-            if (moment(new Date(trackedTime.start)).isoWeek() != this.selectedWeekDayMomentObj.isoWeek()) {
+            if (moment(new Date(trackedTime.start)).isoWeek() != this.selectedWeekDayMomentObj.isoWeek() || moment(new Date(trackedTime.start)).year() != this.selectedWeekDayMomentObj.year()) {
                 return
             }
 
