@@ -5,7 +5,7 @@
             <p>{{ subject.name }}</p>
         </span>
         <span>
-            <i class="bi bi-pencil-square"></i>
+            <i class="bi bi-pencil-square" @click="$emit('edit', subject)"></i>
             <i v-if="!subject.editable" class="bi bi-info-circle-fill" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
             <i v-else class="bi bi-trash-fill"></i>
         </span>
@@ -48,18 +48,20 @@ i {
     font-size: 24px; /* Increased font size for icons */
     margin-left: 20px; /* Adjusted spacing between icons */
 }
+
 </style>
 
 <script>
+import SubjectModal from '../components/SubjectModal.vue';
 export default {
     props: {
         subject: {
             type: Object,
-            // required: true,
         }
     },
     mounted() {
-    console.log(this.subject);
-    }
+        console.log(this.subject);
+    },
+    components: { SubjectModal }
 }
 </script>

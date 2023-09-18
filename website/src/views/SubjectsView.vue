@@ -1,9 +1,9 @@
 <script setup>
 import SubjectListItem from '../components/SubjectListItem.vue';
-import data from '../assets/data.json'
-console.log("Hello")
-console.log(JSON.stringify(data))
+import SubjectModal from '../components/SubjectModal.vue';
+import data from '../assets/data.json';
 </script>
+
 <template>
   <div class="d-flex flex-column w-75 m-auto">
     <div class="w-100 mt-4 d-flex justify-content-between">
@@ -12,15 +12,47 @@ console.log(JSON.stringify(data))
     </div>
     <div class="w-100 mt-4">
       <div v-for="subject, index in data">
-        <SubjectListItem :subject="subject"/>
+        <SubjectListItem :subject="subject" @edit="value => startEditing(value)"/>
         <hr v-if="index != data.length - 1" class="m-auto" />
       </div>
     </div>
   </div>
+  <div>
+    <SubjectModal id="modal" v-if="editValue" :subject="editValue" @close="stopEditing" />
+  </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      editValue: null,
+    }
+  },
+  methods: {
+    startEditing(value) {
+      this.editValue = value
+    },
+    stopEditing() {
+      this.editValue = null
+    },
+    toggleModal(value) {
+      if (value.editable) {
+        this.editValue = value
+        document.getElementById("modal").style.display = 'block';
+      }
+      else {
+        document.getElementById("modal").style.display = 'none';
+      }
+      value.editable = !value.editable
+    }
+  }
+}
+</script>
 
 <style scoped>
 hr {
     width: 85%;
 }
+
 </style>
