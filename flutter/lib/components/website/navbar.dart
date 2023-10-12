@@ -20,12 +20,14 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xff009688),
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Image(
-              image: AssetImage('assets/images/TopicTimerFullLogoWhite.png')),
+            image: AssetImage('assets/images/TopicTimerFullLogoWhite.png'),
+            height: 50,
+          ),
           Wrap(
             spacing: 50,
             children: [
