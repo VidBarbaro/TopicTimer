@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/components/navbar.dart';
+import 'package:topictimer_flutter_application/components/navbar.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
@@ -7,7 +7,9 @@ class NewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: Navbar(activeLink: '/news',),
+      appBar: Navbar(
+        activeLink: '/news',
+      ),
       body: Center(
         child: Text('News'),
       ),

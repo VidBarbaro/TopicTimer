@@ -16,23 +16,14 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      return const WebsiteNavbar(activeLink: activeLink,);
-    }
-    else if (Platform.isAndroid) {
-
-    }
-    else if (Platform.isIOS) {
-      
-    }
-    else if (Platform.isWindows) {
-      
-    }
-    else if (Platform.isLinux) {
-      
-    }
-    else if (Platform.isMacOS) {
-      
-    }
+      return WebsiteNavbar(
+        activeLink: activeLink,
+      );
+    } else if (Platform.isAndroid) {
+    } else if (Platform.isIOS) {
+    } else if (Platform.isWindows) {
+    } else if (Platform.isLinux) {
+    } else if (Platform.isMacOS) {}
 
     return const Placeholder();
   }
@@ -41,7 +32,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 class WebsiteNavbar extends StatefulWidget {
   final String activeLink;
   const WebsiteNavbar({required this.activeLink, super.key});
-  
+
   @override
   State<WebsiteNavbar> createState() => _WebsiteNavbarState();
 }
@@ -50,7 +41,9 @@ class _WebsiteNavbarState extends State<WebsiteNavbar> {
   String _activeLink = '/';
 
   void setActiveLink(String link) {
-    setState(() { _activeLink = link; });
+    setState(() {
+      _activeLink = link;
+    });
   }
 
   @override
@@ -58,16 +51,29 @@ class _WebsiteNavbarState extends State<WebsiteNavbar> {
     return Container(
       color: const Color(0xff009688),
       padding: const EdgeInsets.all(30),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image(image: AssetImage('assets/images/TopicTimerFullLogoWhite.png')),
+          const Image(
+              image: AssetImage('assets/images/TopicTimerFullLogoWhite.png')),
           Wrap(
             spacing: 50,
             children: [
-              NavbarItem(title: 'Login', link: '/login', activeLink: _activeLink,),
-              NavbarItem(title: 'News', link: '/news', activeLink: _activeLink,),
-              NavbarItem(title: 'Login', link: '/login', activeLink: _activeLink,),
+              NavbarItem(
+                title: 'Login',
+                link: '/login',
+                activeLink: _activeLink,
+              ),
+              NavbarItem(
+                title: 'News',
+                link: '/news',
+                activeLink: _activeLink,
+              ),
+              NavbarItem(
+                title: 'Login',
+                link: '/login',
+                activeLink: _activeLink,
+              ),
             ],
           ),
         ],
