@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:test_application/components/navbar_item.dart';
+import 'package:topictimer_flutter_application/components/navbar_item.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final String activeLink;
@@ -65,9 +65,9 @@ class _WebsiteNavbarState extends State<WebsiteNavbar> {
           Wrap(
             spacing: 50,
             children: [
-              NavbarItem(),
-              NavbarItem(title: 'News', link: '/news'),
-              NavbarItem(title: 'Login', link: '/login'),
+              NavbarItem(title: 'Login', link: '/login', activeLink: _activeLink,),
+              NavbarItem(title: 'News', link: '/news', activeLink: _activeLink,),
+              NavbarItem(title: 'Login', link: '/login', activeLink: _activeLink,),
             ],
           ),
         ],

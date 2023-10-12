@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:test_application/pages/home.dart';
-import 'package:test_application/pages/news.dart';
+import 'package:topictimer_flutter_application/pages/home.dart';
+import 'package:topictimer_flutter_application/pages/news.dart';
 
 void main() => runApp(const MyApp());
 
