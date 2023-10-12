@@ -13,7 +13,7 @@ import NavBar from './components/NavBar.vue'
   </main>
 
   <footer>
-    <h3>Footer</h3>
+    <!-- <h3>Footer</h3> -->
   </footer>
 </template>
 

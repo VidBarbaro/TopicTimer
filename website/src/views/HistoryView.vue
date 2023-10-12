@@ -18,9 +18,9 @@
 					<option class="bg-tt-offwhite text-tt-offblack" v-bind:selected="chartType.toUpperCase() == 'BAR'">
 						Bar
 					</option>
-					<option class="bg-tt-offwhite text-tt-offblack" v-bind:selected="chartType.toUpperCase() == 'DONUT'">
+					<!-- <option class="bg-tt-offwhite text-tt-offblack" v-bind:selected="chartType.toUpperCase() == 'DONUT'">
 						Donut
-					</option>
+					</option> -->
 				</select>
 				<VueDatePicker v-model="date" format="MM-dd-yyyy" :enableTimePicker="false" :clearable="false" inputClassName="text-white bg-tt-yellow border-0" />
 			</div>
