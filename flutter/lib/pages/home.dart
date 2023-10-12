@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:topictimer_flutter_application/components/navbar.dart';
+import 'package:topictimer_flutter_application/components/website/navbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

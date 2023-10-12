@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:topictimer_flutter_application/components/navbar.dart';
+import 'package:topictimer_flutter_application/components/website/navbar.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});

@@ -1,9 +1,7 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:topictimer_flutter_application/components/navbar_item.dart';
+import 'package:topictimer_flutter_application/components/website/navbar_item.dart';
 
-class Navbar extends StatelessWidget implements PreferredSizeWidget {
+class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String activeLink;
 
   const Navbar({required this.activeLink, super.key});
@@ -14,30 +12,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return WebsiteNavbar(
-        activeLink: activeLink,
-      );
-    } else if (Platform.isAndroid) {
-    } else if (Platform.isIOS) {
-    } else if (Platform.isWindows) {
-    } else if (Platform.isLinux) {
-    } else if (Platform.isMacOS) {}
-
-    return const Placeholder();
-  }
+  State<Navbar> createState() => _NavbarState();
 }
 
-class WebsiteNavbar extends StatefulWidget {
-  final String activeLink;
-  const WebsiteNavbar({required this.activeLink, super.key});
-
-  @override
-  State<WebsiteNavbar> createState() => _WebsiteNavbarState();
-}
-
-class _WebsiteNavbarState extends State<WebsiteNavbar> {
+class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
