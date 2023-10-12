@@ -14,32 +14,54 @@ class NavbarItem extends StatefulWidget {
 }
 
 class _NavbarItemState extends State<NavbarItem> {
-  String _title = '';
-  String _link = '';
-  bool _isActive = false;
+  String title = '';
+  String link = '';
+  bool isActive = false;
+  TextStyle nonActiveLinkStyle = const TextStyle(
+    color: Colors.white,
+    fontFamily: 'BodoniMT',
+    fontSize: 20,
+  );
 
-  void setTitle(String title) {
-    setState(() { _title = title; });
+  void onHover() {
+    setState(() {
+      nonActiveLinkStyle = const TextStyle(
+        color: Colors.white,
+        fontFamily: 'BodoniMT',
+        fontSize: 20,
+        decoration: TextDecoration.underline,
+      );
+    });
   }
-  void setLink(String link) {
-    setState(() { _link = link; });
-  }
-  void setIsActive(String activeLink) {
-    setState(() { _isActive = _link == activeLink; });
+
+  void onHoverExit() {
+    setState(() {
+      nonActiveLinkStyle = const TextStyle(
+        color: Colors.white,
+        fontFamily: 'BodoniMT',
+        fontSize: 20,
+      );
+    });
   }
   
   @override
   Widget build(BuildContext context) {
-    if (_isActive) {
+    title = widget.title;
+    link = widget.link;
+    isActive = widget.link == widget.activeLink;
+
+    if (isActive) {
       return Text.rich(
               TextSpan(
-                text: _title,
+          text: title,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => context.go(_link),
+                  ..onTap = () => context.go(link),
                 style: const TextStyle(
-                  color: Colors.blue,
+            color: Colors.white,
                   fontFamily: 'BodoniMT',
                   fontSize: 20,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
                 ),
               ),
             );
@@ -47,14 +69,12 @@ class _NavbarItemState extends State<NavbarItem> {
 
     return Text.rich(
               TextSpan(
-                text: _title,
+        text: title,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => context.go(_link),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'BodoniMT',
-                  fontSize: 20,
-                ),
+                  ..onTap = () => context.go(link),
+        onEnter: (event) => onHover(),
+        onExit: (event) => onHoverExit(),
+        style: nonActiveLinkStyle,
               ),
             );
   }
