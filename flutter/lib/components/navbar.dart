@@ -38,14 +38,6 @@ class WebsiteNavbar extends StatefulWidget {
 }
 
 class _WebsiteNavbarState extends State<WebsiteNavbar> {
-  String _activeLink = '/';
-
-  void setActiveLink(String link) {
-    setState(() {
-      _activeLink = link;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,19 +52,19 @@ class _WebsiteNavbarState extends State<WebsiteNavbar> {
             spacing: 50,
             children: [
               NavbarItem(
-                title: 'Login',
-                link: '/login',
-                activeLink: _activeLink,
+                title: 'Home',
+                link: '/',
+                activeLink: widget.activeLink,
               ),
               NavbarItem(
                 title: 'News',
                 link: '/news',
-                activeLink: _activeLink,
+                activeLink: widget.activeLink,
               ),
               NavbarItem(
                 title: 'Login',
                 link: '/login',
-                activeLink: _activeLink,
+                activeLink: widget.activeLink,
               ),
             ],
           ),
