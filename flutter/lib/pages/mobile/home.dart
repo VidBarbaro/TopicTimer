@@ -8,30 +8,36 @@ class HomePageMobile extends StatelessWidget {
 
   List<Widget> createScreens() {
     return [
-      Text('Home1'),
-      Text('Home2'),
-      Text('Home3'),
-      Text('Home4'),
+      Text('Topics page'),
+      Text('Planning'),
+      Text('Timer'),
+      Text('Personal'),
       Text('Settings')
     ];
   }
 
   List<PersistentBottomNavBarItem> createNavBarItems() {
     return [
-      PersistentBottomNavBarItem(title: 'yeet', icon: Icon(Icons.home)),
-      PersistentBottomNavBarItem(icon: Icon(Icons.home)),
+      PersistentBottomNavBarItem(title: 'Topics', icon: Icon(Icons.subject)),
       PersistentBottomNavBarItem(
+          title: 'Planning', icon: Icon(Icons.calendar_today)),
+      PersistentBottomNavBarItem(
+          title: 'Timer',
           activeColorSecondary: Colors.white,
-          icon: Icon(Icons.home),
-          inactiveColorSecondary: Colors.pink),
-      PersistentBottomNavBarItem(icon: Icon(Icons.home)),
-      PersistentBottomNavBarItem(icon: Icon(Icons.home))
+          icon: Icon(Icons.timer, color: Colors.black)),
+      PersistentBottomNavBarItem(
+          title: 'Personal',
+          icon: Icon(Icons.person, color: Colors.black),
+          inactiveIcon: Icon(
+            Icons.person,
+            color: Colors.black,
+          )),
+      PersistentBottomNavBarItem(title: 'Settings', icon: Icon(Icons.settings))
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return PersistentTabView(
       context,
       screens: createScreens(),
@@ -39,20 +45,6 @@ class HomePageMobile extends StatelessWidget {
       backgroundColor: Colors.lightBlue,
       decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
       navBarStyle: NavBarStyle.style15,
-=======
-    return Scaffold(
-      appBar: const Navbar(
-        activeLink: '/',
-        session: 'loggedIn',
-      ),
-      body: Column(children: <Widget>[
-        const Text('this is the mobile home page'),
-        ElevatedButton(
-          onPressed: () => context.go('/news'),
-          child: const Text('Go to the news page'),
-        ),
-      ]),
->>>>>>> ebf2ebc09101ff77287b02e309f2fba2283e044f
     );
   }
 }
