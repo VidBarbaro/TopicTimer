@@ -10,6 +10,7 @@ class HomePageMobile extends StatelessWidget {
     return Scaffold(
       appBar: const Navbar(
         activeLink: '/',
+        session: 'loggedIn',
       ),
       body: Column(children: <Widget>[
         const Text('this is the mobile home page'),
