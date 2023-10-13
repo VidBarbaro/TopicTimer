@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/website/navbar_item.dart';
+import 'package:topictimer_flutter_application/routes/website.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String activeLink;
+  final String session;
 
-  const Navbar({required this.activeLink, super.key});
+  const Navbar({required this.activeLink, required this.session, super.key});
 
   @override
   Size get preferredSize {
@@ -18,6 +20,11 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
+    List<Widget> navbarItems = <Widget>[];
+    var routeList = WebsiteRouter.getRouteList();
+    routeList?.forEach((key, value) => navbarItems.add(NavbarItem(
+        title: value['name'], link: key, activeLink: widget.activeLink)));
+
     return Container(
       color: const Color(0xff009688),
       padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
@@ -30,23 +37,7 @@ class _NavbarState extends State<Navbar> {
           ),
           Wrap(
             spacing: 50,
-            children: [
-              NavbarItem(
-                title: 'Home',
-                link: '/',
-                activeLink: widget.activeLink,
-              ),
-              NavbarItem(
-                title: 'News',
-                link: '/news',
-                activeLink: widget.activeLink,
-              ),
-              NavbarItem(
-                title: 'Login',
-                link: '/login',
-                activeLink: widget.activeLink,
-              ),
-            ],
+            children: navbarItems,
           ),
         ],
       ),

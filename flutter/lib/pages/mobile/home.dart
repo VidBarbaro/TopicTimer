@@ -31,6 +31,7 @@ class HomePageMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return PersistentTabView(
       context,
       screens: createScreens(),
@@ -38,6 +39,20 @@ class HomePageMobile extends StatelessWidget {
       backgroundColor: Colors.lightBlue,
       decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
       navBarStyle: NavBarStyle.style15,
+=======
+    return Scaffold(
+      appBar: const Navbar(
+        activeLink: '/',
+        session: 'loggedIn',
+      ),
+      body: Column(children: <Widget>[
+        const Text('this is the mobile home page'),
+        ElevatedButton(
+          onPressed: () => context.go('/news'),
+          child: const Text('Go to the news page'),
+        ),
+      ]),
+>>>>>>> ebf2ebc09101ff77287b02e309f2fba2283e044f
     );
   }
 }

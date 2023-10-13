@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: const Navbar(
         activeLink: '/',
+        session: 'loggedIn',
       ),
       body: Center(
         child: ElevatedButton(

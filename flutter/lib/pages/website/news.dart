@@ -9,6 +9,7 @@ class NewsPage extends StatelessWidget {
     return const Scaffold(
       appBar: Navbar(
         activeLink: '/news',
+        session: 'loggedIn',
       ),
       body: Center(
         child: Text('News'),
