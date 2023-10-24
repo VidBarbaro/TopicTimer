@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/pages/mobile/home.dart';
 import 'package:topictimer_flutter_application/routes/desktop.dart';
 import 'package:topictimer_flutter_application/routes/mobile.dart';
 import 'package:topictimer_flutter_application/routes/website.dart';
@@ -49,7 +50,9 @@ class _MyAppState extends State<MyApp> {
       return Sizer(
         builder: (context, orientation, deviceType) {
           return const MaterialApp(
-            title: 'Sizer',
+            title: 'TopicTimerApp',
+            home: HomePageMobile(),
+            debugShowCheckedModeBanner: false,
           );
         },
       );
