@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/website/navbar_item.dart';
 import 'package:topictimer_flutter_application/routes/website.dart';
+import 'package:topictimer_flutter_application/theme/color_scheme.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String activeLink;
@@ -26,7 +27,7 @@ class _NavbarState extends State<Navbar> {
         title: value['name'], link: key, activeLink: widget.activeLink)));
 
     return Container(
-      color: const Color(0xff009688),
+      color: ColorSchema.get()?['primary'],
       padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
