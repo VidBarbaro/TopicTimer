@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ColorThemes {
+  /// Example:
+  /// ColorThemes.get()?['primary']
   static Map<String, dynamic>? get({String theme = 'default'}) {
     const themes = {
       'default': {
@@ -12,6 +14,6 @@ class ColorThemes {
       }
     };
 
-    return themes[theme];
+    return themes[theme] ?? themes['default'];
   }
 }
