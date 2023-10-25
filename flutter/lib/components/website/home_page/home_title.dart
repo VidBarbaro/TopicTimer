@@ -11,22 +11,24 @@ class HomeTitle {
           padding: const EdgeInsetsDirectional.only(
             bottom: 10,
           ),
-          child: const Text.rich(
-            TextSpan(
+          child: Text.rich(
+            const TextSpan(
               text: 'Track. Learn. Succeed.',
             ),
             style: TextStyle(
+              color: ColorThemes.get()?['text'],
               fontWeight: FontWeight.bold,
               fontSize: 34,
             ),
           ),
         ),
-        const Text.rich(
-          TextSpan(
+        Text.rich(
+          const TextSpan(
             text:
                 'Make Time Tracking a Breeze\nWhere Learning Meets Simplicity with TopicTimer.',
           ),
           style: TextStyle(
+            color: ColorThemes.get()?['text'],
             fontSize: 18,
           ),
           textAlign: TextAlign.center,
@@ -50,10 +52,11 @@ class HomeTitle {
                     ColorThemes.get()?['secondary'],
                   ),
                 ),
-                child: const Text.rich(
+                child: Text.rich(
                   TextSpan(
                     text: 'Try it now',
                     style: TextStyle(
+                      color: ColorThemes.get()?['text'],
                       fontSize: 16,
                     ),
                   ),
@@ -73,10 +76,11 @@ class HomeTitle {
                     ColorThemes.get()?['secondary'],
                   ),
                 ),
-                child: const Text.rich(
+                child: Text.rich(
                   TextSpan(
                     text: 'See how it works',
                     style: TextStyle(
+                      color: ColorThemes.get()?['text'],
                       fontSize: 16,
                     ),
                   ),

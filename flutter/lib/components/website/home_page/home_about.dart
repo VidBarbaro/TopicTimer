@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/theme/color_themes.dart';
 
 class HomeAbout {
   static Container container = Container(
@@ -26,19 +27,20 @@ class HomeAbout {
                       bottom: 15,
                     ),
                     width: double.infinity,
-                    child: const Text.rich(
-                      TextSpan(
+                    child: Text.rich(
+                      const TextSpan(
                         text: 'About the creators',
                       ),
                       style: TextStyle(
+                        color: ColorThemes.get()?['text'],
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     child: Text.rich(
-                      TextSpan(
+                      const TextSpan(
                         children: <TextSpan>[
                           TextSpan(
                             text:
@@ -90,6 +92,7 @@ class HomeAbout {
                         ],
                       ),
                       style: TextStyle(
+                        color: ColorThemes.get()?['text'],
                         fontSize: 16,
                       ),
                     ),
