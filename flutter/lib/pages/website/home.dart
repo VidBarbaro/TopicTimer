@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:topictimer_flutter_application/components/website/home_page/home_about.dart';
+import 'package:topictimer_flutter_application/components/website/home_page/home_title.dart';
 import 'package:topictimer_flutter_application/components/website/navbar.dart';
+import 'package:topictimer_flutter_application/theme/color_themes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,10 +13,13 @@ class HomePage extends StatelessWidget {
       appBar: const Navbar(
         activeLink: '/',
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.go('/news'),
-          child: const Text('Go to the news page'),
+      backgroundColor: ColorThemes.get()?['background'],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            HomeTitle.container,
+            HomeAbout.container,
+          ],
         ),
       ),
     );
