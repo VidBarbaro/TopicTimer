@@ -5,9 +5,8 @@ import 'package:topictimer_flutter_application/theme/color_themes.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String activeLink;
-  final String session;
 
-  const Navbar({required this.activeLink, required this.session, super.key});
+  const Navbar({required this.activeLink, super.key});
 
   @override
   Size get preferredSize {

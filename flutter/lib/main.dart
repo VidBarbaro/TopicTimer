@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       switch (device) {
         case 'website':
-          router = WebsiteRouter.get('loggedIn');
+          router = WebsiteRouter.get('loggedOut');
           break;
         case 'desktop':
           router = DesktopRouter.get();
