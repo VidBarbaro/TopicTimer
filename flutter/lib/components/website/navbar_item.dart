@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:topictimer_flutter_application/theme/color_themes.dart';
 
 class NavbarItem extends StatefulWidget {
   final String title;
@@ -17,16 +18,17 @@ class _NavbarItemState extends State<NavbarItem> {
   String title = '';
   String link = '';
   bool isActive = false;
-  TextStyle nonActiveLinkStyle = const TextStyle(
-    color: Colors.white,
+
+  TextStyle nonActiveLinkStyle = TextStyle(
+    color: ColorThemes.get()?['background'],
     fontFamily: 'BodoniMT',
     fontSize: 20,
   );
 
   void onHover() {
     setState(() {
-      nonActiveLinkStyle = const TextStyle(
-        color: Colors.white,
+      nonActiveLinkStyle = TextStyle(
+        color: ColorThemes.get()?['background'],
         fontFamily: 'BodoniMT',
         fontSize: 20,
         decoration: TextDecoration.underline,
@@ -36,8 +38,8 @@ class _NavbarItemState extends State<NavbarItem> {
 
   void onHoverExit() {
     setState(() {
-      nonActiveLinkStyle = const TextStyle(
-        color: Colors.white,
+      nonActiveLinkStyle = TextStyle(
+        color: ColorThemes.get()?['background'],
         fontFamily: 'BodoniMT',
         fontSize: 20,
       );
@@ -56,8 +58,8 @@ class _NavbarItemState extends State<NavbarItem> {
           text: title,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => context.go(link),
-                style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: ColorThemes.get()?['background'],
                   fontFamily: 'BodoniMT',
                   fontSize: 20,
             fontWeight: FontWeight.bold,
