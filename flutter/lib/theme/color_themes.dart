@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ColorSchema {
+class ColorThemes {
   static Map<String, dynamic>? get({String theme = 'default'}) {
-    const schemes = {
+    const themes = {
       'default': {
         'primary': Color(0xff009688),
         'secondary': Color(0xffFFC107),
@@ -12,6 +12,6 @@ class ColorSchema {
       }
     };
 
-    return schemes[theme];
+    return themes[theme];
   }
 }
