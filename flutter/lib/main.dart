@@ -30,9 +30,6 @@ class _MyAppState extends State<MyApp> {
         case 'desktop':
           router = DesktopRouter.get();
           break;
-        case 'mobile':
-          router = MobileRouter.get();
-          break;
         default:
           router = GoRouter(
             routes: <RouteBase>[],
@@ -45,8 +42,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (kIsWeb) {
       setRouterForDevice('website');
+    } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      setRouterForDevice('desktop');
     } else if (Platform.isAndroid || Platform.isIOS) {
-      setRouterForDevice('mobile');
       return Sizer(
         builder: (context, orientation, deviceType) {
           return const MaterialApp(
@@ -56,9 +54,7 @@ class _MyAppState extends State<MyApp> {
           );
         },
       );
-    } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      setRouterForDevice('desktop');
-    }
+    } 
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
