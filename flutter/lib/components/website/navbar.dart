@@ -10,7 +10,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return const Size.fromHeight(90.0);
+    return const Size.fromHeight(80.0);
   }
 
   @override
@@ -27,13 +27,15 @@ class _NavbarState extends State<Navbar> {
 
     return Container(
       color: ColorThemes.get()?['primary'],
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+      padding: const EdgeInsets.only(
+        left: 30,
+        right: 30,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Image(
             image: AssetImage('assets/images/TopicTimerFullLogoWhite.png'),
-            height: 50,
           ),
           Wrap(
             spacing: 50,
@@ -42,15 +44,6 @@ class _NavbarState extends State<Navbar> {
         ],
       ),
     );
-  }
-}
-
-class MobileNavbar extends StatelessWidget {
-  const MobileNavbar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 
