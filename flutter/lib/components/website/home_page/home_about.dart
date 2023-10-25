@@ -42,7 +42,7 @@ class HomeAbout {
                         children: <TextSpan>[
                           TextSpan(
                             text:
-                                'Meet the Team Behind TopicTimer At TopicTimer, we\'re driven by a passion for education and a commitment to making a positive impact on the '
+                                'Meet the Team Behind TopicTimer. At TopicTimer, we\'re driven by a passion for education and a commitment to making a positive impact on the '
                                 'way students learn and grow. Our journey began at Fontys University of Applied Sciences, where four students came together to tackle a pressing'
                                 'challenge in the realm of education. Allow us to introduce ourselves:\n\n',
                           ),
