@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/theme/color_themes.dart';
 
 class HomeTitle {
   static Container container = Container(
@@ -11,7 +12,9 @@ class HomeTitle {
             bottom: 10,
           ),
           child: const Text.rich(
-            TextSpan(text: 'Track. Learn. Succeed.'),
+            TextSpan(
+              text: 'Track. Learn. Succeed.',
+            ),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 34,
@@ -27,6 +30,61 @@ class HomeTitle {
             fontSize: 18,
           ),
           textAlign: TextAlign.center,
+        ),
+        Container(
+          padding: const EdgeInsetsDirectional.only(
+            top: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size>(
+                    const Size(180, 40),
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    ColorThemes.get()?['text'],
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    ColorThemes.get()?['secondary'],
+                  ),
+                ),
+                child: const Text.rich(
+                  TextSpan(
+                    text: 'Try it now',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                onPressed: () => {},
+              ),
+              const SizedBox(width: 50),
+              TextButton(
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size>(
+                    const Size(180, 40),
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    ColorThemes.get()?['text'],
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    ColorThemes.get()?['secondary'],
+                  ),
+                ),
+                child: const Text.rich(
+                  TextSpan(
+                    text: 'See how it works',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                onPressed: () => {},
+              ),
+            ],
+          ),
         ),
       ],
     ),
