@@ -10,7 +10,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return const Size.fromHeight(80.0);
+    return const Size.fromHeight(120);
   }
 
   @override
@@ -30,12 +30,15 @@ class _NavbarState extends State<Navbar> {
       padding: const EdgeInsets.only(
         left: 30,
         right: 30,
+        top: 15,
+        bottom: 15,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Image(
             image: AssetImage('assets/images/TopicTimerFullLogoWhite.png'),
+            height: 60,
           ),
           Wrap(
             spacing: 50,
