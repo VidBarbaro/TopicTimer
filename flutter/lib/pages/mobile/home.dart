@@ -75,7 +75,7 @@ class HomePageMobileState extends State<HomePageMobile> {
         backgroundColor: const Color(0xFFE6F3FE),
         decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
         navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
-      NavBarIndexProvider().updateIndex(navBarController.index);
+      NavBarIndexProvider().setPageIndex(navBarController.index);
     },
         screenTransitionAnimation: const ScreenTransitionAnimation(
           // Screen transition animation on change of selected tab.

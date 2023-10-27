@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/navbar_index_model.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
 
 class TopBar extends StatefulWidget {
@@ -11,33 +12,52 @@ class TopBar extends StatefulWidget {
 }
 
 class TopBarState extends State<TopBar> {
-  List<String> options = ['Math', 'Biology', 'Sports', 'Gaming'];
-  int currentTopicIndex = 0;
-
-  void changeSubjectToLeft() {
-    currentTopicIndex--;
-    if (currentTopicIndex < 0) {
-      currentTopicIndex = 3;
+  void changeSubjectToLeft(NavBarIndex provider) {
+    int index = NavBarIndexProvider().getTopicIndex();
+    index--;
+    if (index < 0) {
+      NavBarIndexProvider().setTopicIndex(3);
+      setState(() {});
+      return;
     }
+    NavBarIndexProvider().setTopicIndex(index);
     setState(() {});
   }
 
-  void changeSubjectToRight() {
-    currentTopicIndex++;
-    if (currentTopicIndex > 3) {
-      currentTopicIndex = 0;
+  void changeSubjectToRight(NavBarIndex provider) {
+    int index = NavBarIndexProvider().getTopicIndex();
+    index++;
+    if (index > 3) {
+      NavBarIndexProvider().setTopicIndex(0);
+      setState(() {});
+      return;
     }
+    NavBarIndexProvider().setTopicIndex(index);
     setState(() {});
   }
 
-  String getTitle(int currentTab) {
-    switch (currentTab) {
+  String getSelectedTopicTitle() {
+    switch (NavBarIndexProvider().getTopicIndex()) {
+      case 0:
+        return 'Math';
+      case 1:
+        return 'Biology';
+      case 2:
+        return 'Sports';
+      case 3:
+        return 'Gaming';
+    }
+    return '';
+  }
+
+  String getTitle(NavBarIndex provider) {
+    switch (provider.pageIndex) {
       case 0:
         return 'Topics';
       case 1:
         return 'Planning';
       case 2:
-        return options[currentTopicIndex];
+        return getSelectedTopicTitle();
       case 3:
         return 'Personal';
       case 4:
@@ -51,7 +71,8 @@ class TopBarState extends State<TopBar> {
 
   @override
   Widget build(BuildContext context) {
-    var currentTabIndex = context.watch<NavBarIndexProvider>().currentIndex;
+    NavBarIndex topBarProvider =
+        context.watch<NavBarIndexProvider>().currentIndex;
     return Column(children: [
       Container(
           width: 100.w,
@@ -61,9 +82,9 @@ class TopBarState extends State<TopBar> {
               alignment: WrapAlignment.spaceAround,
               runAlignment: WrapAlignment.center,
               children: [
-                if (currentTabIndex.index == 2)
+                if (topBarProvider.pageIndex == 2)
                   ElevatedButton(
-                    onPressed: changeSubjectToLeft,
+                    onPressed: () => changeSubjectToLeft(topBarProvider),
                     style: topBarButtonStyle,
                     child: const Icon(
                       Icons.arrow_back,
@@ -75,11 +96,13 @@ class TopBarState extends State<TopBar> {
                   height: 5.h,
                   color: Colors.white,
                   alignment: Alignment.center,
-                  child: Text(getTitle(currentTabIndex.index)),
+                  child: Text(
+                    getTitle(topBarProvider),
+                  ),
                 ),
-                if (currentTabIndex.index == 2)
+                if (topBarProvider.pageIndex == 2)
                   ElevatedButton(
-                      onPressed: changeSubjectToRight,
+                      onPressed: () => changeSubjectToRight(topBarProvider),
                       style: topBarButtonStyle,
                       child: const Icon(
                         Icons.arrow_forward,
