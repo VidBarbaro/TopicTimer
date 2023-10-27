@@ -38,7 +38,7 @@ class _NavbarState extends State<Navbar> {
         children: [
           const Image(
             image: AssetImage('assets/images/TopicTimerFullLogoWhite.png'),
-            height: 60,
+            height: 50,
           ),
           Wrap(
             spacing: 50,
