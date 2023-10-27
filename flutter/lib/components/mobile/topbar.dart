@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
 
 class TopBar extends StatefulWidget {
   const TopBar({super.key});
@@ -28,11 +30,28 @@ class TopBarState extends State<TopBar> {
     setState(() {});
   }
 
+  String getTitle(int currentTab) {
+    switch (currentTab) {
+      case 0:
+        return 'Topics';
+      case 1:
+        return 'Planning';
+      case 2:
+        return options[currentTopicIndex];
+      case 3:
+        return 'Personal';
+      case 4:
+        return 'Settings';
+    }
+    return '';
+  }
+
   final ButtonStyle topBarButtonStyle =
       ElevatedButton.styleFrom(backgroundColor: Colors.white);
 
   @override
   Widget build(BuildContext context) {
+    var currentTabIndex = context.watch<NavBarIndexProvider>().currentIndex;
     return Column(children: [
       Container(
           width: 100.w,
@@ -42,27 +61,30 @@ class TopBarState extends State<TopBar> {
               alignment: WrapAlignment.spaceAround,
               runAlignment: WrapAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: changeSubjectToLeft,
-                  style: topBarButtonStyle,
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                  ),
-                ),
-                Container(
-                    width: 35.w,
-                    height: 5.h,
-                    color: Colors.white,
-                    alignment: Alignment.center,
-                    child: Text(options[currentTopicIndex])),
-                ElevatedButton(
-                    onPressed: changeSubjectToRight,
+                if (currentTabIndex.index == 2)
+                  ElevatedButton(
+                    onPressed: changeSubjectToLeft,
                     style: topBarButtonStyle,
                     child: const Icon(
-                      Icons.arrow_forward,
+                      Icons.arrow_back,
                       color: Colors.black,
-                    )),
+                    ),
+                  ),
+                Container(
+                  width: 35.w,
+                  height: 5.h,
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: Text(getTitle(currentTabIndex.index)),
+                ),
+                if (currentTabIndex.index == 2)
+                  ElevatedButton(
+                      onPressed: changeSubjectToRight,
+                      style: topBarButtonStyle,
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.black,
+                      )),
               ])),
       Container(
         width: 100.w,

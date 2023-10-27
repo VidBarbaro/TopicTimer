@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/personal_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/planning_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/settings_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/timer_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/topics_page.dart';
 
-class HomePageMobile extends StatelessWidget {
+class HomePageMobile extends StatefulWidget {
   const HomePageMobile({super.key});
 
-  final TextStyle navBarItemTextStyle =
-      const TextStyle(color: Color(0xFF239AFB));
+  @override
+  State<HomePageMobile> createState() => HomePageMobileState();
+}
+
+class HomePageMobileState extends State<HomePageMobile> {
+  TextStyle navBarItemTextStyle = const TextStyle(color: Color(0xFF239AFB));
+
+  PersistentTabController navBarController =
+      PersistentTabController(initialIndex: 2);
 
   List<Widget> createScreens() {
     return [
@@ -56,14 +64,19 @@ class HomePageMobile extends StatelessWidget {
     ];
   }
 
+  void notifyNavBarChange() {}
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(context,
         screens: createScreens(),
         items: createNavBarItems(),
+        controller: navBarController,
         backgroundColor: const Color(0xFFE6F3FE),
         decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
-        navBarStyle: NavBarStyle.style15,
+        navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
+      NavBarIndexProvider().updateIndex(navBarController.index);
+    },
         screenTransitionAnimation: const ScreenTransitionAnimation(
           // Screen transition animation on change of selected tab.
           animateTabTransition: true,
