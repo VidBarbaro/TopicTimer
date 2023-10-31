@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/components/mobile/timer.dart';
 import 'package:topictimer_flutter_application/components/mobile/topbar.dart';
 
 class MobileTimerPage extends StatelessWidget {
@@ -10,7 +11,8 @@ class MobileTimerPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
-        )
+        ),
+        TimerComp(key: super.key),
       ],
     );
   }

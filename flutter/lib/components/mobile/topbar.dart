@@ -36,6 +36,8 @@ class TopBarState extends State<TopBar> {
     setState(() {});
   }
 
+  void addTopic() {}
+
   String getSelectedTopicTitle() {
     switch (NavBarIndexProvider().getTopicIndex()) {
       case 0:
@@ -91,6 +93,12 @@ class TopBarState extends State<TopBar> {
                       color: Colors.black,
                     ),
                   ),
+                if (topBarProvider.pageIndex == 0)
+                  //Empty button for spacing the topbar
+                  TextButton(
+                    onPressed: () {},
+                    child: const Icon(Icons.abc, color: Colors.blue),
+                  ),
                 Container(
                   width: 35.w,
                   height: 5.h,
@@ -106,6 +114,14 @@ class TopBarState extends State<TopBar> {
                       style: topBarButtonStyle,
                       child: const Icon(
                         Icons.arrow_forward,
+                        color: Colors.black,
+                      )),
+                if (topBarProvider.pageIndex == 0)
+                  ElevatedButton(
+                      onPressed: () => addTopic(),
+                      style: topBarButtonStyle,
+                      child: const Icon(
+                        Icons.add,
                         color: Colors.black,
                       )),
               ])),
