@@ -1,25 +1,15 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TimerInfoProvider with ChangeNotifier {
   int _seconds = 0;
   int _minutes = 0;
   int _hours = 0;
   bool _isActive = false;
+  bool _isInitialized = false;
+  bool get isInitialized => _isInitialized;
 
-  // void startTimer() {
-  //   if (isActive == false) {
-  //     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //       context.watch<_timerInfoProvider>().tick();
-  //     });
-  //   }
-  //   isActive = true;
-  // }
-
-  void pauseTimer() {
-    _isActive = false;
+  void setInit() {
+    _isInitialized = true;
   }
 
   void resetTimer() {
@@ -27,9 +17,22 @@ class TimerInfoProvider with ChangeNotifier {
     _minutes = 0;
     _seconds = 0;
     _isActive = false;
+    notifyListeners();
+  }
+
+  void enableTimer() {
+    _isActive = true;
+  }
+
+  void disableTimer() {
+    _isActive = false;
   }
 
   void tick() {
+    if (!_isActive) {
+      notifyListeners();
+      return;
+    }
     _seconds++;
     if (_seconds > 59) {
       _minutes++;
@@ -39,12 +42,17 @@ class TimerInfoProvider with ChangeNotifier {
         _minutes = 0;
       }
     }
-    print(toString());
     notifyListeners();
   }
 
   @override
   String toString() {
-    return '${_hours}:${_minutes}:${_seconds}';
+    String outputString = '';
+    _hours < 10 ? outputString += '0$_hours:' : outputString += '$_hours:';
+    _minutes < 10
+        ? outputString += '0$_minutes:'
+        : outputString += '$_minutes:';
+    _seconds < 10 ? outputString += '0$_seconds' : outputString += '$_seconds';
+    return outputString;
   }
 }

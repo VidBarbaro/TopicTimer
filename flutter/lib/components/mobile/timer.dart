@@ -18,7 +18,6 @@ class TimerCompState extends State<TimerComp> {
 
   @override
   Widget build(BuildContext context) {
-    // TimerInfo timerInfo = TimerInfo();
     context.watch<TimerInfoProvider>();
     return SizedBox(
         height: 60.h,
@@ -32,16 +31,23 @@ class TimerCompState extends State<TimerComp> {
             Container(
               height: 30.h,
               width: 75.w,
-              color: Colors.yellow,
               alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(5.w))),
               child: Container(
                   height: 28.h,
                   width: 70.w,
-                  color: Colors.lightBlueAccent,
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(3.w))),
                   alignment: Alignment.center,
                   child: Consumer<TimerInfoProvider>(
                     builder: (context, timerInfoProvider, child) {
-                      return Text(timerInfoProvider.toString());
+                      return Text(
+                        timerInfoProvider.toString(),
+                        style: TextStyle(fontSize: 16.w),
+                      );
                     },
                   )),
             ),
@@ -54,18 +60,25 @@ class TimerCompState extends State<TimerComp> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      Timer.periodic(const Duration(seconds: 1), (timer) {
-                        // Provider.of<TimerInfoProvider>(context, listen: false)
-                        //     .tick();
-                        context.read<TimerInfoProvider>().tick();
-                      });
+                      if (!context.read<TimerInfoProvider>().isInitialized) {
+                        Timer.periodic(const Duration(seconds: 1), (timer) {
+                          context.read<TimerInfoProvider>().tick();
+                        });
+                        context.read<TimerInfoProvider>().setInit();
+                      }
+                      context.read<TimerInfoProvider>().enableTimer();
                     },
                     child: const Icon(Icons.play_arrow)),
                 ElevatedButton(
-                    onPressed: TimerInfoProvider().pauseTimer,
+                    onPressed: () {
+                      context.read<TimerInfoProvider>().disableTimer();
+                    },
                     child: const Icon(Icons.pause)),
                 ElevatedButton(
-                    onPressed: TimerInfoProvider().resetTimer,
+                    onPressed: () {
+                      context.read<TimerInfoProvider>().resetTimer();
+                      context.read<TimerInfoProvider>().disableTimer();
+                    },
                     child: const Icon(Icons.stop)),
               ],
             )

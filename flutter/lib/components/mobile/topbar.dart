@@ -106,6 +106,7 @@ class TopBarState extends State<TopBar> {
                   alignment: Alignment.center,
                   child: Text(
                     getTitle(topBarProvider),
+                    style: TextStyle(fontSize: 5.w),
                   ),
                 ),
                 if (topBarProvider.pageIndex == 2)
