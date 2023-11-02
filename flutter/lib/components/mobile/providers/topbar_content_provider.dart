@@ -15,12 +15,12 @@ class Topic {
 class TopBarConentProvider with ChangeNotifier {
   int _pageIndex = 2;
   int _selectedTopicIndex = 1;
-  final int maxPages = 5;
 
   List<Topic> topics = [
     Topic(name: 'Math', color: Colors.red),
     Topic(name: 'English', color: Colors.orange),
-    Topic(name: 'Dutch', color: Colors.blue)
+    Topic(name: 'Dutch', color: Colors.blue),
+    Topic(name: 'Biology', color: Colors.green)
   ];
 
   void setPageIndex(int newIndex) {
@@ -34,8 +34,8 @@ class TopBarConentProvider with ChangeNotifier {
       throw Exception('No topics initiased');
     }
     _selectedTopicIndex--;
-    if (_selectedTopicIndex < 1) {
-      _selectedTopicIndex = topics.length--;
+    if (_selectedTopicIndex < 0) {
+      _selectedTopicIndex = topics.length - 1;
     }
     notifyListeners();
   }

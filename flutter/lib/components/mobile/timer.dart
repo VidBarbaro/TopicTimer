@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 class TimerComp extends StatelessWidget {
   TimerComp({super.key});
@@ -12,43 +13,52 @@ class TimerComp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.watch<TimerInfoProvider>();
     return SizedBox(
         height: 60.h,
         width: 80.w,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 8.h,
-              width: 10.w,
-            ),
-            Container(
-              height: 30.h,
-              width: 75.w,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.all(Radius.circular(5.w))),
-              child: Consumer<TimerInfoProvider>(
-                  builder: (context, timerInfoProvider, child) {
-                return Container(
-                  height: 28.h,
-                  width: 70.w,
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent,
-                      borderRadius: BorderRadius.all(Radius.circular(3.w))),
-                  alignment: Alignment.center,
-                  child: Text(
-                    timerInfoProvider.toString(),
-                    style: TextStyle(fontSize: 16.w),
-                  ),
-                );
-              }),
-            ),
-            SizedBox(
-              height: 3.h,
-              width: 5.w,
-            ),
+            Consumer<TopBarConentProvider>(
+                builder: (context, topBarConentProvider, child) {
+              return Wrap(
+                  alignment: WrapAlignment.center,
+                  direction: Axis.vertical,
+                  children: [
+                    SizedBox(
+                      height: 8.h,
+                      width: 10.w,
+                    ),
+                    Container(
+                      height: 30.h,
+                      width: 75.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: topBarConentProvider.getSelectedTopic().color,
+                          borderRadius: BorderRadius.all(Radius.circular(5.w))),
+                      child: Container(
+                        height: 28.h,
+                        width: 70.w,
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.w))),
+                        alignment: Alignment.center,
+                        child: Consumer<TimerInfoProvider>(
+                            builder: (context, timerInfoProvider, child) {
+                          return Text(
+                            timerInfoProvider.toString(),
+                            style: TextStyle(fontSize: 16.w),
+                          );
+                        }),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 6.h,
+                      width: 5.w,
+                    )
+                  ]);
+            }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

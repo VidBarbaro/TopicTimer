@@ -61,10 +61,10 @@ class _MyAppState extends State<MyApp> {
           return MultiProvider(
               providers: [
                 ChangeNotifierProvider(
-                  create: (context) => TimerInfoProvider(),
+                  create: (context) => TopBarConentProvider(),
                 ),
                 ChangeNotifierProvider(
-                  create: (context) => TopBarConentProvider(),
+                  create: (context) => TimerInfoProvider(),
                 )
               ],
               child: const MaterialApp(

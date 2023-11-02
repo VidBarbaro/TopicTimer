@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 class TopBar extends StatelessWidget {
   TopBar({super.key});
   void addTopic() {}
-  final ButtonStyle topBarButtonStyle =
-      ElevatedButton.styleFrom(backgroundColor: Colors.white);
+  final ButtonStyle topBarButtonStyle = ElevatedButton.styleFrom(
+      backgroundColor: Colors.white,
+      elevation: 5,
+      disabledBackgroundColor: Colors.white70);
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +25,21 @@ class TopBar extends StatelessWidget {
               children: [
                 if (context.read<TopBarConentProvider>().getSelectedPage() ==
                     'Timer')
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.read<TopBarConentProvider>().switchTopicLeft(),
-                    style: topBarButtonStyle,
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                  ),
+                  Consumer<TimerInfoProvider>(
+                      builder: (context, timerInfoProvider, child) {
+                    return ElevatedButton(
+                      onPressed: timerInfoProvider.isActive
+                          ? null
+                          : () => context
+                              .read<TopBarConentProvider>()
+                              .switchTopicLeft(),
+                      style: topBarButtonStyle,
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      ),
+                    );
+                  }),
                 if (context.read<TopBarConentProvider>().getSelectedPage() ==
                     'Topics')
                   //Empty button for spacing the topbar
@@ -64,15 +73,20 @@ class TopBar extends StatelessWidget {
                 ),
                 if (context.read<TopBarConentProvider>().getSelectedPage() ==
                     'Timer')
-                  ElevatedButton(
-                      onPressed: () => context
-                          .read<TopBarConentProvider>()
-                          .switchTopicRight(),
-                      style: topBarButtonStyle,
-                      child: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black,
-                      )),
+                  Consumer<TimerInfoProvider>(
+                      builder: (context, timerInfoProvider, child) {
+                    return ElevatedButton(
+                        onPressed: timerInfoProvider.isActive
+                            ? null
+                            : () => context
+                                .read<TopBarConentProvider>()
+                                .switchTopicRight(),
+                        style: topBarButtonStyle,
+                        child: const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.black,
+                        ));
+                  }),
                 if (context.read<TopBarConentProvider>().getSelectedPage() ==
                     'Topics')
                   ElevatedButton(
