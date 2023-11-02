@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/personal_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/planning_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/settings_page.dart';
@@ -75,7 +76,7 @@ class HomePageMobileState extends State<HomePageMobile> {
         backgroundColor: const Color(0xFFE6F3FE),
         decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
         navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
-      NavBarIndexProvider().setPageIndex(navBarController.index);
+      context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
     },
         screenTransitionAnimation: const ScreenTransitionAnimation(
           // Screen transition animation on change of selected tab.

@@ -1,80 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:topictimer_flutter_application/components/mobile/models/navbar_index_model.dart';
-import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
-class TopBar extends StatefulWidget {
-  const TopBar({super.key});
-
-  @override
-  State<TopBar> createState() => TopBarState();
-}
-
-class TopBarState extends State<TopBar> {
-  void changeSubjectToLeft(NavBarIndex provider) {
-    int index = NavBarIndexProvider().getTopicIndex();
-    index--;
-    if (index < 0) {
-      NavBarIndexProvider().setTopicIndex(3);
-      setState(() {});
-      return;
-    }
-    NavBarIndexProvider().setTopicIndex(index);
-    setState(() {});
-  }
-
-  void changeSubjectToRight(NavBarIndex provider) {
-    int index = NavBarIndexProvider().getTopicIndex();
-    index++;
-    if (index > 3) {
-      NavBarIndexProvider().setTopicIndex(0);
-      setState(() {});
-      return;
-    }
-    NavBarIndexProvider().setTopicIndex(index);
-    setState(() {});
-  }
-
+class TopBar extends StatelessWidget {
+  TopBar({super.key});
   void addTopic() {}
-
-  String getSelectedTopicTitle() {
-    switch (NavBarIndexProvider().getTopicIndex()) {
-      case 0:
-        return 'Math';
-      case 1:
-        return 'Biology';
-      case 2:
-        return 'Sports';
-      case 3:
-        return 'Gaming';
-    }
-    return '';
-  }
-
-  String getTitle(NavBarIndex provider) {
-    switch (provider.pageIndex) {
-      case 0:
-        return 'Topics';
-      case 1:
-        return 'Planning';
-      case 2:
-        return getSelectedTopicTitle();
-      case 3:
-        return 'Personal';
-      case 4:
-        return 'Settings';
-    }
-    return '';
-  }
-
   final ButtonStyle topBarButtonStyle =
       ElevatedButton.styleFrom(backgroundColor: Colors.white);
 
   @override
   Widget build(BuildContext context) {
-    NavBarIndex topBarProvider =
-        context.watch<NavBarIndexProvider>().currentIndex;
     return Column(children: [
       Container(
           width: 100.w,
@@ -84,16 +20,19 @@ class TopBarState extends State<TopBar> {
               alignment: WrapAlignment.spaceAround,
               runAlignment: WrapAlignment.center,
               children: [
-                if (topBarProvider.pageIndex == 2)
+                if (context.read<TopBarConentProvider>().getSelectedPage() ==
+                    'Timer')
                   ElevatedButton(
-                    onPressed: () => changeSubjectToLeft(topBarProvider),
+                    onPressed: () =>
+                        context.read<TopBarConentProvider>().switchTopicLeft(),
                     style: topBarButtonStyle,
                     child: const Icon(
                       Icons.arrow_back,
                       color: Colors.black,
                     ),
                   ),
-                if (topBarProvider.pageIndex == 0)
+                if (context.read<TopBarConentProvider>().getSelectedPage() ==
+                    'Topics')
                   //Empty button for spacing the topbar
                   TextButton(
                     onPressed: () {},
@@ -104,20 +43,38 @@ class TopBarState extends State<TopBar> {
                   height: 5.h,
                   color: Colors.white,
                   alignment: Alignment.center,
-                  child: Text(
-                    getTitle(topBarProvider),
-                    style: TextStyle(fontSize: 5.w),
+                  child: Consumer<TopBarConentProvider>(
+                    builder: (context, topBarConentProvider, child) {
+                      if (context
+                              .read<TopBarConentProvider>()
+                              .getSelectedPage() ==
+                          'Timer') {
+                        return Text(
+                          topBarConentProvider.getSelectedTopic().name,
+                          style: TextStyle(fontSize: 5.w),
+                        );
+                      } else {
+                        return Text(
+                          topBarConentProvider.getSelectedPage(),
+                          style: TextStyle(fontSize: 5.w),
+                        );
+                      }
+                    },
                   ),
                 ),
-                if (topBarProvider.pageIndex == 2)
+                if (context.read<TopBarConentProvider>().getSelectedPage() ==
+                    'Timer')
                   ElevatedButton(
-                      onPressed: () => changeSubjectToRight(topBarProvider),
+                      onPressed: () => context
+                          .read<TopBarConentProvider>()
+                          .switchTopicRight(),
                       style: topBarButtonStyle,
                       child: const Icon(
                         Icons.arrow_forward,
                         color: Colors.black,
                       )),
-                if (topBarProvider.pageIndex == 0)
+                if (context.read<TopBarConentProvider>().getSelectedPage() ==
+                    'Topics')
                   ElevatedButton(
                       onPressed: () => addTopic(),
                       style: topBarButtonStyle,

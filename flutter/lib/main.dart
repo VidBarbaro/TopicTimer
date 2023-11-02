@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:topictimer_flutter_application/components/mobile/providers/navbar_index_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/home.dart';
 import 'package:topictimer_flutter_application/routes/desktop.dart';
 import 'package:topictimer_flutter_application/routes/website.dart';
@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
                   create: (context) => TimerInfoProvider(),
                 ),
                 ChangeNotifierProvider(
-                  create: (context) => NavBarIndexProvider(),
+                  create: (context) => TopBarConentProvider(),
                 )
               ],
               child: const MaterialApp(

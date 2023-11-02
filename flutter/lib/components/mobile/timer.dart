@@ -5,20 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 
-class TimerComp extends StatefulWidget {
-  const TimerComp({super.key});
-
-  @override
-  State<TimerComp> createState() => TimerCompState();
-}
-
-class TimerCompState extends State<TimerComp> {
+class TimerComp extends StatelessWidget {
+  TimerComp({super.key});
   final ButtonStyle timerControlButtonStyle =
       ElevatedButton.styleFrom(backgroundColor: Colors.white);
 
   @override
   Widget build(BuildContext context) {
-    context.watch<TimerInfoProvider>();
+    // context.watch<TimerInfoProvider>();
     return SizedBox(
         height: 60.h,
         width: 80.w,
@@ -35,21 +29,21 @@ class TimerCompState extends State<TimerComp> {
               decoration: BoxDecoration(
                   color: Colors.yellow,
                   borderRadius: BorderRadius.all(Radius.circular(5.w))),
-              child: Container(
+              child: Consumer<TimerInfoProvider>(
+                  builder: (context, timerInfoProvider, child) {
+                return Container(
                   height: 28.h,
                   width: 70.w,
                   decoration: BoxDecoration(
                       color: Colors.lightBlueAccent,
                       borderRadius: BorderRadius.all(Radius.circular(3.w))),
                   alignment: Alignment.center,
-                  child: Consumer<TimerInfoProvider>(
-                    builder: (context, timerInfoProvider, child) {
-                      return Text(
-                        timerInfoProvider.toString(),
-                        style: TextStyle(fontSize: 16.w),
-                      );
-                    },
-                  )),
+                  child: Text(
+                    timerInfoProvider.toString(),
+                    style: TextStyle(fontSize: 16.w),
+                  ),
+                );
+              }),
             ),
             SizedBox(
               height: 3.h,
