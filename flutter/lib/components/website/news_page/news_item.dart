@@ -79,6 +79,8 @@ class NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -121,8 +123,10 @@ class NewsItem extends StatelessWidget {
             ),
             width: 850,
             child: Scrollbar(
+              controller: scrollController,
               thumbVisibility: true,
               child: SingleChildScrollView(
+                controller: scrollController,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 30,
                 ),
