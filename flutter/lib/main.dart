@@ -14,15 +14,6 @@ import 'package:topictimer_flutter_application/routes/website.dart';
 
 void main() => runApp(const MyApp());
 
-// void main() => runApp(ChangeNotifierProvider<MultiProvider>(
-//     child: const MyApp(),
-//     create: (_) => MultiProvider(providers: NavBarIndexProvider())));
-
-/*
-This might break the website, but I need this for statemanagment of the mobile app,
-In case it breaks... This was the old implementation
-void main() => runApp(const MyApp());
-*/
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

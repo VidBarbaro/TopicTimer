@@ -8,6 +8,7 @@ class MobileSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<BluetoothInfoProvider>().enableBluetooth();
     return Column(
       children: [
         TopBar(
@@ -16,8 +17,11 @@ class MobileSettingsPage extends StatelessWidget {
         const Text(
             'This page is being used for BLE testing with the embedded device, please do not change the content of this page'),
         ElevatedButton(
-            onPressed: () => context.read<BluetoothInfoProvider>().scan(),
-            child: const Text('Scan'))
+            onPressed: () => context.read<BluetoothInfoProvider>().startScan(),
+            child: const Text('Start scanning')),
+        ElevatedButton(
+            onPressed: context.read<BluetoothInfoProvider>().getScanResults,
+            child: const Text('Get scan results'))
       ],
     );
   }

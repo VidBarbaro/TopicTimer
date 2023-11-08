@@ -39,7 +39,8 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   sizer: ^2.0.15
   provider: ^6.0.5
-  flutter_reactive_ble: ^5.2.0
+  flutter_blue_plus: ^1.27.0
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:

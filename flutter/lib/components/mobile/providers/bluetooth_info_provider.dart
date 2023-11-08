@@ -1,13 +1,54 @@
+import 'dart:io';
+
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
-  final flutterReactiveBle = FlutterReactiveBle();
+  void enableBluetooth() async {
+    if (!await FlutterBluePlus.isSupported) {
+      print('[ERROR] Bluetooth not supported by this device');
+      return;
+    }
 
-  void scan() {
-    print(flutterReactiveBle.scanRegistry.discoveredDevices.length);
+    if (await Permission.bluetoothScan.request().isGranted) {
+      if (await Permission.bluetoothConnect.request().isGranted) {
+        FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+          print(state);
+          if (state == BluetoothAdapterState.on) {
+            //Do your action
+          } else {
+            print('[ERROR] Bleutooth adapter could not be started');
+            print(state);
+            return;
+          }
+        });
+      }
+      if (Platform.isAndroid) {
+        await FlutterBluePlus.turnOn();
+      }
 
-    flutterReactiveBle
-        .scanForDevices(withServices: [], scanMode: ScanMode.lowLatency);
+      // Setup Listener for scan results.
+      var subscription = FlutterBluePlus.scanResults.listen(
+        (results) {
+          if (results.isNotEmpty) {
+            ScanResult r = results.last; // the most recently found device
+            print(
+                '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
+          }
+        },
+      );
+    }
+  }
+
+  void startScan() async {
+    FlutterBluePlus.startScan();
+  }
+
+  void getScanResults() async {
+    FlutterBluePlus.stopScan();
+    if (await FlutterBluePlus.scanResults.length > 0) {
+      print(FlutterBluePlus.scanResults.last.toString());
+    }
   }
 }
