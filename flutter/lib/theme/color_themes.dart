@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
+
 class ColorThemes {
-  /// Example:
-  /// ColorThemes.get()?['primary']
-  /// TODO: create SetTheme function
+  /// TODO: obsolete, remove when website code is changed to new format
   static Map<String, dynamic>? get({String theme = 'default'}) {
     const themes = {
       'default': {

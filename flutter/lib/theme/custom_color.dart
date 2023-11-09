@@ -1,0 +1,1 @@
+enum CustomColor {primary, secondary, tertiary, background, text}
