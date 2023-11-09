@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +18,7 @@ class BluetoothInfoProvider with ChangeNotifier {
           print(state);
           if (state == BluetoothAdapterState.on) {
             //Do your action
+            print('Succesfully initialised bluetooth adapter');
           } else {
             print('[ERROR] Bleutooth adapter could not be started');
             print(state);
@@ -30,43 +32,55 @@ class BluetoothInfoProvider with ChangeNotifier {
 
       // Setup Listener for scan results.
       var subscription = FlutterBluePlus.scanResults.listen(
-        (results) {
+        (results) async {
           if (results.isNotEmpty) {
             ScanResult r = results.last; // the most recently found device
             print(
                 '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
+            if (r.advertisementData.localName == 'TopicWatch') {
+              FlutterBluePlus.stopScan();
+              await r.device.connect(autoConnect: true);
+
+              print("succesfully connected to TopicWatch");
+              List<BluetoothService> services =
+                  await r.device.discoverServices();
+              services.forEach((service) {
+                print('service found: ');
+                print(service.serviceUuid.toString());
+                if (service.serviceUuid.toString() ==
+                    'a6846862-7efa-11ee-b962-0242ac120002') {
+                  service.characteristics.forEach((element) {
+                    if (element.characteristicUuid.toString() ==
+                        'a6846b78-7efa-11ee-b962-0242ac120002') {
+                      print('writing data');
+                      element.write([0x21, 0x22, 0x23, 0x24]);
+                    }
+                  });
+                } else {
+                  print('Niet dood');
+                }
+              });
+              stopScan();
+            } else {
+              print('something went wrong connecting');
+            }
           }
         },
       );
+      // if (FlutterBluePlus.connectedDevices.isEmpty) {
+      //   print('subscription canceled');
+      //   subscription.cancel();
+      // }
     }
   }
 
   void startScan() async {
+    print('Start scanning');
     FlutterBluePlus.startScan();
   }
 
-  void getScanResults() async {
+  void stopScan() async {
+    print('stopped scanning');
     FlutterBluePlus.stopScan();
-    if (await FlutterBluePlus.scanResults.length > 0) {
-      print(FlutterBluePlus.scanResults.last.toString());
-    }
-  }
-
-  void connectToDevice(ScanResult foundDevice) async {
-    await foundDevice.device.connect(autoConnect: true);
-    if (FlutterBluePlus.connectedDevices.isNotEmpty) {
-      print('Succesfully connected to device');
-      //TODO: discover services
-      List<BluetoothService> services =
-          await foundDevice.device.discoverServices();
-      int? length = 0;
-      if (foundDevice.device.servicesList != null) {
-        length = foundDevice.device.servicesList?.length;
-        return;
-      }
-      for (int i = 0; i < length; i++) {
-        //do something with services
-      }
-    }
   }
 }

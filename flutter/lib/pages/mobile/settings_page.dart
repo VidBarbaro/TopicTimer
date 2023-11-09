@@ -20,8 +20,8 @@ class MobileSettingsPage extends StatelessWidget {
             onPressed: () => context.read<BluetoothInfoProvider>().startScan(),
             child: const Text('Start scanning')),
         ElevatedButton(
-            onPressed: context.read<BluetoothInfoProvider>().getScanResults,
-            child: const Text('Get scan results'))
+            onPressed: () => context.read<BluetoothInfoProvider>().stopScan(),
+            child: const Text('Stop scanning')),
       ],
     );
   }
