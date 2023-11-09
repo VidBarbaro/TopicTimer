@@ -1,0 +1,5 @@
+#pragma once
+
+#define BLE_DEVICE_NAME "TopicWatch"
+#define BLE_UUID_SERVICE "a6846862-7efa-11ee-b962-0242ac120002"
+#define BLE_UUID_CHARACTERISTIC "a6846b78-7efa-11ee-b962-0242ac120002"
