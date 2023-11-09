@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
+  BluetoothDevice? _device;
+  BluetoothCharacteristic? _characteristic;
+
   void enableBluetooth() async {
     if (!await FlutterBluePlus.isSupported) {
       print('[ERROR] Bluetooth not supported by this device');
@@ -29,58 +33,67 @@ class BluetoothInfoProvider with ChangeNotifier {
       if (Platform.isAndroid) {
         await FlutterBluePlus.turnOn();
       }
+    }
+  }
 
-      // Setup Listener for scan results.
-      var subscription = FlutterBluePlus.scanResults.listen(
-        (results) async {
-          if (results.isNotEmpty) {
-            ScanResult r = results.last; // the most recently found device
-            print(
-                '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
-            if (r.advertisementData.localName == 'TopicWatch') {
-              FlutterBluePlus.stopScan();
-              await r.device.connect(autoConnect: true);
-
-              print("succesfully connected to TopicWatch");
-              List<BluetoothService> services =
-                  await r.device.discoverServices();
-              services.forEach((service) {
-                print('service found: ');
-                print(service.serviceUuid.toString());
-                if (service.serviceUuid.toString() ==
-                    'a6846862-7efa-11ee-b962-0242ac120002') {
-                  service.characteristics.forEach((element) {
-                    if (element.characteristicUuid.toString() ==
-                        'a6846b78-7efa-11ee-b962-0242ac120002') {
-                      print('writing data');
-                      element.write([0x21, 0x22, 0x23, 0x24]);
-                    }
-                  });
-                } else {
-                  print('Niet dood');
-                }
-              });
-              stopScan();
-            } else {
-              print('something went wrong connecting');
-            }
-          }
-        },
-      );
-      // if (FlutterBluePlus.connectedDevices.isEmpty) {
-      //   print('subscription canceled');
-      //   subscription.cancel();
-      // }
+  Future<void> connectToDevice(BluetoothDevice device) async {
+    await device.connect();
+    await device.discoverServices();
+    List<BluetoothService> services = await device.discoverServices();
+    for (BluetoothService service in services) {
+      for (BluetoothCharacteristic characteristic in service.characteristics) {
+        if (characteristic.uuid.toString() ==
+            'a6846b78-7efa-11ee-b962-0242ac120002') {
+          _characteristic = characteristic;
+          characteristic.setNotifyValue(true);
+          characteristic.lastValueStream.listen((value) {
+            print("Received data: ${String.fromCharCodes(value)}");
+            handleMessage(String.fromCharCodes(value));
+          });
+        }
+      }
     }
   }
 
   void startScan() async {
     print('Start scanning');
-    FlutterBluePlus.startScan();
+    await FlutterBluePlus.startScan();
+    var subscription = FlutterBluePlus.scanResults.listen((results) {
+      if (results.isNotEmpty) {
+        ScanResult r = results.last; // the most recently found device
+        print(
+            '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
+        if (r.advertisementData.localName == "TopicWatch") {
+          stopScan();
+          _device = r.device;
+          connectToDevice(r.device);
+        }
+      }
+    });
   }
 
   void stopScan() async {
     print('stopped scanning');
     FlutterBluePlus.stopScan();
+  }
+
+  void handleMessage(String message) {
+    print(message);
+    if (message.isEmpty) {
+      return;
+    }
+    message = message.substring(0, message.length - 1);
+    print('handle message');
+    if (_characteristic == null) {
+      print('characteristic is null');
+      return;
+    }
+    if (message == 'Time?') {
+      print('sending');
+      print(TimeOfDay.now().toString());
+      _characteristic?.write(
+          '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}'
+              .codeUnits);
+    }
   }
 }
