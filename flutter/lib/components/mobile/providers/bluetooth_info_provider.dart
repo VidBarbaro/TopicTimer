@@ -51,4 +51,22 @@ class BluetoothInfoProvider with ChangeNotifier {
       print(FlutterBluePlus.scanResults.last.toString());
     }
   }
+
+  void connectToDevice(ScanResult foundDevice) async {
+    await foundDevice.device.connect(autoConnect: true);
+    if (FlutterBluePlus.connectedDevices.isNotEmpty) {
+      print('Succesfully connected to device');
+      //TODO: discover services
+      List<BluetoothService> services =
+          await foundDevice.device.discoverServices();
+      int? length = 0;
+      if (foundDevice.device.servicesList != null) {
+        length = foundDevice.device.servicesList?.length;
+        return;
+      }
+      for (int i = 0; i < length; i++) {
+        //do something with services
+      }
+    }
+  }
 }
