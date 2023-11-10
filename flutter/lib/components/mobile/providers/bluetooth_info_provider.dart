@@ -5,7 +5,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
-  //These variables aren't used outside the class, but could be handy later on
+  //These variables aren't used outside the class, but could be handy later on for updating the UI
   BluetoothDevice? _device; //Bluetoothdevice which is the TopicTimer
   BluetoothCharacteristic? _characteristic; //Characterestic to write to
   StreamSubscription<List<ScanResult>>?
