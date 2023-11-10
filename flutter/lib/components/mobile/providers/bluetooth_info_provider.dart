@@ -1,14 +1,17 @@
-import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/foundation.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
-  BluetoothDevice? _device;
-  BluetoothCharacteristic? _characteristic;
+  //These variables aren't used outside the class, but could be handy later on
+  BluetoothDevice? _device; //Bluetoothdevice which is the TopicTimer
+  BluetoothCharacteristic? _characteristic; //Characterestic to write to
+  StreamSubscription<List<ScanResult>>?
+      _messageListener; //messageListener is triggered when a new message is received
+  StreamSubscription<BluetoothConnectionState>?
+      _connectionListener; //connectionListener is triggered when the connection gets updated
 
   void enableBluetooth() async {
     if (!await FlutterBluePlus.isSupported) {
@@ -22,10 +25,9 @@ class BluetoothInfoProvider with ChangeNotifier {
           print(state);
           if (state == BluetoothAdapterState.on) {
             //Do your action
-            print('Succesfully initialised bluetooth adapter');
+            print('[SUCCESS] initialised bluetooth adapter');
           } else {
             print('[ERROR] Bleutooth adapter could not be started');
-            print(state);
             return;
           }
         });
@@ -38,6 +40,14 @@ class BluetoothInfoProvider with ChangeNotifier {
 
   Future<void> connectToDevice(BluetoothDevice device) async {
     await device.connect();
+    if (device.isConnected) {
+      //set up connectionListener
+      _connectionListener = device.connectionState.listen((event) {
+        if (event == BluetoothConnectionState.disconnected) {
+          connectToDevice(device);
+        }
+      });
+    }
     await device.discoverServices();
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService service in services) {
@@ -47,7 +57,7 @@ class BluetoothInfoProvider with ChangeNotifier {
           _characteristic = characteristic;
           characteristic.setNotifyValue(true);
           characteristic.lastValueStream.listen((value) {
-            print("Received data: ${String.fromCharCodes(value)}");
+            print('Received data: ${String.fromCharCodes(value)}');
             handleMessage(String.fromCharCodes(value));
           });
         }
@@ -55,15 +65,20 @@ class BluetoothInfoProvider with ChangeNotifier {
     }
   }
 
+  void disconnectDevice() {
+    _messageListener?.cancel();
+    _connectionListener?.cancel();
+  }
+
   void startScan() async {
     print('Start scanning');
     await FlutterBluePlus.startScan();
-    var subscription = FlutterBluePlus.scanResults.listen((results) {
+    _messageListener = FlutterBluePlus.scanResults.listen((results) {
       if (results.isNotEmpty) {
         ScanResult r = results.last; // the most recently found device
         print(
             '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
-        if (r.advertisementData.localName == "TopicWatch") {
+        if (r.advertisementData.localName == 'TopicWatch') {
           stopScan();
           _device = r.device;
           connectToDevice(r.device);
@@ -73,27 +88,26 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   void stopScan() async {
-    print('stopped scanning');
     FlutterBluePlus.stopScan();
   }
 
   void handleMessage(String message) {
-    print(message);
     if (message.isEmpty) {
       return;
     }
     message = message.substring(0, message.length - 1);
-    print('handle message');
     if (_characteristic == null) {
-      print('characteristic is null');
       return;
     }
-    if (message == 'Time?') {
-      print('sending');
-      print(TimeOfDay.now().toString());
-      _characteristic?.write(
-          '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}'
-              .codeUnits);
+    switch (message) {
+      case 'Time?':
+        _characteristic?.write(
+            '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}'
+                .codeUnits);
+        break;
+      default:
+        //Unhandled message
+        break;
     }
   }
 }
