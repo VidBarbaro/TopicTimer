@@ -23,17 +23,17 @@ void VirtualRTCProvider::increaseTime()
 {
     _dateTime.seconds++;
 
-    if (_dateTime.seconds == 60)
+    if (_dateTime.seconds >= 60)
     {
         _dateTime.seconds = 0;
         _dateTime.minutes++;
 
-        if (_dateTime.minutes == 60)
+        if (_dateTime.minutes >= 60)
         {
             _dateTime.minutes = 0;
             _dateTime.hours++;
 
-            if (_dateTime.hours == 24)
+            if (_dateTime.hours >= 24)
             {
                 _dateTime.hours = 0;
                 increaseDate();
@@ -48,12 +48,12 @@ void VirtualRTCProvider::increaseDate()
 
     _dateTime.day++;
 
-    if (_dateTime.day == _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
+    if (_dateTime.day >= _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
     {
         _dateTime.day = 1;
         _dateTime.month++;
 
-        if (_dateTime.month == 13)
+        if (_dateTime.month >= 13)
         {
             _dateTime.month = 1;
             _dateTime.year++;
