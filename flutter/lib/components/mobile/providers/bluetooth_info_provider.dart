@@ -66,8 +66,14 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   void disconnectDevice() {
-    _messageListener?.cancel();
-    _connectionListener?.cancel();
+    if(_messageListener != null)
+    {
+      _messageListener?.cancel();
+    }
+    if(_connectionListener != null)
+    {
+      _connectionListener?.cancel();
+    }
   }
 
   void startScan() async {
