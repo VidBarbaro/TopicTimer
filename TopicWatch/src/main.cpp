@@ -6,15 +6,10 @@
 #include "TFT_eSPI.h"
 #include "VirtualRTCProvider.h"
 
-void onConnected();
-void onDisconnected();
-void onRead(const char *value);
-void onWrite(const char *value);
-
 TFT_eSPI tft = TFT_eSPI();
-// BLEProvider bleProvider = BLEProvider(onConnected, onDisconnected, onRead, onWrite);
 Border border = Border(&tft, 3);
-VirtualRTCProvider vrp = VirtualRTCProvider();
+BLEProvider bleProvider;
+VirtualRTCProvider vrp;
 DateTime *dt = vrp.getTime();
 
 int percentage = 0;
@@ -25,7 +20,8 @@ bool waitingForAnswer = false;
 
 void setup()
 {
-    Serial.begin(9600);
+    bleProvider.init();
+
     /*
      * Turn on and initialize the screen
      */
@@ -37,10 +33,8 @@ void setup()
     tft.fillScreen(TFT_BLACK);
 
     /*
-     * Print BLE details
+     * Print initial border
      */
-    tft.setTextSize(1);
-    tft.drawString(BLE_DEVICE_NAME, 50, 10);
     border.set(100, TFT_RED);
 
     tft.setTextSize(5);
@@ -59,24 +53,4 @@ void loop()
 
     String s = StringHelper::padZeroLeft(String(dt->hours)) + ':' + StringHelper::padZeroLeft(String(dt->minutes)) + ':' + StringHelper::padZeroLeft(String(dt->seconds));
     tft.drawString(s, tft.width() / 2, tft.height() / 2);
-}
-
-void onConnected()
-{
-    border.set(100, 0x009688);
-}
-
-void onDisconnected()
-{
-    border.set(100, TFT_RED);
-}
-
-void onRead(const char *value)
-{
-    tft.drawString(String(value), 50, 100);
-}
-
-void onWrite(const char *value)
-{
-    tft.drawString(String(value), 50, 100);
 }
