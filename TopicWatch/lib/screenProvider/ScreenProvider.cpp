@@ -13,25 +13,25 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
     switch (iGestureId)
     {
     case CST816Touch::gesture_t::GESTURE_UP:
-        instance->_border.set(100, TFT_BLUE);
+        // Nothing for now
         break;
     case CST816Touch::gesture_t::GESTURE_RIGHT:
-        instance->_border.set(100, TFT_BROWN);
+        instance->_viewController.nextLeft();
         break;
     case CST816Touch::gesture_t::GESTURE_DOWN:
-        instance->_border.set(100, TFT_COLMOD);
+        // Nothing for now
         break;
     case CST816Touch::gesture_t::GESTURE_LEFT:
-        instance->_border.set(100, 0xFFFF00);
+        instance->_viewController.nextRight();
         break;
     case CST816Touch::gesture_t::GESTURE_DOUBLE_CLICK:
-        instance->_border.set(100, 0xFFC0CB);
+        // Nothing for now
         break;
     case CST816Touch::gesture_t::GESTURE_LONG_PRESS:
-        instance->_border.set(100, 0xFF5A00);
+        // Nothing for now
         break;
     case CST816Touch::gesture_t::GESTURE_TOUCH_BUTTON:
-        instance->_border.set(100, 0x800080);
+        instance->_viewController.home();
         break;
     default:
         break;
@@ -46,7 +46,7 @@ void ScreenProvider::onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedSc
     }
 
     ScreenProvider *instance = (ScreenProvider *)_instance;
-    instance->_border.set(100, TFT_GREEN);
+    // Nothing for now
 }
 
 void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
@@ -55,7 +55,17 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 
     _border.init(&_tft, 4);
     _vRTCProvider = vRTCProvider;
-    _dateTime = _vRTCProvider->getTime();
+    _viewController.init(&_tft, &_border, _vRTCProvider);
+    Topic tmpTopic;
+    tmpTopic.id = 0;
+    tmpTopic.name = "Tycho's test topic";
+    tmpTopic.color = 0x89CFF0;
+    _viewController.addView(tmpTopic);
+    Topic tmpTopic2;
+    tmpTopic2.id = 1;
+    tmpTopic2.name = "Tycho's 2nd test topic";
+    tmpTopic2.color = TFT_RED;
+    _viewController.addView(tmpTopic2);
 
     /*
      * Turn on and initialize the screen
@@ -65,8 +75,8 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 
     _tft.begin();
     _tft.setRotation(1);
-    _tft.fillScreen(TT_GRAY);
-    _tft.setTextColor(TT_BLACK, TT_GRAY);
+    _tft.fillScreen(WatchSettings::topicTimer_GRAY);
+    _tft.setTextColor(WatchSettings::topicTimer_BLACK, WatchSettings::topicTimer_GRAY);
 
     /*
      * Setup touchscreen
@@ -102,9 +112,5 @@ void ScreenProvider::setVirtualRTCProviderTime(int hours, int minutes, int secon
 void ScreenProvider::update()
 {
     _touch.control();
-
-    _tft.setTextSize(5);
-    _tft.setTextDatum(MC_DATUM);
-    String s = StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes));
-    _tft.drawString(s, _tft.width() / 2, _tft.height() / 2);
+    _viewController.drawCurrentView();
 }

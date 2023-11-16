@@ -9,13 +9,9 @@
 #include "TouchSubscriber.h"
 #include "TFT_eSPI.h"
 #include "VirtualRTCProvider.h"
+#include "ViewController.h"
+#include "WatchSettings.h"
 #include <Wire.h>
-
-#define TT_GRAY 0xF5F5F5
-#define TT_BLACK 0x333333
-#define TT_GREEN 0x009688
-#define TT_ORANGE 0xFFC107
-#define TT_BLUE 0x03A9F4
 
 using namespace MDO;
 
@@ -26,9 +22,9 @@ private:
     TFT_eSPI _tft = TFT_eSPI();
     Border _border;
     VirtualRTCProvider *_vRTCProvider;
-    DateTime *_dateTime;
     TouchSubscriber _touchSubscriber;
     CST816Touch _touch;
+    ViewController _viewController;
 
     static void *_instance;
     static void onGesture(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);

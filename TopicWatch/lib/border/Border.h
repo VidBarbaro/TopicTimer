@@ -26,6 +26,7 @@ public:
     void set(double precent, uint32_t color);
     void setWithGoal(double progress, double goal);
     void setWithGoal(double progress, double goal, uint32_t color);
+    int getHeight();
 };
 
 #endif
