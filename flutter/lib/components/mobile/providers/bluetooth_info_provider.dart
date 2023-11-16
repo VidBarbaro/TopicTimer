@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
   //These variables aren't used outside the class, but could be handy later on for updating the UI
@@ -18,6 +20,20 @@ class BluetoothInfoProvider with ChangeNotifier {
       print('[ERROR] Bluetooth not supported by this device');
       return;
     }
+
+    SetTimeMessage message = SetTimeMessage(
+        command: 'Testcommand',
+        date: Date(
+            years: DateTime.now().year,
+            months: DateTime.now().month,
+            days: DateTime.now().day),
+        time: Time(
+            hours: TimeOfDay.now().hour,
+            minutes: TimeOfDay.now().minute,
+            seconds: 0));
+
+    print('TEST PRINT');
+    print(jsonEncode(message));
 
     if (await Permission.bluetoothScan.request().isGranted) {
       if (await Permission.bluetoothConnect.request().isGranted) {
@@ -39,7 +55,11 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   Future<void> connectToDevice(BluetoothDevice device) async {
-    await device.connect();
+    try {
+      await device.connect();
+    } catch (ex) {
+      print(ex.toString());
+    }
     if (device.isConnected) {
       //set up connectionListener
       _connectionListener = device.connectionState.listen((event) {
@@ -66,12 +86,10 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   void disconnectDevice() {
-    if(_messageListener != null)
-    {
+    if (_messageListener != null) {
       _messageListener?.cancel();
     }
-    if(_connectionListener != null)
-    {
+    if (_connectionListener != null) {
       _connectionListener?.cancel();
     }
   }
@@ -99,8 +117,11 @@ class BluetoothInfoProvider with ChangeNotifier {
 
   void handleMessage(String message) {
     if (message.isEmpty) {
+      //Null check
       return;
     }
+
+    //Clean string by removing zero terminator
     message = message.substring(0, message.length - 1);
     if (_characteristic == null) {
       return;
