@@ -6,7 +6,7 @@
 
 namespace MDO
 {
-    typedef void (*GestureCallback)(CST816Touch *pTouch, String iGestureId, bool bReleasedScreen);
+    typedef void (*GestureCallback)(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);
     typedef void (*TouchCallback)(CST816Touch *pTouch, int x, int y, bool bReleasedScreen);
     class TouchSubscriber : public TouchSubscriberInterface
     {
@@ -18,7 +18,7 @@ namespace MDO
         // the pointer is the 'this' from the CST816Touch source
         virtual void
         gestureNotification(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);
-        virtual void setGestureCallback(void (*func)(CST816Touch *pTouch, String iGestureId, bool bReleasedScreen));
+        virtual void setGestureCallback(void (*func)(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen));
 
         // the pointer is the 'this' from the CST816Touch source
         virtual void touchNotification(CST816Touch *pTouch, int x, int y, bool bReleasedScreen);

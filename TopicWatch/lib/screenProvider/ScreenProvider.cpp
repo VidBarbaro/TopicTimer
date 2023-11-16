@@ -2,7 +2,7 @@
 
 void *ScreenProvider::_instance = nullptr;
 
-void ScreenProvider::onGesture(CST816Touch *pTouch, String iGestureId, bool bReleasedScreen)
+void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen)
 {
     if (_instance == nullptr)
     {
@@ -10,7 +10,32 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, String iGestureId, bool bRel
     }
 
     ScreenProvider *instance = (ScreenProvider *)_instance;
-    instance->_border.set(100, TFT_BLUE);
+    switch (iGestureId)
+    {
+    case CST816Touch::gesture_t::GESTURE_UP:
+        instance->_border.set(100, TFT_BLUE);
+        break;
+    case CST816Touch::gesture_t::GESTURE_RIGHT:
+        instance->_border.set(100, TFT_BROWN);
+        break;
+    case CST816Touch::gesture_t::GESTURE_DOWN:
+        instance->_border.set(100, TFT_COLMOD);
+        break;
+    case CST816Touch::gesture_t::GESTURE_LEFT:
+        instance->_border.set(100, 0xFFFF00);
+        break;
+    case CST816Touch::gesture_t::GESTURE_DOUBLE_CLICK:
+        instance->_border.set(100, 0xFFC0CB);
+        break;
+    case CST816Touch::gesture_t::GESTURE_LONG_PRESS:
+        instance->_border.set(100, 0xFF5A00);
+        break;
+    case CST816Touch::gesture_t::GESTURE_TOUCH_BUTTON:
+        instance->_border.set(100, 0x800080);
+        break;
+    default:
+        break;
+    }
 }
 
 void ScreenProvider::onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedScreen)
@@ -28,7 +53,7 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 {
     _instance = this;
 
-    _border.init(&_tft, 3);
+    _border.init(&_tft, 4);
     _vRTCProvider = vRTCProvider;
     _dateTime = _vRTCProvider->getTime();
 
@@ -40,15 +65,8 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 
     _tft.begin();
     _tft.setRotation(1);
-    _tft.fillScreen(TFT_BLACK);
-
-    /*
-     * Print initial border
-     */
-    _border.set(100, TFT_RED);
-
-    _tft.setTextSize(5);
-    _tft.setTextDatum(MC_DATUM);
+    _tft.fillScreen(TT_GRAY);
+    _tft.setTextColor(TT_BLACK, TT_GRAY);
 
     /*
      * Setup touchscreen
@@ -85,6 +103,8 @@ void ScreenProvider::update()
 {
     _touch.control();
 
-    String s = StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)) + ':' + StringHelper::padZeroLeft(String(_dateTime->seconds));
+    _tft.setTextSize(5);
+    _tft.setTextDatum(MC_DATUM);
+    String s = StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes));
     _tft.drawString(s, _tft.width() / 2, _tft.height() / 2);
 }

@@ -32,10 +32,10 @@ namespace MDO
         }
 
         Serial.println();
-        _gestureCallback(pTouch, CST816Touch::gestureIdToString(iGestureId), bReleasedScreen);
+        _gestureCallback(pTouch, iGestureId, bReleasedScreen);
     }
 
-    /*virtual*/ void TouchSubscriber::setGestureCallback(void (*func)(CST816Touch *pTouch, String iGestureId, bool bReleasedScreen))
+    /*virtual*/ void TouchSubscriber::setGestureCallback(void (*func)(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen))
     {
         _gestureCallback = func;
     }

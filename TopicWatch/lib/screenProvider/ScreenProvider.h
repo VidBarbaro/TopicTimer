@@ -11,6 +11,12 @@
 #include "VirtualRTCProvider.h"
 #include <Wire.h>
 
+#define TT_GRAY 0xF5F5F5
+#define TT_BLACK 0x333333
+#define TT_GREEN 0x009688
+#define TT_ORANGE 0xFFC107
+#define TT_BLUE 0x03A9F4
+
 using namespace MDO;
 
 class ScreenProvider
@@ -25,7 +31,7 @@ private:
     CST816Touch _touch;
 
     static void *_instance;
-    static void onGesture(CST816Touch *pTouch, String iGestureId, bool bReleasedScreen);
+    static void onGesture(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);
     static void onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedScreen);
 
 public:
