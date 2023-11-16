@@ -51,9 +51,9 @@ class TopBarConentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Topic getSelectedTopic() {
-    return topics[_selectedTopicIndex];
-  }
+  Topic getSelectedTopic() => topics[_selectedTopicIndex];
+  
+  List<Topic> getTopics()  => topics;
 
   String getSelectedPage() {
     switch (_pageIndex) {

@@ -7,6 +7,8 @@ import 'package:topictimer_flutter_application/pages/mobile/planning_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/settings_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/timer_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/topics_page.dart';
+import 'package:topictimer_flutter_application/theme/custom_color.dart';
+import 'package:topictimer_flutter_application/theme/color_provider.dart';
 
 class HomePageMobile extends StatefulWidget {
   const HomePageMobile({super.key});
@@ -36,7 +38,7 @@ class HomePageMobileState extends State<HomePageMobile> {
       PersistentBottomNavBarItem(
           title: 'Topics',
           textStyle: navBarItemTextStyle,
-          icon: const Icon(Icons.subject, color: Color(0xFFFF8205)),
+          icon:  Icon(Icons.subject, color: ColorProvider.get(CustomColor.primary)),
           inactiveIcon: const Icon(Icons.subject, color: Color(0xFF239AFB))),
       PersistentBottomNavBarItem(
           title: 'Planning',
