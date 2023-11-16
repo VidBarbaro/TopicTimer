@@ -18,8 +18,9 @@ private:
     _getPrecentage(double progress, double goal);
 
 public:
-    Border(TFT_eSPI *tft, int height);
+    Border() = default;
     ~Border() = default;
+    void init(TFT_eSPI *tft, int height);
     void clear(uint32_t clearColor);
     void set(double precent);
     void set(double precent, uint32_t color);

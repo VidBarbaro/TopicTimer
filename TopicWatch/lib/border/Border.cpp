@@ -1,6 +1,6 @@
 #include "Border.h"
 
-Border::Border(TFT_eSPI *tft, int height)
+void Border::init(TFT_eSPI *tft, int height)
 {
     _tft = tft;
     _height = height;
