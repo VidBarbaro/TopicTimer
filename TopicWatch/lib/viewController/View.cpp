@@ -84,7 +84,7 @@ void View::draw(int clearScreen)
         return;
     }
 
-    switch (viewState)
+    switch (_viewState)
     {
     case ViewState::IDLE:
         _drawIdle(clearScreen);

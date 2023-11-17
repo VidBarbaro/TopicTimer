@@ -25,7 +25,7 @@ private:
         IDLE,
         TRACKING,
     };
-    ViewState viewState = ViewState::IDLE;
+    ViewState _viewState = ViewState::IDLE;
     Border *_border;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
