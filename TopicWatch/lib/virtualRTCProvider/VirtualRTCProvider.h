@@ -16,12 +16,11 @@ struct DateTime
 class VirtualRTCProvider
 {
 private:
-    static const int _numberOfDaysInTheMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     static hw_timer_t *_timer;
     const uint64_t _sleepTime = 1 * 1000000; // 1 second(s)
     static DateTime _dateTime;
     static DateTime _trackingDateTime;
-    static int _isTracking = false;
+    static int _isTracking;
 
     static void IRAM_ATTR onTimer();
     static void increaseTime();

@@ -50,6 +50,8 @@ void VirtualRTCProvider::increaseTime()
 
 void VirtualRTCProvider::increaseDate()
 {
+    const int _numberOfDaysInTheMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
     _dateTime.day++;
 
     if (_dateTime.day >= _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
@@ -90,6 +92,8 @@ void VirtualRTCProvider::increaseTrackingTime()
 
 void VirtualRTCProvider::increaseTrackingDate()
 {
+    const int _numberOfDaysInTheMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
     _trackingDateTime.day++;
 
     if (_trackingDateTime.day >= _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
