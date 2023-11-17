@@ -17,6 +17,11 @@ void ViewController::home()
         return;
     }
 
+    if (_currentViewIndex == 0)
+    {
+        return;
+    }
+
     _currentViewIndex = 0;
     _allViews[_currentViewIndex].draw(true);
 }
@@ -32,6 +37,7 @@ void ViewController::nextLeft()
     if (_currentViewIndex < 0)
     {
         _currentViewIndex = 0;
+        return;
     }
 
     if (!_allViews[_currentViewIndex].isInitialized())
