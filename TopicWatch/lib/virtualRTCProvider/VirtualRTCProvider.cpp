@@ -2,6 +2,8 @@
 
 hw_timer_t *VirtualRTCProvider::_timer;
 DateTime VirtualRTCProvider::_dateTime;
+DateTime VirtualRTCProvider::_trackingDateTime;
+int VirtualRTCProvider::_isTracking = false;
 
 VirtualRTCProvider::VirtualRTCProvider()
 {
@@ -17,6 +19,10 @@ VirtualRTCProvider::VirtualRTCProvider()
 void IRAM_ATTR VirtualRTCProvider::onTimer()
 {
     increaseTime();
+    if (_isTracking)
+    {
+        increaseTrackingTime();
+    }
 }
 
 void VirtualRTCProvider::increaseTime()
@@ -44,8 +50,6 @@ void VirtualRTCProvider::increaseTime()
 
 void VirtualRTCProvider::increaseDate()
 {
-    static const int _numberOfDaysInTheMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
     _dateTime.day++;
 
     if (_dateTime.day >= _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
@@ -57,6 +61,46 @@ void VirtualRTCProvider::increaseDate()
         {
             _dateTime.month = 1;
             _dateTime.year++;
+        }
+    }
+}
+
+void VirtualRTCProvider::increaseTrackingTime()
+{
+    _trackingDateTime.seconds++;
+
+    if (_trackingDateTime.seconds >= 60)
+    {
+        _trackingDateTime.seconds = 0;
+        _trackingDateTime.minutes++;
+
+        if (_trackingDateTime.minutes >= 60)
+        {
+            _trackingDateTime.minutes = 0;
+            _trackingDateTime.hours++;
+
+            if (_trackingDateTime.hours >= 24)
+            {
+                _trackingDateTime.hours = 0;
+                increaseTrackingDate();
+            }
+        }
+    }
+}
+
+void VirtualRTCProvider::increaseTrackingDate()
+{
+    _trackingDateTime.day++;
+
+    if (_trackingDateTime.day >= _numberOfDaysInTheMonth[_dateTime.month - 1] + 1)
+    {
+        _trackingDateTime.day = 1;
+        _trackingDateTime.month++;
+
+        if (_trackingDateTime.month >= 13)
+        {
+            _trackingDateTime.month = 1;
+            _trackingDateTime.year++;
         }
     }
 }
@@ -74,4 +118,25 @@ void VirtualRTCProvider::setTime(int hours, int minutes, int seconds, int year, 
 DateTime *VirtualRTCProvider::getTime()
 {
     return &_dateTime;
+}
+
+void VirtualRTCProvider::startTopicTimer()
+{
+    if (!_isTracking)
+    {
+        _trackingDateTime.hours = 0;
+        _trackingDateTime.minutes = 0;
+        _trackingDateTime.seconds = 0;
+        _trackingDateTime.year = 0;
+        _trackingDateTime.month = 0;
+        _trackingDateTime.day = 0;
+    }
+
+    _isTracking = true;
+}
+
+DateTime VirtualRTCProvider::stopTopicTimer()
+{
+    _isTracking = false;
+    return _trackingDateTime;
 }
