@@ -107,6 +107,11 @@ void ViewController::startTracking()
     }
 }
 
+void ViewController::togglePauseTracking()
+{
+    _vRTCProvider->togglePauseTopicTimer();
+}
+
 void ViewController::stopTracking()
 {
     if (_currentViewIndex > 0)

@@ -4,6 +4,7 @@ hw_timer_t *VirtualRTCProvider::_timer;
 DateTime VirtualRTCProvider::_dateTime;
 DateTime VirtualRTCProvider::_trackingDateTime;
 int VirtualRTCProvider::_isTracking = false;
+int VirtualRTCProvider::_trackingIsPaused = false;
 
 VirtualRTCProvider::VirtualRTCProvider()
 {
@@ -69,6 +70,11 @@ void VirtualRTCProvider::increaseDate()
 
 void VirtualRTCProvider::increaseTrackingTime()
 {
+    if (_trackingIsPaused)
+    {
+        return;
+    }
+
     _trackingDateTime.seconds++;
 
     if (_trackingDateTime.seconds >= 60)
@@ -142,6 +148,14 @@ void VirtualRTCProvider::startTopicTimer()
     }
 
     _isTracking = true;
+}
+
+void VirtualRTCProvider::togglePauseTopicTimer()
+{
+    if (_isTracking)
+    {
+        _trackingIsPaused = !_trackingIsPaused;
+    }
 }
 
 void VirtualRTCProvider::stopTopicTimer()

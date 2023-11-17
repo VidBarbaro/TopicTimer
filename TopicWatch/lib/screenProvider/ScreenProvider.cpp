@@ -36,7 +36,7 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
 
         break;
     case CST816Touch::gesture_t::GESTURE_LONG_PRESS:
-        // Nothing for now
+        instance->_viewController.togglePauseTracking(); // THIS IS MAYBE TOO LONG, MAYBE CHANGE THE EVENT FOR THIS
         break;
     case CST816Touch::gesture_t::GESTURE_TOUCH_BUTTON:
         instance->_viewController.home();

@@ -21,6 +21,7 @@ private:
     static DateTime _dateTime;
     static DateTime _trackingDateTime;
     static int _isTracking;
+    static int _trackingIsPaused;
 
     static void IRAM_ATTR onTimer();
     static void increaseTime();
@@ -35,6 +36,7 @@ public:
     DateTime *getTime();
     DateTime *getTrackingTime();
     void startTopicTimer();
+    void togglePauseTopicTimer();
     void stopTopicTimer();
 };
 

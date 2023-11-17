@@ -30,6 +30,7 @@ public:
     void removeView(int viewIndex);
     void drawCurrentView();
     void startTracking();
+    void togglePauseTracking();
     void stopTracking();
     int getCurrentViewState();
 };
