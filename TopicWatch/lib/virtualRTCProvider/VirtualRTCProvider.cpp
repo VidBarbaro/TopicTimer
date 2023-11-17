@@ -13,7 +13,7 @@ VirtualRTCProvider::VirtualRTCProvider()
     timerAlarmWrite(_timer, _sleepTime, true);
     timerAlarmEnable(_timer);
 
-    setTime(0, 0, 0, 2023, 11, 13);
+    setTime(10, 43, 34, 2023, 11, 17);
 }
 
 void IRAM_ATTR VirtualRTCProvider::onTimer()
