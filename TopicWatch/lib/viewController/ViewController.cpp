@@ -12,12 +12,22 @@ void ViewController::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRT
 
 void ViewController::home()
 {
+    if (_currentViewIsTracking)
+    {
+        return;
+    }
+
     _currentViewIndex = 0;
     _allViews[_currentViewIndex].draw(true);
 }
 
 void ViewController::nextLeft()
 {
+    if (_currentViewIsTracking)
+    {
+        return;
+    }
+
     _currentViewIndex--;
     if (_currentViewIndex < 0)
     {
@@ -35,6 +45,11 @@ void ViewController::nextLeft()
 
 void ViewController::nextRight()
 {
+    if (_currentViewIsTracking)
+    {
+        return;
+    }
+
     _currentViewIndex++;
     if (_currentViewIndex >= WatchSettings::maxAmountOfViews)
     {
@@ -75,4 +90,27 @@ void ViewController::removeView(int viewIndex)
 void ViewController::drawCurrentView()
 {
     _allViews[_currentViewIndex].draw();
+}
+
+void ViewController::startTracking()
+{
+    if (_currentViewIndex > 0)
+    {
+        _currentViewIsTracking = true;
+        _allViews[_currentViewIndex].startTracking();
+    }
+}
+
+void ViewController::stopTracking()
+{
+    if (_currentViewIndex > 0)
+    {
+        _currentViewIsTracking = false;
+        _allViews[_currentViewIndex].stopTracking();
+    }
+}
+
+int ViewController::getCurrentViewState()
+{
+    return _currentViewIsTracking;
 }

@@ -9,8 +9,8 @@ ScreenProvider sp;
 
 void setup()
 {
-    bleProvider.init();
     sp.init(&vrp);
+    bleProvider.init();
 }
 
 void loop()

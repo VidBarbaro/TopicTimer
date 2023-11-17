@@ -124,6 +124,11 @@ DateTime *VirtualRTCProvider::getTime()
     return &_dateTime;
 }
 
+DateTime *VirtualRTCProvider::getTrackingTime()
+{
+    return &_trackingDateTime;
+}
+
 void VirtualRTCProvider::startTopicTimer()
 {
     if (!_isTracking)
@@ -139,8 +144,7 @@ void VirtualRTCProvider::startTopicTimer()
     _isTracking = true;
 }
 
-DateTime VirtualRTCProvider::stopTopicTimer()
+void VirtualRTCProvider::stopTopicTimer()
 {
     _isTracking = false;
-    return _trackingDateTime;
 }

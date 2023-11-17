@@ -14,8 +14,11 @@ void View::_drawHomeView(int clearScreen)
 
     _tft->setTextSize(6);
     _tft->setTextDatum(MC_DATUM);
-    String s = StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes));
-    _tft->drawString(s, _tft->width() / 2, _tft->height() / 2);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
+
+    _tft->setTextSize(2);
+    _tft->setTextDatum(BC_DATUM);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->day)) + '-' + StringHelper::padZeroLeft(String(_dateTime->month)) + '-' + StringHelper::padZeroLeft(String(_dateTime->year)), _tft->width() / 2, _tft->height() - 13);
 
     _border->set(100, WatchSettings::topicTimer_GRAY);
 }
@@ -34,8 +37,11 @@ void View::_drawIdle(int clearScreen)
 
     _tft->setTextSize(6);
     _tft->setTextDatum(MC_DATUM);
-    String s = StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes));
-    _tft->drawString(s, _tft->width() / 2, _tft->height() / 2);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
+
+    _tft->setTextSize(2);
+    _tft->setTextDatum(BC_DATUM);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->day)) + '-' + StringHelper::padZeroLeft(String(_dateTime->month)) + '-' + StringHelper::padZeroLeft(String(_dateTime->year)), _tft->width() / 2, _tft->height() - 13);
 
     _border->set(100, _topic.color);
 }
@@ -46,6 +52,21 @@ void View::_drawTracking(int clearScreen)
     {
         _clearCenter();
     }
+
+    _tft->setTextSize(2);
+    _tft->setTextDatum(TC_DATUM);
+    _tft->drawString(_topic.name, _tft->width() / 2, 13);
+
+    _tft->setTextSize(6);
+    _tft->setTextDatum(MC_DATUM);
+    _tft->drawString(StringHelper::padZeroLeft(String(_trackingDateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_trackingDateTime->minutes)) + ':' + StringHelper::padZeroLeft(String(_trackingDateTime->seconds)), _tft->width() / 2, _tft->height() / 2);
+
+    _tft->setTextSize(2);
+    _tft->setTextDatum(BC_DATUM);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() - 30);
+    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->day)) + '-' + StringHelper::padZeroLeft(String(_dateTime->month)) + '-' + StringHelper::padZeroLeft(String(_dateTime->year)), _tft->width() / 2, _tft->height() - 13);
+
+    _border->set(100, _topic.color);
 }
 
 void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex)
@@ -54,6 +75,7 @@ void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider,
     _border = border;
     _vRTCProvider = vRTCProvider;
     _dateTime = _vRTCProvider->getTime();
+    _trackingDateTime = _vRTCProvider->getTrackingTime();
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
     _initialized = true;
@@ -66,6 +88,7 @@ void View::init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *
     _border = border;
     _vRTCProvider = vRTCProvider;
     _dateTime = _vRTCProvider->getTime();
+    _trackingDateTime = _vRTCProvider->getTrackingTime();
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
     _initialized = true;
@@ -95,4 +118,18 @@ void View::draw(int clearScreen)
     default:
         break;
     }
+}
+
+void View::startTracking()
+{
+    _viewState = ViewState::TRACKING;
+    _vRTCProvider->startTopicTimer();
+    draw(true);
+}
+
+void View::stopTracking()
+{
+    _viewState = ViewState::IDLE;
+    _vRTCProvider->stopTopicTimer();
+    draw(true);
 }

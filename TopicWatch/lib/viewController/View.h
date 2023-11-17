@@ -30,6 +30,7 @@ private:
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
     DateTime *_dateTime;
+    DateTime *_trackingDateTime;
     int *_amountOfActiveViews;
     int *_currentViewIndex;
 
@@ -45,6 +46,8 @@ public:
     void init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex);
     int isInitialized();
     void draw(int clearScreen = false);
+    void startTracking();
+    void stopTracking();
 };
 
 #endif

@@ -16,6 +16,7 @@ private:
     int _currentViewIndex;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
+    int _currentViewIsTracking = false;
 
 public:
     ViewController() = default;
@@ -28,6 +29,9 @@ public:
     void addView(Topic topic);
     void removeView(int viewIndex);
     void drawCurrentView();
+    void startTracking();
+    void stopTracking();
+    int getCurrentViewState();
 };
 
 #endif
