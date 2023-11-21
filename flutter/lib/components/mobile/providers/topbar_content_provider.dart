@@ -15,7 +15,7 @@ class Topic {
   }
 
   Map<String, dynamic> toJson() =>
-      {'id': _id, 'name': _name, 'colour': _color.toString()};
+      {'id': _id, 'name': _name, 'colour': _color.value.toString()};
 }
 
 class TopBarConentProvider with ChangeNotifier {
