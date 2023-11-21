@@ -14,8 +14,7 @@ private:
     int _screenHorizontal = 320;
     int _screenVertical = 170;
 
-    double
-    _getPrecentage(double progress, double goal);
+    double _getPrecentage(double progress, double goal);
 
 public:
     Border() = default;
