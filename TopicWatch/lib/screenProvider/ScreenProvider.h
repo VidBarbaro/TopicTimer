@@ -5,7 +5,6 @@
 #include "Border.h"
 #include <CST816_TouchLib.h>
 #include "PinConfig.h"
-#include "StringHelper.h"
 #include "TouchSubscriber.h"
 #include "TFT_eSPI.h"
 #include "VirtualRTCProvider.h"
