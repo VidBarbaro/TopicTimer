@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
 class Topic {
+  int _id = 0;
+  int get id => _id;
   Color _color = Colors.transparent;
   Color get color => _color;
   String _name = 'No name';
   String get name => _name;
 
-  Topic({required String name, required Color color}) {
+  Topic({required int id, required String name, required Color color}) {
+    _id = id;
     _name = name;
     _color = color;
   }
+
+  Map<String, dynamic> toJson() => {'id': _id, 'name': _name, 'colour': _color};
 }
 
 class TopBarConentProvider with ChangeNotifier {
@@ -17,10 +22,10 @@ class TopBarConentProvider with ChangeNotifier {
   int _selectedTopicIndex = 1;
 
   List<Topic> topics = [
-    Topic(name: 'Math', color: Colors.red),
-    Topic(name: 'English', color: Colors.orange),
-    Topic(name: 'Dutch', color: Colors.blue),
-    Topic(name: 'Biology', color: Colors.green)
+    Topic(id: 1, name: 'Math', color: Colors.red),
+    Topic(id: 2, name: 'English', color: Colors.orange),
+    Topic(id: 3, name: 'Dutch', color: Colors.blue),
+    Topic(id: 4, name: 'Biology', color: Colors.green)
   ];
 
   void setPageIndex(int newIndex) {
@@ -52,8 +57,8 @@ class TopBarConentProvider with ChangeNotifier {
   }
 
   Topic getSelectedTopic() => topics[_selectedTopicIndex];
-  
-  List<Topic> getTopics()  => topics;
+
+  List<Topic> getTopics() => topics;
 
   String getSelectedPage() {
     switch (_pageIndex) {
