@@ -16,8 +16,7 @@ namespace MDO
 
     public:
         // the pointer is the 'this' from the CST816Touch source
-        virtual void
-        gestureNotification(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);
+        virtual void gestureNotification(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen);
         virtual void setGestureCallback(void (*func)(CST816Touch *pTouch, int iGestureId, bool bReleasedScreen));
 
         // the pointer is the 'this' from the CST816Touch source
