@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 class Topic {
   int _id = 0;
   int get id => _id;
@@ -18,16 +19,13 @@ class Topic {
       {'id': _id, 'name': _name, 'colour': _color.value.toString()};
 }
 
+
+
 class TopBarConentProvider with ChangeNotifier {
   int _pageIndex = 2;
   int _selectedTopicIndex = 1;
 
-  List<Topic> topics = [
-    Topic(id: 1, name: 'Math', color: Colors.red),
-    Topic(id: 2, name: 'English', color: Colors.orange),
-    Topic(id: 3, name: 'Dutch', color: Colors.blue),
-    Topic(id: 4, name: 'Biology', color: Colors.green)
-  ];
+  List<TopicModel> topics = TopicProvider.getTopics();
 
   void setPageIndex(int newIndex) {
     _pageIndex = newIndex;
@@ -57,9 +55,9 @@ class TopBarConentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Topic getSelectedTopic() => topics[_selectedTopicIndex];
-
-  List<Topic> getTopics() => topics;
+  TopicModel getSelectedTopic() => topics[_selectedTopicIndex];
+  
+  List<TopicModel> getTopics()  => topics;
 
   String getSelectedPage() {
     switch (_pageIndex) {
