@@ -10,7 +10,7 @@ class SchoolDetailsComp extends StatelessWidget {
     
     return Container(
         width: 100.w,
-        height: 12.h,
+        height: 10.h,
         color: Colors.blue,
         child: const Center(
               child: Text(
@@ -18,7 +18,7 @@ class SchoolDetailsComp extends StatelessWidget {
                 style: TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 1),
                   fontWeight: FontWeight.bold,
-                  fontSize: 25,
+                  fontSize: 23,
                   ),
               ),
             )

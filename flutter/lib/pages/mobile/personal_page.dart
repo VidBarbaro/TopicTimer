@@ -17,9 +17,9 @@ class MobilePersonalPage extends StatelessWidget {
         // ProfileDetailsComp
         ProfileDetailsComp(key: super.key),
         // SchoolDetailsComp
-        SchoolDetailsComp(key: super.key)
+        SchoolDetailsComp(key: super.key),
         // PasswordChangeComp
-
+        Expanded(child: PasswordChangeComp(key: super.key))
       ],
     );
   }
