@@ -115,6 +115,16 @@ void VirtualRTCProvider::increaseTrackingDate()
     }
 }
 
+void VirtualRTCProvider::clearDateTime(DateTime *dateTimeToClear)
+{
+    dateTimeToClear->hours = 0;
+    dateTimeToClear->minutes = 0;
+    dateTimeToClear->seconds = 0;
+    dateTimeToClear->year = 0;
+    dateTimeToClear->month = 0;
+    dateTimeToClear->day = 0;
+}
+
 void VirtualRTCProvider::setTime(int hours, int minutes, int seconds, int year, int month, int day)
 {
     _dateTime.hours = hours;
@@ -139,12 +149,9 @@ void VirtualRTCProvider::startTopicTimer()
 {
     if (!_isTracking)
     {
-        _trackingDateTime.hours = 0;
-        _trackingDateTime.minutes = 0;
-        _trackingDateTime.seconds = 0;
-        _trackingDateTime.year = 0;
-        _trackingDateTime.month = 0;
-        _trackingDateTime.day = 0;
+        clearDateTime(&_trackingDateTime);
+
+        _trackingInfo.startTime = _dateTime;
     }
 
     _isTracking = true;
@@ -158,7 +165,17 @@ void VirtualRTCProvider::togglePauseTopicTimer()
     }
 }
 
-void VirtualRTCProvider::stopTopicTimer()
+TrackingInfo VirtualRTCProvider::stopTopicTimer()
 {
+    if (_trackingDateTime.minutes < WatchSettings::minimalTrackingMinutes)
+    {
+        clearDateTime(&_trackingInfo.startTime);
+        clearDateTime(&_trackingInfo.endTime);
+    }
+    else
+    {
+        _trackingInfo.endTime = _dateTime;
+    }
     _isTracking = false;
+    return _trackingInfo;
 }
