@@ -1,5 +1,16 @@
 #include "ServerCallbacks.h"
 
+void ServerCallbacks::sendTimeRequest(NimBLECharacteristic* charateristic)
+{
+    StaticJsonDocument<100> doc;
+
+    doc["command"] = "getTime";
+    String message = " ";   
+    serializeJson(doc, message);
+    charateristic->setValue(message);
+    charateristic->notify();
+}
+
 void ServerCallbacks::onConnect(NimBLEServer *pServer, ble_gap_conn_desc *desc)
 {
     Serial.print("Client address: ");

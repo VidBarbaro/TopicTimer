@@ -1,4 +1,8 @@
+#ifndef CHARACTERISTICCALLBACKS_H
+#define CHARACTERISTICCALLBACKS_H
+
 #include <NimBLEDevice.h>
+#include "BLEProvider.h"
 
 class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
 {
@@ -8,3 +12,5 @@ class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
         void onRead(NimBLECharacteristic* pCharacteristic);
         void onWrite(NimBLECharacteristic* pCharacteristic);
 };
+
+#endif

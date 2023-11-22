@@ -15,11 +15,11 @@ void BLEProvider::init()
     NimBLEDevice::setSecurityAuth(false, false, false);
 
     _pServer = NimBLEDevice::createServer();
-    _pServer->setCallbacks(new ServerCallbacks);
+    _pServer->setCallbacks(new ServerCallbacks());
 
     NimBLEService *pService = _pServer->createService("a6846862-7efa-11ee-b962-0242ac120002");
     NimBLECharacteristic *_pCharacteristic = pService->createCharacteristic("a6846b78-7efa-11ee-b962-0242ac120002", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
-    _pCharacteristic->setCallbacks(&_chrCallbacks);
+    _pCharacteristic->setCallbacks(new CharacteristicCallbacks());
 
     pService->start();
 
@@ -53,7 +53,7 @@ void BLEProvider::sendTopicsRequest(void)
 void BLEProvider::sendTrackedTimes(void)
 {
     StaticJsonDocument<300> doc;
-
+    //Dummy data
     doc["command"] = "setTrackedTime";
     doc["data"]["topic"]["id"] = 1;
     doc["data"]["beginTime"]["time"]["hours"] = 11;
