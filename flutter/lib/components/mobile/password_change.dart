@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/theme/color_provider.dart';
+import 'package:topictimer_flutter_application/theme/custom_color.dart';
 
 class PasswordChangeComp extends StatelessWidget {
   PasswordChangeComp({Key? key});
@@ -8,20 +10,20 @@ class PasswordChangeComp extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(106, 106, 106, 0.2),
+        decoration: BoxDecoration(
+          color: ColorProvider.get(CustomColor.text),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         constraints: const BoxConstraints(maxWidth: 270, maxHeight: 235),
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            const Align(
+            Align(
               alignment: Alignment(-0.85, -0.75),
               child: Text(
                 'Password',
                 style: TextStyle(
-                  color: Color.fromRGBO(0, 0, 0, 1),
+                  color: ColorProvider.get(CustomColor.background),
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
@@ -38,12 +40,12 @@ class PasswordChangeComp extends StatelessWidget {
                   print('Button pressed!');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(255, 193, 7, 1),
+                  backgroundColor: ColorProvider.get(CustomColor.secondary),
                 ),
-                child: const Text(
+                child: Text(
                   'Save Changes',
                   style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                    color: ColorProvider.get(CustomColor.background),
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
@@ -66,7 +68,7 @@ class PasswordChangeComp extends StatelessWidget {
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color.fromRGBO(255, 255, 255, 1),
+            fillColor: ColorProvider.get(CustomColor.background),
             border: OutlineInputBorder(),
             hintText: hintText,
             contentPadding: const EdgeInsets.all(1),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/theme/color_provider.dart';
+import 'package:topictimer_flutter_application/theme/custom_color.dart';
 
 class SchoolDetailsComp extends StatelessWidget {
   SchoolDetailsComp({super.key});
@@ -11,12 +13,12 @@ class SchoolDetailsComp extends StatelessWidget {
     return Container(
         width: 100.w,
         height: 10.h,
-        color: Colors.blue,
-        child: const Center(
+        color: ColorProvider.get(CustomColor.tertiary),
+        child: Center(
               child: Text(
                 'School name',
                 style: TextStyle(
-                  color: Color.fromRGBO(255, 255, 255, 1),
+                  color: ColorProvider.get(CustomColor.background),
                   fontWeight: FontWeight.bold,
                   fontSize: 23,
                   ),
