@@ -3,12 +3,12 @@
 
 #include "Arduino.h"
 #include "TFT_eSPI.h"
+#include "WatchSettings.h"
 
 class Border
 {
 private:
     TFT_eSPI *_tft;
-    int _height = 5;
     uint32_t _defaultColor = 0xFFFFFF;
     int _screenCircumference = 980;
     int _screenHorizontal = 320;
@@ -19,7 +19,7 @@ private:
 public:
     Border() = default;
     ~Border() = default;
-    void init(TFT_eSPI *tft, int height);
+    void init(TFT_eSPI *tft);
     void clear(uint32_t clearColor);
     void set(double precent);
     void set(double precent, uint32_t color);
