@@ -9,7 +9,7 @@ class Border
 {
 private:
     TFT_eSPI *_tft;
-    uint32_t _defaultColor = 0xFFFFFF;
+    uint16_t _defaultColor = TFT_WHITE;
     int _screenCircumference = 980;
     int _screenHorizontal = 320;
     int _screenVertical = 170;
@@ -25,7 +25,6 @@ public:
     void set(double precent, uint32_t color);
     void setWithGoal(double progress, double goal);
     void setWithGoal(double progress, double goal, uint32_t color);
-    int getHeight();
 };
 
 #endif

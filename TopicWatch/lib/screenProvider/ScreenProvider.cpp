@@ -61,18 +61,18 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 {
     _instance = this;
 
-    _border.init(&_tft, 4);
+    _border.init(&_tft);
     _vRTCProvider = vRTCProvider;
     _viewController.init(&_tft, &_border, _vRTCProvider);
     Topic tmpTopic;
     tmpTopic.id = 0;
-    tmpTopic.name = "Tycho's test topic";
-    tmpTopic.color = 0x89CFF0;
+    tmpTopic.name = "Sprint 3 delivery";
+    tmpTopic.color = WatchSettings::topicTimer_GREEN;
     _viewController.addView(tmpTopic);
     Topic tmpTopic2;
     tmpTopic2.id = 1;
-    tmpTopic2.name = "Tycho's 2nd test topic";
-    tmpTopic2.color = TFT_RED;
+    tmpTopic2.name = "Developing TopicTimer";
+    tmpTopic2.color = WatchSettings::topicTimer_ORANGE;
     _viewController.addView(tmpTopic2);
 
     /*
@@ -83,8 +83,8 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
 
     _tft.begin();
     _tft.setRotation(1);
-    _tft.fillScreen(WatchSettings::topicTimer_GRAY);
-    _tft.setTextColor(WatchSettings::topicTimer_BLACK, WatchSettings::topicTimer_GRAY);
+    _tft.fillScreen(WatchSettings::topicTimer_BLACK);
+    _tft.setTextColor(WatchSettings::topicTimer_GRAY, WatchSettings::topicTimer_BLACK);
 
     /*
      * Setup touchscreen

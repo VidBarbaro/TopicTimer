@@ -3,6 +3,9 @@
 
 #include "Arduino.h"
 #include "Border.h"
+#include "BluetoothIcon.h"
+#include "NoBluetoothIcon.h"
+#include "SettingsIcon.h"
 #include "StringHelper.h"
 #include "TFT_eSPI.h"
 #include "VirtualRTCProvider.h"
@@ -12,7 +15,7 @@ struct Topic
 {
     int id = -1;
     String name = "";
-    uint32_t color;
+    uint16_t color;
 };
 
 class View

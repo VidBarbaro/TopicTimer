@@ -60,8 +60,3 @@ void Border::setWithGoal(double progress, double goal, uint32_t color)
 {
     Border::set(_getPrecentage(progress, goal), color);
 }
-
-int Border::getHeight()
-{
-    return WatchSettings::borderSize;
-}
