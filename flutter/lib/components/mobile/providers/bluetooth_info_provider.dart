@@ -22,32 +22,6 @@ class BluetoothInfoProvider with ChangeNotifier {
       return;
     }
 
-    SetTimeMessage message = SetTimeMessage(
-        date: Date(
-            years: DateTime.now().year,
-            months: DateTime.now().month,
-            days: DateTime.now().day),
-        time: Time(
-            hours: TimeOfDay.now().hour,
-            minutes: TimeOfDay.now().minute,
-            seconds: 0));
-
-    DateTimeJSON begin = DateTimeJSON.now();
-    DateTimeJSON end = DateTimeJSON.now();
-    end.setTime(Time(hours: 16, minutes: 30, seconds: 15));
-    SetTrackedTimes message2 =
-        SetTrackedTimes(data: TopicData(beginTime: begin, endTime: end, id: 1));
-
-    SetTopics message3 =
-        SetTopics(topic: Topic(id: 1, name: 'Programming', color: Colors.blue));
-
-    print('SetTimeMessage JSON print');
-    print(jsonEncode(message));
-    print('SetTrackedTimed JSON print');
-    print(jsonEncode(message2));
-    print('SetTopics JSON print');
-    print(jsonEncode(message3));
-
     if (await Permission.bluetoothScan.request().isGranted) {
       if (await Permission.bluetoothConnect.request().isGranted) {
         FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
@@ -128,6 +102,57 @@ class BluetoothInfoProvider with ChangeNotifier {
     FlutterBluePlus.stopScan();
   }
 
+  void writeMessage(String message) {
+    SetTimeMessage message = SetTimeMessage(
+        date: Date(
+            years: DateTime.now().year,
+            months: DateTime.now().month,
+            days: DateTime.now().day),
+        time: Time(
+            hours: TimeOfDay.now().hour,
+            minutes: TimeOfDay.now().minute,
+            seconds: 0));
+
+    DateTimeJSON begin = DateTimeJSON.now();
+    DateTimeJSON end = DateTimeJSON.now();
+    end.setTime(Time(hours: 16, minutes: 30, seconds: 15));
+    SetTrackedTimes message2 =
+        SetTrackedTimes(data: TopicData(beginTime: begin, endTime: end, id: 1));
+
+    SetTopics message3 =
+        SetTopics(topic: Topic(id: 1, name: 'Programming', color: Colors.blue));
+
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      print('SetTimeMessage JSON print');
+      print(jsonEncode(message));
+      if (_characteristic == null) {
+        return;
+      }
+      List<int> list = json.decode(message.toString()).cast<int>();
+      _characteristic?.write(list);
+    });
+
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      print('SetTrackedTimed JSON print');
+      print(jsonEncode(message2));
+      if (_characteristic == null) {
+        return;
+      }
+      List<int> list = json.decode(message2.toString()).cast<int>();
+      _characteristic?.write(list);
+    });
+
+    Future.delayed(const Duration(milliseconds: 5000), () {
+      print('SetTopics JSON print');
+      print(jsonEncode(message3));
+      if (_characteristic == null) {
+        return;
+      }
+      List<int> list = json.decode(message3.toString()).cast<int>();
+      _characteristic?.write(list);
+    });
+  }
+
   void handleMessage(String message) {
     if (message.isEmpty) {
       //Null check
@@ -139,6 +164,8 @@ class BluetoothInfoProvider with ChangeNotifier {
     if (_characteristic == null) {
       return;
     }
+    //Convert from string to JSON command
+
     switch (message) {
       case 'Time?':
         _characteristic?.write(
