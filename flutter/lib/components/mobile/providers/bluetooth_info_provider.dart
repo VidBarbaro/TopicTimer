@@ -122,35 +122,14 @@ class BluetoothInfoProvider with ChangeNotifier {
     SetTopics message3 =
         SetTopics(topic: Topic(id: 1, name: 'Programming', color: Colors.blue));
 
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      print('SetTimeMessage JSON print');
-      print(jsonEncode(message));
-      if (_characteristic == null) {
-        return;
-      }
-      List<int> list = json.decode(message.toString()).cast<int>();
-      _characteristic?.write(list);
-    });
-
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      print('SetTrackedTimed JSON print');
-      print(jsonEncode(message2));
-      if (_characteristic == null) {
-        return;
-      }
-      List<int> list = json.decode(message2.toString()).cast<int>();
-      _characteristic?.write(list);
-    });
-
-    Future.delayed(const Duration(milliseconds: 5000), () {
-      print('SetTopics JSON print');
-      print(jsonEncode(message3));
-      if (_characteristic == null) {
-        return;
-      }
-      List<int> list = json.decode(message3.toString()).cast<int>();
-      _characteristic?.write(list);
-    });
+    print('SetTimeMessage JSON print');
+    String messageString = jsonEncode(message);
+    print(messageString);
+    if (_characteristic == null) {
+      return;
+    }
+    List<int> numbers = messageString.codeUnits.toList();
+    _characteristic?.write(numbers);
   }
 
   void handleMessage(String message) {
@@ -165,6 +144,10 @@ class BluetoothInfoProvider with ChangeNotifier {
       return;
     }
     //Convert from string to JSON command
+    var messageJSON = json.decode(message);
+
+    print('Printing the found command');
+    print(messageJSON['command'].toString());
 
     switch (message) {
       case 'Time?':
