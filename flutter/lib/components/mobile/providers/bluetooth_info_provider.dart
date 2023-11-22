@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
   //These variables aren't used outside the class, but could be handy later on for updating the UI
@@ -20,20 +21,6 @@ class BluetoothInfoProvider with ChangeNotifier {
       print('[ERROR] Bluetooth not supported by this device');
       return;
     }
-
-    SetTimeMessage message = SetTimeMessage(
-        command: 'Testcommand',
-        date: Date(
-            years: DateTime.now().year,
-            months: DateTime.now().month,
-            days: DateTime.now().day),
-        time: Time(
-            hours: TimeOfDay.now().hour,
-            minutes: TimeOfDay.now().minute,
-            seconds: 0));
-
-    print('TEST PRINT');
-    print(jsonEncode(message));
 
     if (await Permission.bluetoothScan.request().isGranted) {
       if (await Permission.bluetoothConnect.request().isGranted) {
@@ -115,6 +102,36 @@ class BluetoothInfoProvider with ChangeNotifier {
     FlutterBluePlus.stopScan();
   }
 
+  void writeMessage(String message) {
+    SetTimeMessage message = SetTimeMessage(
+        date: Date(
+            years: DateTime.now().year,
+            months: DateTime.now().month,
+            days: DateTime.now().day),
+        time: Time(
+            hours: TimeOfDay.now().hour,
+            minutes: TimeOfDay.now().minute,
+            seconds: 0));
+
+    DateTimeJSON begin = DateTimeJSON.now();
+    DateTimeJSON end = DateTimeJSON.now();
+    end.setTime(Time(hours: 16, minutes: 30, seconds: 15));
+    SetTrackedTimes message2 =
+        SetTrackedTimes(data: TopicData(beginTime: begin, endTime: end, id: 1));
+
+    SetTopics message3 =
+        SetTopics(topic: Topic(id: 1, name: 'Programming', color: Colors.blue));
+
+    print('SetTimeMessage JSON print');
+    String messageString = jsonEncode(message);
+    print(messageString);
+    if (_characteristic == null) {
+      return;
+    }
+    List<int> numbers = messageString.codeUnits.toList();
+    _characteristic?.write(numbers);
+  }
+
   void handleMessage(String message) {
     if (message.isEmpty) {
       //Null check
@@ -126,6 +143,12 @@ class BluetoothInfoProvider with ChangeNotifier {
     if (_characteristic == null) {
       return;
     }
+    //Convert from string to JSON command
+    var messageJSON = json.decode(message);
+
+    print('Printing the found command');
+    print(messageJSON['command'].toString());
+
     switch (message) {
       case 'Time?':
         _characteristic?.write(

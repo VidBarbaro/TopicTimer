@@ -18,28 +18,28 @@ class ProfileDetailsComp extends StatelessWidget {
               children: [
                 SizedBox(height: 20),
                 CircleAvatar(
-                  radius: 75,
+                  radius: 60,
                   backgroundColor: Color.fromRGBO(255, 202, 175, 1),
                   child: CircleAvatar(
-                    radius: 65,
+                    radius: 55,
                     backgroundColor: Color.fromRGBO(217, 217, 217, 1),
                     child: Center(
                       child: Icon(
                         Icons.person, 
                         color: Color.fromRGBO(255, 202, 175, 1),
-                        size: 130,
+                        size: 100,
                         ),
                     )
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 // Is the white border around the text as shown in figma needed? No in built property by flutter
                 Text(
                   'John Doe',
                   style: TextStyle(
                     color: Color.fromRGBO(3, 169, 244, 1),
                     fontWeight: FontWeight.bold,
-                    fontSize: 40,
+                    fontSize: 37,
                     ),
                 )
               ],
