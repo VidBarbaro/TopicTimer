@@ -1,6 +1,8 @@
 #ifndef WATCH_SETTINGS
 #define WATCH_SETTINGS
 
+#include "TFT_eSPI.h"
+
 class WatchSettings
 {
 private:

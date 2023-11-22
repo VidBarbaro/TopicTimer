@@ -3,6 +3,7 @@
 hw_timer_t *VirtualRTCProvider::_timer;
 DateTime VirtualRTCProvider::_dateTime;
 DateTime VirtualRTCProvider::_trackingDateTime;
+TrackingInfo VirtualRTCProvider::_trackingInfo;
 int VirtualRTCProvider::_isTracking = false;
 int VirtualRTCProvider::_trackingIsPaused = false;
 
