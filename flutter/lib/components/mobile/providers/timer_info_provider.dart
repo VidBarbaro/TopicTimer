@@ -6,6 +6,8 @@ class TimerInfoProvider with ChangeNotifier {
   int _hours = 0;
   bool _isActive = false;
   bool get isActive => _isActive;
+  bool _isPaused = false;
+  bool get isPaused => _isPaused;
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
@@ -17,22 +19,30 @@ class TimerInfoProvider with ChangeNotifier {
     _hours = 0;
     _minutes = 0;
     _seconds = 0;
+    _isPaused = false;
     _isActive = false;
     notifyListeners();
   }
 
   void enableTimer() {
     _isActive = true;
+    _isPaused = false;
     notifyListeners();
+  }
+
+  void pauseTimer() {
+    _isPaused = true;
   }
 
   void disableTimer() {
     _isActive = false;
+    _isPaused = false;
     notifyListeners();
   }
 
   void tick() {
-    if (!_isActive) {
+    if (!_isActive || _isPaused) {
+      //Early return because Timer is not active or is paused
       notifyListeners();
       return;
     }

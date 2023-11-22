@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
+//For sending BLE messages a JSON object is needed,
+//In this file all JSON objects are mentioned
+
 class Time {
   int _hours = 0;
   int get hours => _hours;
