@@ -3,10 +3,10 @@ import 'package:topictimer_flutter_application/components/mobile/models/topic_mo
 
 class TopicProvider{
   static  List<TopicModel> topiclist = [
-    TopicModel(0,'Math', Colors.red),
-    TopicModel(1,'Biology', Colors.green),
-    TopicModel(2, 'English', Colors.orange),
-    TopicModel(3, 'Dutch', Colors.blue)];
+    TopicModel(0,'Software', Colors.red),
+    TopicModel(1,'Technology', Colors.green),
+    TopicModel(2, 'Research', Colors.orange),
+    TopicModel(3, 'Meeting', Colors.blue)];
 
   static List<TopicModel> getTopics() => topiclist;
   void createTopic(TopicModel topic) => topiclist.add(topic);

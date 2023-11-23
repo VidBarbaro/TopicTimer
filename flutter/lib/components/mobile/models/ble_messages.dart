@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 //For sending BLE messages a JSON object is needed,
@@ -151,9 +152,9 @@ class SetTrackedTimes {
 class SetTopics {
   final String _command = 'setTopics';
   String get command => _command;
-  Topic _topic = Topic(id: 0, name: 'None', color: Colors.black);
+  TopicModel _topic = TopicModel(0, 'None', Colors.black);
 
-  SetTopics({required Topic topic}) {
+  SetTopics({required TopicModel topic}) {
     _topic = topic;
   }
 

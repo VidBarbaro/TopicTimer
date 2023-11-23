@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
-class Topic {
-  int _id = 0;
-  int get id => _id;
-  Color _color = Colors.transparent;
-  Color get color => _color;
-  String _name = 'No name';
-  String get name => _name;
 
-  Topic({required int id, required String name, required Color color}) {
-    _id = id;
-    _name = name;
-    _color = color;
-  }
-
-  Map<String, dynamic> toJson() =>
-      {'id': _id, 'name': _name, 'colour': _color.value.toString()};
-}
 
 
 
