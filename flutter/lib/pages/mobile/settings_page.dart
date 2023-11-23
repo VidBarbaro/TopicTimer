@@ -23,10 +23,8 @@ class MobileSettingsPage extends StatelessWidget {
             onPressed: () => context.read<BluetoothInfoProvider>().stopScan(),
             child: const Text('Stop scanning')),
         ElevatedButton(
-            onPressed: () => context
-                .read<BluetoothInfoProvider>()
-                .writeMessage('Parameter has no effect yet'),
-            child: const Text('Start sending Test Messages')),
+            onPressed: () => context.read<BluetoothInfoProvider>().sendTime(),
+            child: const Text('Send Time message to the watch')),
       ],
     );
   }

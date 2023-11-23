@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/theme/color_provider.dart';
+import 'package:topictimer_flutter_application/theme/custom_color.dart';
 
 class ProfileDetailsComp extends StatelessWidget {
   ProfileDetailsComp({super.key});
@@ -8,8 +10,8 @@ class ProfileDetailsComp extends StatelessWidget {
     // TODO: implement build
     
     return Container(
-      color: Color.fromRGBO(0, 150, 136, 1),
-      child: const Center(
+      color: ColorProvider.get(CustomColor.primary),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -19,14 +21,14 @@ class ProfileDetailsComp extends StatelessWidget {
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 60,
-                  backgroundColor: Color.fromRGBO(255, 202, 175, 1),
+                  backgroundColor: ColorProvider.get(CustomColor.background),
                   child: CircleAvatar(
                     radius: 55,
-                    backgroundColor: Color.fromRGBO(217, 217, 217, 1),
+                    backgroundColor: ColorProvider.get(CustomColor.text),
                     child: Center(
                       child: Icon(
                         Icons.person, 
-                        color: Color.fromRGBO(255, 202, 175, 1),
+                        color: ColorProvider.get(CustomColor.background),
                         size: 100,
                         ),
                     )
@@ -37,7 +39,7 @@ class ProfileDetailsComp extends StatelessWidget {
                 Text(
                   'John Doe',
                   style: TextStyle(
-                    color: Color.fromRGBO(3, 169, 244, 1),
+                    color: ColorProvider.get(CustomColor.tertiary),
                     fontWeight: FontWeight.bold,
                     fontSize: 37,
                     ),

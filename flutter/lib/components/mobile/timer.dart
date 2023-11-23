@@ -75,7 +75,7 @@ class TimerComp extends StatelessWidget {
                     child: const Icon(Icons.play_arrow)),
                 ElevatedButton(
                     onPressed: () {
-                      context.read<TimerInfoProvider>().disableTimer();
+                      context.read<TimerInfoProvider>().pauseTimer();
                     },
                     child: const Icon(Icons.pause)),
                 ElevatedButton(

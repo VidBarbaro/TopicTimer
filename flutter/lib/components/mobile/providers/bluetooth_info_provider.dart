@@ -55,19 +55,19 @@ class BluetoothInfoProvider with ChangeNotifier {
           connectToDevice(device);
         }
       });
-    }
-    await device.discoverServices();
-    List<BluetoothService> services = await device.discoverServices();
-    for (BluetoothService service in services) {
-      for (BluetoothCharacteristic characteristic in service.characteristics) {
-        if (characteristic.uuid.toString() ==
-            'a6846b78-7efa-11ee-b962-0242ac120002') {
-          _characteristic = characteristic;
-          characteristic.setNotifyValue(true);
-          characteristic.lastValueStream.listen((value) {
-            print('Received data: ${String.fromCharCodes(value)}');
-            handleMessage(String.fromCharCodes(value));
-          });
+      List<BluetoothService> services = await device.discoverServices();
+      for (BluetoothService service in services) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.uuid.toString() ==
+              'a6846b78-7efa-11ee-b962-0242ac120002') {
+            _characteristic = characteristic;
+            characteristic.setNotifyValue(true);
+            characteristic.onValueReceived.listen((value) {
+              print('Received data: ${String.fromCharCodes(value)}');
+              handleMessage(String.fromCharCodes(value));
+            });
+          }
         }
       }
     }
@@ -103,8 +103,9 @@ class BluetoothInfoProvider with ChangeNotifier {
     FlutterBluePlus.stopScan();
   }
 
-  void writeMessage(String message) {
-    SetTimeMessage message = SetTimeMessage(
+  //setTime (send time to watch)
+  void sendTime() {
+    SetTimeMessage messageJSON = SetTimeMessage(
         date: Date(
             years: DateTime.now().year,
             months: DateTime.now().month,
@@ -113,17 +114,11 @@ class BluetoothInfoProvider with ChangeNotifier {
             hours: TimeOfDay.now().hour,
             minutes: TimeOfDay.now().minute,
             seconds: 0));
+    writeMessage(messageJSON.toJson().toString());
+  }
 
-    DateTimeJSON begin = DateTimeJSON.now();
-    DateTimeJSON end = DateTimeJSON.now();
-    end.setTime(Time(hours: 16, minutes: 30, seconds: 15));
-    SetTrackedTimes message2 =
-        SetTrackedTimes(data: TopicData(beginTime: begin, endTime: end, id: 1));
-
-    SetTopics message3 =
-        SetTopics(topic: TopicModel(1,'Programming',  Colors.blue));
-
-    print('SetTimeMessage JSON print');
+  void writeMessage(String message) {
+    print('[BLE] Sending: ');
     String messageString = jsonEncode(message);
     print(messageString);
     if (_characteristic == null) {
@@ -139,25 +134,20 @@ class BluetoothInfoProvider with ChangeNotifier {
       return;
     }
 
-    //Clean string by removing zero terminator
-    message = message.substring(0, message.length - 1);
-    if (_characteristic == null) {
-      return;
-    }
-    //Convert from string to JSON command
-    var messageJSON = json.decode(message);
+    print('Just a check 2');
+    final messageJSON = jsonDecode(message) as Map<String, dynamic>;
 
     print('Printing the found command');
-    print(messageJSON['command'].toString());
+    print(messageJSON.toString());
 
-    switch (message) {
-      case 'Time?':
+    switch (messageJSON['command']) {
+      case 'getTime':
         _characteristic?.write(
             '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}'
                 .codeUnits);
         break;
       default:
-        //Unhandled message
+        print('Unhandled message');
         break;
     }
   }

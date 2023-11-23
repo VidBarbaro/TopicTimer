@@ -18,7 +18,8 @@ class HomePageMobile extends StatefulWidget {
 }
 
 class HomePageMobileState extends State<HomePageMobile> {
-  TextStyle navBarItemTextStyle = const TextStyle(color: Color(0xFF239AFB));
+  // ASK MICHEL, i dont know why but i couldn't get calling this variable to change colors for me
+  TextStyle navBarItemTextStyle = TextStyle(color: ColorProvider.get(CustomColor.tertiary));
 
   PersistentTabController navBarController =
       PersistentTabController(initialIndex: 2);
@@ -37,33 +38,42 @@ class HomePageMobileState extends State<HomePageMobile> {
     return [
       PersistentBottomNavBarItem(
           title: 'Topics',
-          textStyle: navBarItemTextStyle,
-          icon:  Icon(Icons.subject, color: ColorProvider.get(CustomColor.primary)),
-          inactiveIcon: const Icon(Icons.subject, color: Color(0xFF239AFB))),
+          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary),),
+          activeColorPrimary: ColorProvider.get(CustomColor.secondary) ?? Colors.white,
+          icon:  Icon(Icons.subject, color: ColorProvider.get(CustomColor.secondary)),
+          inactiveIcon: Icon(Icons.subject, color: ColorProvider.get(CustomColor.tertiary))),
       PersistentBottomNavBarItem(
           title: 'Planning',
-          textStyle: navBarItemTextStyle,
-          icon: const Icon(Icons.calendar_today, color: Color(0xFFFF8205)),
+          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          activeColorPrimary: ColorProvider.get(CustomColor.secondary) ?? Colors.white,
+          icon: Icon(Icons.calendar_today, color: ColorProvider.get(CustomColor.secondary)),
           inactiveIcon:
-              const Icon(Icons.calendar_today, color: Color(0xFF239AFB))),
+              Icon(Icons.calendar_today, color: ColorProvider.get(CustomColor.tertiary))),
+      // HAVE TO ASK MICHEL, is the button active the whole time because it's weird with changing colors and stays on the color as it is active the whole time
+      // this it has to do something with intial index but not sure
       PersistentBottomNavBarItem(
           title: 'Timer',
-          textStyle: navBarItemTextStyle,
-          icon: const Icon(Icons.timer, color: Color(0xFFFF8205)),
-          inactiveIcon: const Icon(Icons.timer, color: Color(0xFF239AFB))),
+          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          activeColorPrimary: ColorProvider.get(CustomColor.secondary) ?? Colors.white,
+          icon: Icon(Icons.timer, color: ColorProvider.get(CustomColor.tertiary)),
+          inactiveIcon: Icon(
+            Icons.timer, 
+            color: ColorProvider.get(CustomColor.background))),
       PersistentBottomNavBarItem(
           title: 'Personal',
-          textStyle: navBarItemTextStyle,
-          icon: const Icon(Icons.person, color: Color(0xFFFF8205)),
-          inactiveIcon: const Icon(
+          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          activeColorPrimary: ColorProvider.get(CustomColor.secondary) ?? Colors.white,
+          icon: Icon(Icons.person, color: ColorProvider.get(CustomColor.secondary)),
+          inactiveIcon: Icon(
             Icons.person,
-            color: Color(0xFF239AFB),
+            color: ColorProvider.get(CustomColor.tertiary),
           )),
       PersistentBottomNavBarItem(
           title: 'Settings',
-          textStyle: navBarItemTextStyle,
-          icon: const Icon(Icons.settings, color: Color(0xFFFF8205)),
-          inactiveIcon: const Icon(Icons.settings, color: Color(0xFF239AFB)))
+          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          activeColorPrimary: ColorProvider.get(CustomColor.secondary) ?? Colors.white,
+          icon: Icon(Icons.settings, color: ColorProvider.get(CustomColor.secondary)),
+          inactiveIcon: Icon(Icons.settings, color: ColorProvider.get(CustomColor.tertiary)))
     ];
   }
 
@@ -75,7 +85,7 @@ class HomePageMobileState extends State<HomePageMobile> {
         screens: createScreens(),
         items: createNavBarItems(),
         controller: navBarController,
-        backgroundColor: const Color(0xFFE6F3FE),
+        backgroundColor: ColorProvider.get(CustomColor.primary) ?? Colors.white,
         decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
         navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
       context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
