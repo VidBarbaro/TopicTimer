@@ -7,6 +7,8 @@
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
 
+//MAKE CLASS STATIC?
+
 class BLEProvider
 {
     private:
