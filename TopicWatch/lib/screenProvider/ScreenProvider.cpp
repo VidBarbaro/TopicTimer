@@ -117,9 +117,14 @@ void ScreenProvider::setVirtualRTCProviderTime(int hours, int minutes, int secon
     _vRTCProvider->setTime(hours, minutes, seconds, year, month, day);
 }
 
-void ScreenProvider::toggleHasBluetoothConnection()
+void ScreenProvider::setHasBluetoothConnection()
 {
-    _viewController.toggleHasBluetoothConnection();
+    _viewController.setHasBluetoothConnection();
+}
+
+void ScreenProvider::setHasNoBluetoothConnection()
+{
+    _viewController.setHasNoBluetoothConnection();
 }
 
 void ScreenProvider::update()

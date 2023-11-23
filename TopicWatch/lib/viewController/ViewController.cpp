@@ -126,8 +126,14 @@ int ViewController::getCurrentViewState()
     return _currentViewIsTracking;
 }
 
-void ViewController::toggleHasBluetoothConnection()
+void ViewController::setHasBluetoothConnection()
 {
-    _hasBluetoothConnnection = !_hasBluetoothConnnection;
+    _hasBluetoothConnnection = true;
+    _allViews[_currentViewIndex].draw(true);
+}
+
+void ViewController::setHasNoBluetoothConnection()
+{
+    _hasBluetoothConnnection = false;
     _allViews[_currentViewIndex].draw(true);
 }

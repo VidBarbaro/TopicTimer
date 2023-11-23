@@ -34,7 +34,8 @@ public:
     void togglePauseTracking();
     void stopTracking();
     int getCurrentViewState();
-    void toggleHasBluetoothConnection();
+    void setHasBluetoothConnection();
+    void setHasNoBluetoothConnection();
 };
 
 #endif

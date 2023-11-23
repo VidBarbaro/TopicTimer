@@ -1,8 +1,11 @@
 #include "BLEProvider.h"
-#include "ServerCallbacks.h"
 
-void BLEProvider::init()
+void BLEProvider::init(ScreenProvider* sp)
 {
+    _instance = this;
+
+    _sp = sp;
+
     /** sets device name */
     NimBLEDevice::init(BLE_DEVICE_NAME);
 
@@ -15,11 +18,11 @@ void BLEProvider::init()
     NimBLEDevice::setSecurityAuth(false, false, false);
 
     _pServer = NimBLEDevice::createServer();
-    _pServer->setCallbacks(new ServerCallbacks());
+    _pServer->setCallbacks(new ServerCallbacks(_instance));
 
     NimBLEService *pService = _pServer->createService("a6846862-7efa-11ee-b962-0242ac120002");
     NimBLECharacteristic *_pCharacteristic = pService->createCharacteristic("a6846b78-7efa-11ee-b962-0242ac120002", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
-    _pCharacteristic->setCallbacks(new CharacteristicCallbacks());
+    _pCharacteristic->setCallbacks(new CharacteristicCallbacks(_instance));
 
     pService->start();
 
@@ -75,18 +78,32 @@ void BLEProvider::sendTrackedTimes(void)
     write(message);
 }
 
-
-void BLEProvider::write(String value)
+/// @brief 
+/// @param value 
+/// @return TRUE if succesfull OR FALSE for failure  
+bool BLEProvider::write(String value)
 {
     if(value == NULL)
     {
-        return;
+        return false;
     }
 
     if(_pCharacteristic == NULL)
     {
-        return;
+        return false;
     }
     _pCharacteristic->setValue(value);
     _pCharacteristic->notify();
+    return true;
+}
+
+void BLEProvider::setConnectionState(bool newState)
+{
+    _connectionState = newState;
+    _connectionState ? _sp->setHasBluetoothConnection() : _sp->setHasNoBluetoothConnection(); 
+}
+
+ScreenProvider *BLEProvider::getScreenProvider(void)
+{
+    return _sp;
 }

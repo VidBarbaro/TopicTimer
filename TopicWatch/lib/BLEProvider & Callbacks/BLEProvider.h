@@ -6,23 +6,27 @@
 #include "ArduinoJson.h"
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
-
-//MAKE CLASS STATIC?
+#include "ScreenProvider.h"
 
 class BLEProvider
 {
     private:
+        BLEProvider* _instance;
         NimBLEServer *_pServer;
         NimBLECharacteristic *_pCharacteristic; //Primary characteristic to write too
+        ScreenProvider* _sp;
+        int _connectionState = false;
 
     public:
         BLEProvider() = default;
         ~BLEProvider() = default;
-        void init(void);
-        void write(String value);
+        void init(ScreenProvider* sp);
+        bool write(String value);
         void sendTimeRequest(void);
         void sendTopicsRequest(void);
         void sendTrackedTimes(void);
+        void setConnectionState(bool newState);
+        ScreenProvider* getScreenProvider(void);
 };
 
 #endif

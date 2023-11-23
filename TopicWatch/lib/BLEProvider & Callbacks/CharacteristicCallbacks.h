@@ -7,10 +7,12 @@
 class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
 {
     public:
-        CharacteristicCallbacks() = default;
+        CharacteristicCallbacks(void* provider);
     private:
+        void* _provider;
         void onRead(NimBLECharacteristic* pCharacteristic);
         void onWrite(NimBLECharacteristic* pCharacteristic);
+        bool handleMessage(String message);
 };
 
 #endif
