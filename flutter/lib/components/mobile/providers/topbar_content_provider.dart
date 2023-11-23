@@ -7,39 +7,42 @@ import 'package:topictimer_flutter_application/components/mobile/models/topic_mo
 
 class TopBarConentProvider with ChangeNotifier {
   int _pageIndex = 2;
-  int _selectedTopicIndex = 1;
+  int _selectedTopicIndex = 0;
 
   List<TopicModel> topics = TopicProvider.getTopics();
 
   void setPageIndex(int newIndex) {
     _pageIndex = newIndex;
+    _selectedTopicIndex = 0;
     notifyListeners();
   }
 
   ///Returns the new topic
   void switchTopicLeft() {
-    if (topics.isEmpty) {
-      throw Exception('No topics initiased');
-    }
+    if (topics.isNotEmpty) {
     _selectedTopicIndex--;
     if (_selectedTopicIndex < 0) {
       _selectedTopicIndex = topics.length - 1;
     }
     notifyListeners();
-  }
+  }}
 
   void switchTopicRight() {
-    if (topics.isEmpty) {
-      throw Exception('No topics initiased');
-    }
-    _selectedTopicIndex++;
+    if (topics.isNotEmpty) {
+     _selectedTopicIndex++;
     if (_selectedTopicIndex == topics.length) {
       _selectedTopicIndex = 0;
     }
     notifyListeners();
   }
+      }
 
-  TopicModel getSelectedTopic() => topics[_selectedTopicIndex];
+  TopicModel getSelectedTopic() {
+    if(topics.isNotEmpty){
+    return topics[_selectedTopicIndex];
+  }
+  return TopicModel(-1,'Timer',Colors.transparent);
+  }
   
   List<TopicModel> getTopics()  => topics;
 
