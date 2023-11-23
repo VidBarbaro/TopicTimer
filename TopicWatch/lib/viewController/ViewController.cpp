@@ -73,14 +73,14 @@ void ViewController::nextRight()
 
 void ViewController::addView()
 {
-    _allViews[_activeViewCount].init(_tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex);
+    _allViews[_activeViewCount].init(_tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex, &_hasBluetoothConnnection);
 
     _activeViewCount++;
 }
 
 void ViewController::addView(Topic topic)
 {
-    _allViews[_activeViewCount].init(topic, _tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex);
+    _allViews[_activeViewCount].init(topic, _tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex, &_hasBluetoothConnnection);
 
     _activeViewCount++;
 }
@@ -124,4 +124,10 @@ void ViewController::stopTracking()
 int ViewController::getCurrentViewState()
 {
     return _currentViewIsTracking;
+}
+
+void ViewController::toggleHasBluetoothConnection()
+{
+    _hasBluetoothConnnection = !_hasBluetoothConnnection;
+    _allViews[_currentViewIndex].draw(true);
 }

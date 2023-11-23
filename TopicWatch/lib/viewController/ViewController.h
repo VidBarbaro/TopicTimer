@@ -17,6 +17,7 @@ private:
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
     int _currentViewIsTracking = false;
+    int _hasBluetoothConnnection = false;
 
 public:
     ViewController() = default;
@@ -33,6 +34,7 @@ public:
     void togglePauseTracking();
     void stopTracking();
     int getCurrentViewState();
+    void toggleHasBluetoothConnection();
 };
 
 #endif
