@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "Border.h"
+#include "BLEProvider.h"
 #include <CST816_TouchLib.h>
 #include "PinConfig.h"
 #include "TouchSubscriber.h"
@@ -20,6 +21,7 @@ class ScreenProvider
 private:
     TFT_eSPI _tft = TFT_eSPI();
     Border _border;
+    BLEProvider *_bleProvider;
     VirtualRTCProvider *_vRTCProvider;
     TouchSubscriber _touchSubscriber;
     CST816Touch _touch;
@@ -32,7 +34,7 @@ private:
 public:
     ScreenProvider() = default;
     ~ScreenProvider() = default;
-    void init(VirtualRTCProvider *vRTCProvider);
+    void init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProvider);
     void setVirtualRTCProviderTime(int hours, int minutes, int seconds, int year, int month, int day);
     void setHasBluetoothConnection();
     void setHasNoBluetoothConnection();

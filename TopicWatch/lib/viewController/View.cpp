@@ -28,7 +28,7 @@ void View::_drawHomeView(int clearScreen)
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + (WatchSettings::iconSize * 2) + WatchSettings::iconMargin),
                     WatchSettings::iconSize, WatchSettings::iconSize,
-                    _hasBluetoothConnnection ? Bluetooth : NoBluetooth,
+                    *_hasBluetoothConnnection ? Bluetooth : NoBluetooth,
                     TFT_PINK);
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize),
@@ -66,7 +66,7 @@ void View::_drawIdle(int clearScreen)
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + (WatchSettings::iconSize * 2) + WatchSettings::iconMargin),
                     WatchSettings::iconSize, WatchSettings::iconSize,
-                    _hasBluetoothConnnection ? Bluetooth : NoBluetooth,
+                    *_hasBluetoothConnnection ? Bluetooth : NoBluetooth,
                     TFT_PINK);
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize),

@@ -1,10 +1,8 @@
 #include "BLEProvider.h"
 
-void BLEProvider::init(ScreenProvider* sp)
+void BLEProvider::init()
 {
     _instance = this;
-
-    _sp = sp;
 
     /** sets device name */
     NimBLEDevice::init(BLE_DEVICE_NAME);
@@ -99,11 +97,16 @@ bool BLEProvider::write(String value)
 
 void BLEProvider::setConnectionState(bool newState)
 {
-    _connectionState = newState;
-    _connectionState ? _sp->setHasBluetoothConnection() : _sp->setHasNoBluetoothConnection(); 
+    if (newState != _connectionState)
+    {
+        _stateChanged = true;
+        _connectionState = newState;
+    }
 }
 
-ScreenProvider *BLEProvider::getScreenProvider(void)
+int BLEProvider::getConnectionState()
 {
-    return _sp;
+    int returnValue = _stateChanged ? _connectionState : -1;
+    _stateChanged = false;
+    return returnValue;
 }

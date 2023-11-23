@@ -6,27 +6,31 @@
 #include "ArduinoJson.h"
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
-#include "ScreenProvider.h"
+
+typedef void (*SetTimeCallback)(int hours, int minutes, int seconds, int year, int month, int day);
 
 class BLEProvider
 {
-    private:
-        BLEProvider* _instance;
-        NimBLEServer *_pServer;
-        NimBLECharacteristic *_pCharacteristic; //Primary characteristic to write too
-        ScreenProvider* _sp;
-        int _connectionState = false;
 
-    public:
-        BLEProvider() = default;
-        ~BLEProvider() = default;
-        void init(ScreenProvider* sp);
-        bool write(String value);
-        void sendTimeRequest(void);
-        void sendTopicsRequest(void);
-        void sendTrackedTimes(void);
-        void setConnectionState(bool newState);
-        ScreenProvider* getScreenProvider(void);
+private:
+    BLEProvider *_instance;
+    NimBLEServer *_pServer;
+    NimBLECharacteristic *_pCharacteristic; // Primary characteristic to write too
+    int _connectionState = false;
+    int _stateChanged = false;
+
+public:
+    SetTimeCallback setTimeCallback = nullptr;
+
+    BLEProvider() = default;
+    ~BLEProvider() = default;
+    void init();
+    bool write(String value);
+    void sendTimeRequest(void);
+    void sendTopicsRequest(void);
+    void sendTrackedTimes(void);
+    void setConnectionState(bool newState);
+    int getConnectionState(void);
 };
 
 #endif

@@ -54,7 +54,10 @@ bool CharacteristicCallbacks::handleMessage(String message)
 
             Serial.println(String(h) + " " + String(m) + " " + String(s));
 
-            bleProvider->getScreenProvider()->setVirtualRTCProviderTime(0, 0, 0, 0, 0, 0);
+            if (bleProvider->setTimeCallback != nullptr)
+            {
+                bleProvider->setTimeCallback(0, 0, 0, 0, 0, 0);
+            }
         }
         else
         {

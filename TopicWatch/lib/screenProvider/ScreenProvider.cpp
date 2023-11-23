@@ -57,11 +57,12 @@ void ScreenProvider::onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedSc
     // Nothing for now
 }
 
-void ScreenProvider::init(VirtualRTCProvider *vRTCProvider)
+void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProvider)
 {
     _instance = this;
 
     _border.init(&_tft);
+    _bleProvider = bleProvider;
     _vRTCProvider = vRTCProvider;
     _viewController.init(&_tft, &_border, _vRTCProvider);
     Topic tmpTopic;
@@ -119,16 +120,23 @@ void ScreenProvider::setVirtualRTCProviderTime(int hours, int minutes, int secon
 
 void ScreenProvider::setHasBluetoothConnection()
 {
+    Serial.println("ScreenProvider: setHasBluetoothConnection()");
     _viewController.setHasBluetoothConnection();
 }
 
 void ScreenProvider::setHasNoBluetoothConnection()
 {
+    Serial.println("ScreenProvider: setHasNoBluetoothConnection()");
     _viewController.setHasNoBluetoothConnection();
 }
 
 void ScreenProvider::update()
 {
     _touch.control();
+    int bleConnectionState = _bleProvider->getConnectionState();
+    if (bleConnectionState > -1)
+    {
+        bleConnectionState ? _viewController.setHasBluetoothConnection() : _viewController.setHasNoBluetoothConnection();
+    }
     _viewController.drawCurrentView();
 }
