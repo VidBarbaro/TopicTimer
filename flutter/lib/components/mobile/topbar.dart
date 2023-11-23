@@ -51,7 +51,6 @@ class TopBar extends StatelessWidget {
                     onPressed: () {},
                     child: Icon(
                       Icons.abc,
-                      // NEED TO TALK TO MICHEL ABOUT THIS
                       color: ColorProvider.get(CustomColor.primary)
                       ),
                   ),
@@ -102,7 +101,6 @@ class TopBar extends StatelessWidget {
                       style: topBarButtonStyle,
                       child: Icon(
                         Icons.add,
-                        // NEED TO TALK TO MICHEL ABOUT THIS
                         color: ColorProvider.get(CustomColor.primary),
                       )),
               ])),
