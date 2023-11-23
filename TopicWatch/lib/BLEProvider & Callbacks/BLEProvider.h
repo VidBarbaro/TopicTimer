@@ -6,12 +6,10 @@
 #include "ArduinoJson.h"
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
-
-typedef void (*SetTimeCallback)(int hours, int minutes, int seconds, int year, int month, int day);
+#include "VirtualRTCProvider.h"
 
 class BLEProvider
 {
-
 private:
     BLEProvider *_instance;
     NimBLEServer *_pServer;
@@ -20,8 +18,6 @@ private:
     int _stateChanged = false;
 
 public:
-    SetTimeCallback setTimeCallback = nullptr;
-
     BLEProvider() = default;
     ~BLEProvider() = default;
     void init();
