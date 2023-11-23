@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
-import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 //For sending BLE messages a JSON object is needed,
 //In this file all JSON objects are mentioned
@@ -19,7 +18,7 @@ class Time {
     _seconds = seconds;
   }
   Map<String, dynamic> toJson() =>
-      {'hours': _hours, 'minutes': _minutes, 'seconds': _seconds};
+      {'"hours"': _hours, '"minutes"': _minutes, '"seconds"': _seconds};
 }
 
 class Date {
@@ -37,7 +36,7 @@ class Date {
   }
 
   Map<String, dynamic> toJson() =>
-      {'years': _years, 'months': _months, 'days': _days};
+      {'"year"': _years, '"month"': _months, '"day"': _days};
 }
 
 class DateTimeJSON {
@@ -67,12 +66,12 @@ class DateTimeJSON {
   }
 
   Map<String, dynamic> toJson() =>
-      {'time': _time.toJson(), 'date': _date.toJson()};
+      {'"time"': _time.toJson(), '"date"': _date.toJson()};
 }
 
 //Phone to watch (SetTime)
 class SetTimeMessage {
-  final String _command = 'setTime';
+  final String _command = '"setTime"';
   String get command => _command;
   DateTimeJSON _data = DateTimeJSON(
       time: Time(hours: 0, minutes: 0, seconds: 0),
@@ -83,8 +82,8 @@ class SetTimeMessage {
     _data = DateTimeJSON(time: time, date: date);
   }
   Map<String, dynamic> toJson() => {
-        'command': _command,
-        'data': _data.toJson(),
+        '"command"': _command,
+        '"data"': _data.toJson(),
       };
 }
 

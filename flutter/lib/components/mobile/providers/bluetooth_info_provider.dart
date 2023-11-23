@@ -5,17 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
-import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
-import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
   //These variables aren't used outside the class, but could be handy later on for updating the UI
   BluetoothDevice? _device; //Bluetoothdevice which is the TopicTimer
   BluetoothCharacteristic? _characteristic; //Characterestic to write to
   StreamSubscription<List<ScanResult>>?
-      _messageListener; //messageListener is triggered when a new message is received
+      _scannerListener; //messageListener is triggered when a new message is received
   StreamSubscription<BluetoothConnectionState>?
       _connectionListener; //connectionListener is triggered when the connection gets updated
+  StreamSubscription<List<int>>? _messageListener;
+  bool _connected = false;
+
+  String getConnectionState() {
+    notifyListeners();
+    if (_connected) {
+      return 'Connected';
+    }
+    return 'Disconnected';
+  }
 
   void enableBluetooth() async {
     if (!await FlutterBluePlus.isSupported) {
@@ -30,6 +38,7 @@ class BluetoothInfoProvider with ChangeNotifier {
           if (state == BluetoothAdapterState.on) {
             //Do your action
             print('[SUCCESS] initialised bluetooth adapter');
+            startScan();
           } else {
             print('[ERROR] Bleutooth adapter could not be started');
             return;
@@ -52,7 +61,10 @@ class BluetoothInfoProvider with ChangeNotifier {
       //set up connectionListener
       _connectionListener = device.connectionState.listen((event) {
         if (event == BluetoothConnectionState.disconnected) {
+          _connected = false;
           connectToDevice(device);
+        } else if (event == BluetoothConnectionState.connected) {
+          _connected = true;
         }
       });
       List<BluetoothService> services = await device.discoverServices();
@@ -62,10 +74,14 @@ class BluetoothInfoProvider with ChangeNotifier {
           if (characteristic.uuid.toString() ==
               'a6846b78-7efa-11ee-b962-0242ac120002') {
             _characteristic = characteristic;
-            characteristic.setNotifyValue(true);
-            characteristic.onValueReceived.listen((value) {
-              print('Received data: ${String.fromCharCodes(value)}');
-              handleMessage(String.fromCharCodes(value));
+            _characteristic?.setNotifyValue(true);
+            _messageListener =
+                _characteristic?.lastValueStream.listen((event) async {
+              if (_characteristic!.properties.write) {
+                List<int> value = await _characteristic!.read();
+                print("Received");
+                print(value);
+              }
             });
           }
         }
@@ -74,18 +90,21 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   void disconnectDevice() {
-    if (_messageListener != null) {
-      _messageListener?.cancel();
+    if (_scannerListener != null) {
+      _scannerListener?.cancel();
     }
     if (_connectionListener != null) {
       _connectionListener?.cancel();
+    }
+    if (_messageListener != null) {
+      _messageListener?.cancel();
     }
   }
 
   void startScan() async {
     print('Start scanning');
     await FlutterBluePlus.startScan();
-    _messageListener = FlutterBluePlus.scanResults.listen((results) {
+    _scannerListener = FlutterBluePlus.scanResults.listen((results) {
       if (results.isNotEmpty) {
         ScanResult r = results.last; // the most recently found device
         print(
@@ -118,13 +137,15 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
   void writeMessage(String message) {
-    print('[BLE] Sending: ');
     String messageString = jsonEncode(message);
-    print(messageString);
     if (_characteristic == null) {
       return;
     }
+    print('[BLE] Sending: ');
+    print(messageString);
+    //messageString = messageString.substring(1, messageString.length - 1);
     List<int> numbers = messageString.codeUnits.toList();
+
     _characteristic?.write(numbers);
   }
 
@@ -142,9 +163,7 @@ class BluetoothInfoProvider with ChangeNotifier {
 
     switch (messageJSON['command']) {
       case 'getTime':
-        _characteristic?.write(
-            '${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}'
-                .codeUnits);
+        sendTime();
         break;
       default:
         print('Unhandled message');

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/home.dart';
@@ -59,7 +60,10 @@ class _MyAppState extends State<MyApp> {
                   create: (context) => TimerInfoProvider(),
                 ),
                 ChangeNotifierProvider(
-                    create: (context) => BluetoothInfoProvider())
+                  create: (context) => BluetoothInfoProvider()),
+                ChangeNotifierProvider(
+                  create: (context) => ThemeChangeProvider(),
+                )
               ],
               child: const MaterialApp(
                 title: 'Topic Timer',
