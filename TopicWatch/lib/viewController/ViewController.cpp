@@ -129,4 +129,5 @@ int ViewController::getCurrentViewState()
 void ViewController::toggleHasBluetoothConnection()
 {
     _hasBluetoothConnnection = !_hasBluetoothConnnection;
+    _allViews[_currentViewIndex].draw(true);
 }
