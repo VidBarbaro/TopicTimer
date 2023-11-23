@@ -13,6 +13,7 @@ class BLEProvider
 private:
     BLEProvider *_instance;
     NimBLEServer *_pServer;
+    NimBLEService *_pService;
     NimBLECharacteristic *_pCharacteristic; // Primary characteristic to write too
     int _connectionState = false;
     int _stateChanged = false;

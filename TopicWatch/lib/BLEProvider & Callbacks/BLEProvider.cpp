@@ -16,16 +16,16 @@ void BLEProvider::init()
     NimBLEDevice::setSecurityAuth(false, false, false);
 
     _pServer = NimBLEDevice::createServer();
+
+    _pService = _pServer->createService("a6846862-7efa-11ee-b962-0242ac120002");
+    _pCharacteristic = _pService->createCharacteristic("a6846b78-7efa-11ee-b962-0242ac120002", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
+    _pCharacteristic->setCallbacks(new CharacteristicCallbacks(_instance));
     _pServer->setCallbacks(new ServerCallbacks(_instance));
 
-    NimBLEService *pService = _pServer->createService("a6846862-7efa-11ee-b962-0242ac120002");
-    NimBLECharacteristic *_pCharacteristic = pService->createCharacteristic("a6846b78-7efa-11ee-b962-0242ac120002", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
-    _pCharacteristic->setCallbacks(new CharacteristicCallbacks(_instance));
-
-    pService->start();
+    _pService->start();
 
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-    pAdvertising->addServiceUUID(pService->getUUID());
+    pAdvertising->addServiceUUID(_pService->getUUID());
 
     pAdvertising->setScanResponse(true);
     pAdvertising->start();
@@ -83,13 +83,17 @@ bool BLEProvider::write(String value)
 {
     if(value == NULL)
     {
+        Serial.println("[ERROR]: in function: BLEProvider::write param is NULL");
         return false;
     }
 
     if(_pCharacteristic == NULL)
     {
+        Serial.println("[ERROR]: Characteristic is NULL");
         return false;
     }
+    Serial.print("[SENDING]: ");
+    Serial.println(value);
     _pCharacteristic->setValue(value);
     _pCharacteristic->notify();
     return true;

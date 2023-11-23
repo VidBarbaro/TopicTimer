@@ -33,18 +33,15 @@ bool CharacteristicCallbacks::handleMessage(String message)
         Serial.println("Message is fucked niffo");
         return false;
     }
-    StaticJsonDocument<400> doc;
-    DeserializationError error = deserializeJson(doc, message);
+    //JSON string is double serialized, to it needs twice deserialized
+    StaticJsonDocument<512> temp, doc;
+    DeserializationError error = deserializeJson(temp, message);
+    error = deserializeJson(doc, temp.as<const char*>());
 
+    Serial.print("[RECEIVED]: ");
+    serializeJson(doc, Serial);
     if(error == DeserializationError::Ok)
     {
-        JsonObject root = doc.as<JsonObject>();
-
-        for (JsonPair kv : root)
-        {
-            Serial.println(kv.key().c_str());
-        }
-
         if (doc["command"] == "setTime")
         {
             Serial.println("Command found");
@@ -52,9 +49,11 @@ bool CharacteristicCallbacks::handleMessage(String message)
             int m = doc["data"]["time"]["minutes"];
             int s = doc["data"]["time"]["seconds"];
 
-            Serial.println(String(h) + " " + String(m) + " " + String(s));
+            int y = doc["data"]["date"]["year"];
+            int mo = doc["data"]["date"]["month"];
+            int d = doc["data"]["date"]["day"];
 
-            VirtualRTCProvider::setTime(0, 0, 0, 0, 0, 0);
+            VirtualRTCProvider::setTime(h, m, s, y, mo, d);
         }
         else
         {
