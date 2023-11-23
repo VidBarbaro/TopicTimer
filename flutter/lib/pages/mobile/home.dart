@@ -94,7 +94,7 @@ class HomePageMobileState extends State<HomePageMobile> {
           // Screen transition animation on change of selected tab.
           animateTabTransition: true,
           curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 100),
         ));
   }
 }
