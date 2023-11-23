@@ -28,7 +28,7 @@ void View::_drawHomeView(int clearScreen)
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + (WatchSettings::iconSize * 2) + WatchSettings::iconMargin),
                     WatchSettings::iconSize, WatchSettings::iconSize,
-                    NoBluetooth,
+                    _hasBluetoothConnnection ? Bluetooth : NoBluetooth,
                     TFT_PINK);
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize),
@@ -66,7 +66,7 @@ void View::_drawIdle(int clearScreen)
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + (WatchSettings::iconSize * 2) + WatchSettings::iconMargin),
                     WatchSettings::iconSize, WatchSettings::iconSize,
-                    NoBluetooth,
+                    _hasBluetoothConnnection ? Bluetooth : NoBluetooth,
                     TFT_PINK);
     _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize),
@@ -105,7 +105,7 @@ void View::_drawTracking(int clearScreen)
     _border->set(100, _topic.color);
 }
 
-void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex)
+void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection)
 {
     _tft = tft;
     _border = border;
@@ -115,9 +115,10 @@ void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider,
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
     _initialized = true;
+    _hasBluetoothConnnection = hasBluetoothConnnection;
 }
 
-void View::init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex)
+void View::init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection)
 {
     _topic = topic;
     _tft = tft;
@@ -128,6 +129,7 @@ void View::init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
     _initialized = true;
+    _hasBluetoothConnnection = hasBluetoothConnnection;
 }
 
 int View::isInitialized()

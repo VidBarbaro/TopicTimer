@@ -34,6 +34,7 @@ public:
     ~ScreenProvider() = default;
     void init(VirtualRTCProvider *vRTCProvider);
     void setVirtualRTCProviderTime(int hours, int minutes, int seconds, int year, int month, int day);
+    void toggleHasBluetoothConnection();
     void update();
 };
 

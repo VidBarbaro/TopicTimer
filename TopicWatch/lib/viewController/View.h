@@ -36,6 +36,7 @@ private:
     DateTime *_trackingDateTime;
     int *_amountOfActiveViews;
     int *_currentViewIndex;
+    int *_hasBluetoothConnnection;
 
     void _clearCenter();
     void _drawHomeView(int clearScreen);
@@ -45,8 +46,8 @@ private:
 public:
     View() = default;
     ~View() = default;
-    void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex);
-    void init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex);
+    void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection);
+    void init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection);
     int isInitialized();
     void draw(int clearScreen = false);
     void startTracking();
