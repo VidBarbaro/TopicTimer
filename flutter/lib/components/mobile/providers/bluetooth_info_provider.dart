@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
