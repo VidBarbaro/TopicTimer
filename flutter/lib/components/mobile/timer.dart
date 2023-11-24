@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -46,23 +45,18 @@ class TimerComp extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Consumer<TimerInfoProvider>(
                             builder: (context, timerInfoProvider, child) {
-                              if(topBarConentProvider.getSelectedTopic().id != -1) {
-                                return 
-                          Text(
-                            timerInfoProvider.toString(),
-                            style: TextStyle(fontSize: 16.w),
-                          );
-                              }
-                              else
-                              {
-                          return 
-                          Text(
-                            "You don't have any topics. \n Go ahead and make one to start tracking",
-                            style: TextStyle(fontSize: 5.w),
-                            textAlign: TextAlign.center,
-                          );
-
-                              }
+                          if (topBarConentProvider.getTopics().isNotEmpty) {
+                            return Text(
+                              timerInfoProvider.toString(),
+                              style: TextStyle(fontSize: 16.w),
+                            );
+                          } else {
+                            return Text(
+                              "You don't have any topics. \n Go ahead and make one to start tracking",
+                              style: TextStyle(fontSize: 5.w),
+                              textAlign: TextAlign.center,
+                            );
+                          }
                         }),
                       ),
                     ),
@@ -72,33 +66,45 @@ class TimerComp extends StatelessWidget {
                     )
                   ]);
             }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      if (!context.read<TimerInfoProvider>().isInitialized) {
-                        Timer.periodic(const Duration(seconds: 1), (timer) {
-                          context.read<TimerInfoProvider>().tick();
-                        });
-                        context.read<TimerInfoProvider>().setInit();
-                      }
-                      context.read<TimerInfoProvider>().enableTimer();
-                    },
-                    child: const Icon(Icons.play_arrow)),
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<TimerInfoProvider>().pauseTimer();
-                    },
-                    child: const Icon(Icons.pause)),
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<TimerInfoProvider>().resetTimer();
-                      context.read<TimerInfoProvider>().disableTimer();
-                    },
-                    child: const Icon(Icons.stop)),
-              ],
-            )    
+            Consumer<TopBarConentProvider>(
+                builder: (context, topBarConentProvider, child) {
+              if (topBarConentProvider.getTopics().isNotEmpty) {
+                return Consumer<TimerInfoProvider>(
+                    builder: (context, timerInfoProvider, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            if (!context
+                                .read<TimerInfoProvider>()
+                                .isInitialized) {
+                              Timer.periodic(const Duration(seconds: 1),
+                                  (timer) {
+                                context.read<TimerInfoProvider>().tick();
+                              });
+                              context.read<TimerInfoProvider>().setInit();
+                            }
+                            context.read<TimerInfoProvider>().enableTimer();
+                          },
+                          child: const Icon(Icons.play_arrow)),
+                      ElevatedButton(
+                          onPressed: () {
+                            context.read<TimerInfoProvider>().pauseTimer();
+                          },
+                          child: const Icon(Icons.pause)),
+                      ElevatedButton(
+                          onPressed: () {
+                            context.read<TimerInfoProvider>().resetTimer();
+                            context.read<TimerInfoProvider>().disableTimer();
+                          },
+                          child: const Icon(Icons.stop)),
+                    ],
+                  );
+                });
+              }
+                return const Text('');
+            })
           ],
         ));
   }

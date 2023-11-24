@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/theme/color_provider.dart';
@@ -107,21 +108,24 @@ class TopBar extends StatelessWidget {
                           color: ColorProvider.get(CustomColor.primary),
                         )),
                 ])),
-        Container(
-          width: 100.w,
-          height: 5.h,
-          color: ColorProvider.get(CustomColor.tertiary),
-          alignment: Alignment.center,
-          child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
-            Icon(
-              Icons.watch, 
-              color: ColorProvider.get(CustomColor.background)),
+      Container(
+        width: 100.w,
+        height: 5.h,
+        color: ColorProvider.get(CustomColor.tertiary),
+        alignment: Alignment.center,
+        child: Consumer<BluetoothInfoProvider>(
+            builder: (context, bluetoothInfoProvider, child) {
+          return Wrap(alignment: WrapAlignment.center, children: <Widget>[
+            Icon(Icons.watch, color: ColorProvider.get(CustomColor.background)),
             Text(
-              'Disconnected',
-              style: TextStyle(color: ColorProvider.get(CustomColor.background), fontSize: 20),
-            )
-          ]),
-        )
+              bluetoothInfoProvider.getConnectionState(),
+              style: TextStyle(
+                  color: ColorProvider.get(CustomColor.background),
+                  fontSize: 20),
+            ),
+          ]);
+        }),
+      ),
       ]);
             });
   }
