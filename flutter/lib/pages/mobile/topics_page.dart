@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
@@ -22,9 +23,16 @@ List<TopicModel> topiclist = TopicProvider.getTopics();
     return Column(
       children: [
         TopBar(),
+        if(topiclist.isNotEmpty)
         Column(
-           children: [for(var topic in topiclist) TopicWidget(topic: topic, callback: callback)],
+           children: [for(var topic in topiclist) TopicWidget(key: UniqueKey(), topic : topic, callback: callback)],
         )
+        else
+        Text(
+          "It seems like you don't have any topics to display yet",
+           style: TextStyle(fontSize: 5.w),
+           textAlign: TextAlign.center,
+         )
       ],
     );
   }
