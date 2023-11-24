@@ -4,7 +4,7 @@ import 'package:topictimer_flutter_application/theme/custom_color.dart';
 class ThemeProvider {
   static bool darktheme = false;
   static Map<CustomColor, Color> getTheme() {
-    /// TODO change test data to API call or internal storage
+    /// THIS MODULE NEEDS TO BE DELETED, IT IS REPLACED BY THE THEME_CHANGE_PROVIDER
     if(darktheme == false){
       return {
         CustomColor.primary: const Color(0xff009688),

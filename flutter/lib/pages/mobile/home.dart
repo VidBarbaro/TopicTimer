@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/personal_page.dart';
 import 'package:topictimer_flutter_application/pages/mobile/planning_page.dart';
@@ -81,20 +82,24 @@ class HomePageMobileState extends State<HomePageMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(context,
-        screens: createScreens(),
-        items: createNavBarItems(),
-        controller: navBarController,
-        backgroundColor: ColorProvider.get(CustomColor.primary) ?? Colors.white,
-        decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
-        navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
-      context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
-    },
-        screenTransitionAnimation: const ScreenTransitionAnimation(
-          // Screen transition animation on change of selected tab.
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 100),
-        ));
-  }
+    return Consumer<ThemeChangeProvider>(
+    builder: (context, themeChangeProvider, child) {
+      return PersistentTabView(context,
+          screens: createScreens(),
+          items: createNavBarItems(),
+          controller: navBarController,
+          backgroundColor: ColorProvider.get(CustomColor.primary) ?? Colors.white,
+          decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
+          navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
+        context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
+      },
+          screenTransitionAnimation: const ScreenTransitionAnimation(
+            // Screen transition animation on change of selected tab.
+            animateTabTransition: true,
+            curve: Curves.ease,
+            duration: Duration(milliseconds: 100),
+          ));
+    }
+  );
+}
 }
