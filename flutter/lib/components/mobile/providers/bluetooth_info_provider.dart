@@ -11,10 +11,10 @@ class BluetoothInfoProvider with ChangeNotifier {
   BluetoothDevice? _device; //Bluetoothdevice which is the TopicTimer
   BluetoothCharacteristic? _characteristic; //Characterestic to write to
   StreamSubscription<List<ScanResult>>?
-      _scannerListener; //messageListener is triggered when a new message is received
+      _scannerListener; //scannerListener is triggered when a new message is received
   StreamSubscription<BluetoothConnectionState>?
       _connectionListener; //connectionListener is triggered when the connection gets updated
-  StreamSubscription<List<int>>? _messageListener;
+  StreamSubscription<List<int>>? _messageListener; //
   bool _connected = false;
 
   String getConnectionState() {
@@ -77,10 +77,16 @@ class BluetoothInfoProvider with ChangeNotifier {
             _characteristic?.setNotifyValue(true);
             _messageListener =
                 _characteristic?.lastValueStream.listen((event) async {
-              if (_characteristic!.properties.write) {
-                List<int> value = await _characteristic!.read();
-                print("Received");
-                print(value);
+              if (_characteristic!.properties.read) {
+                try {
+                  List<int> value = await _characteristic!.read();
+                  print("Received message");
+                  String message = String.fromCharCodes(value);
+                  handleMessage(
+                      message); //Somehow the message can't be printed to the monitor
+                } catch (ex) {
+                  _messageListener?.cancel();
+                }
               }
             });
           }
@@ -131,8 +137,8 @@ class BluetoothInfoProvider with ChangeNotifier {
             days: DateTime.now().day),
         time: Time(
             hours: TimeOfDay.now().hour,
-            minutes: TimeOfDay.now().minute,
-            seconds: 0));
+            minutes: DateTime.now().minute,
+            seconds: DateTime.now().second));
     writeMessage(messageJSON.toJson().toString());
   }
 
@@ -154,12 +160,17 @@ class BluetoothInfoProvider with ChangeNotifier {
       //Null check
       return;
     }
+    var messageJSON;
+    try {
+      messageJSON = jsonDecode(message) as Map<String, dynamic>;
+    } catch (ex) {
+      print(ex);
+    }
 
-    print('Just a check 2');
-    final messageJSON = jsonDecode(message) as Map<String, dynamic>;
-
-    print('Printing the found command');
-    print(messageJSON.toString());
+    if (messageJSON == null) {
+      //empty message with no command received, ignore the message
+      return;
+    }
 
     switch (messageJSON['command']) {
       case 'getTime':
