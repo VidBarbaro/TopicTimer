@@ -16,13 +16,12 @@ class BluetoothInfoProvider with ChangeNotifier {
       _connectionListener; //connectionListener is triggered when the connection gets updated
   StreamSubscription<List<int>>? _messageListener; //
   bool _connected = false;
-
   String getConnectionState() {
-    notifyListeners();
     if (_connected) {
       return 'Connected';
+    } else {
+      return 'Disconnected';
     }
-    return 'Disconnected';
   }
 
   void enableBluetooth() async {
@@ -62,9 +61,11 @@ class BluetoothInfoProvider with ChangeNotifier {
       _connectionListener = device.connectionState.listen((event) {
         if (event == BluetoothConnectionState.disconnected) {
           _connected = false;
+          notifyListeners();
           connectToDevice(device);
         } else if (event == BluetoothConnectionState.connected) {
           _connected = true;
+          notifyListeners();
         }
       });
       List<BluetoothService> services = await device.discoverServices();
@@ -80,7 +81,6 @@ class BluetoothInfoProvider with ChangeNotifier {
               if (_characteristic!.properties.read) {
                 try {
                   List<int> value = await _characteristic!.read();
-                  print("Received message");
                   String message = String.fromCharCodes(value);
                   handleMessage(
                       message); //Somehow the message can't be printed to the monitor
@@ -136,7 +136,7 @@ class BluetoothInfoProvider with ChangeNotifier {
             months: DateTime.now().month,
             days: DateTime.now().day),
         time: Time(
-            hours: TimeOfDay.now().hour,
+            hours: DateTime.now().hour,
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second));
     writeMessage(messageJSON.toJson().toString());
@@ -160,7 +160,7 @@ class BluetoothInfoProvider with ChangeNotifier {
       //Null check
       return;
     }
-    var messageJSON;
+    dynamic messageJSON;
     try {
       messageJSON = jsonDecode(message) as Map<String, dynamic>;
     } catch (ex) {

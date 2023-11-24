@@ -46,23 +46,19 @@ class TimerComp extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Consumer<TimerInfoProvider>(
                             builder: (context, timerInfoProvider, child) {
-                              if(topBarConentProvider.getSelectedTopic().id != -1) {
-                                return 
-                          Text(
-                            timerInfoProvider.toString(),
-                            style: TextStyle(fontSize: 16.w),
-                          );
-                              }
-                              else
-                              {
-                          return 
-                          Text(
-                            "You don't have any topics. \n Go ahead and make one to start tracking",
-                            style: TextStyle(fontSize: 5.w),
-                            textAlign: TextAlign.center,
-                          );
-
-                              }
+                          if (topBarConentProvider.getSelectedTopic().id !=
+                              -1) {
+                            return Text(
+                              timerInfoProvider.toString(),
+                              style: TextStyle(fontSize: 16.w),
+                            );
+                          } else {
+                            return Text(
+                              "You don't have any topics. \n Go ahead and make one to start tracking",
+                              style: TextStyle(fontSize: 5.w),
+                              textAlign: TextAlign.center,
+                            );
+                          }
                         }),
                       ),
                     ),
@@ -98,7 +94,7 @@ class TimerComp extends StatelessWidget {
                     },
                     child: const Icon(Icons.stop)),
               ],
-            )    
+            )
           ],
         ));
   }
