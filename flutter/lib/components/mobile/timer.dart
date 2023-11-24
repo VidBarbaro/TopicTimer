@@ -57,18 +57,6 @@ class TimerComp extends StatelessWidget {
                               textAlign: TextAlign.center,
                             );
                           }
-                          if (topBarConentProvider.getTopics().isNotEmpty) {
-                            return Text(
-                              timerInfoProvider.toString(),
-                              style: TextStyle(fontSize: 16.w),
-                            );
-                          } else {
-                            return Text(
-                              "You don't have any topics. \n Go ahead and make one to start tracking",
-                              style: TextStyle(fontSize: 5.w),
-                              textAlign: TextAlign.center,
-                            );
-                          }
                         }),
                       ),
                     ),
