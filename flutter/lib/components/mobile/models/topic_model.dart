@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TopicModel {
-TopicModel(this.id, this.name, this.color);
-int id = -1;
+TopicModel(this.name, this.color);
+UniqueKey id = UniqueKey(); 
 String name = 'This topic was not initialized correctly';
 Color color = Colors.transparent;
 

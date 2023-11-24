@@ -10,14 +10,23 @@ class TopicWidget extends StatefulWidget {
   TopicModel topic;
   Function() callback;
   @override
-  State<TopicWidget> createState() => _TopicWidgetState(topic: topic, callback: callback);
+  State<TopicWidget> createState() => _TopicWidgetState();
 }
 
 class _TopicWidgetState extends State<TopicWidget> {
-  _TopicWidgetState({required this.topic, required this.callback});
-  TopicModel topic;
-  Function() callback;
+  late TopicModel topic;
+  late Function() callback;
   bool _isVisible = false;
+
+  @override
+  void initState()
+  {
+    topic = widget.topic;
+    callback = widget.callback;
+    super.initState();
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +51,7 @@ class _TopicWidgetState extends State<TopicWidget> {
                    Container(
                     width: 60.w,
                     padding: const EdgeInsets.fromLTRB(30,0,0,0),
-                    child:  Text(topic.name, style:  TextStyle(fontSize: 20, color: ColorProvider.get(CustomColor.text))))
+                    child:  Text(topic.id.toString(), style:  TextStyle(fontSize: 20, color: ColorProvider.get(CustomColor.text))))
                 ])),
                Row(
                 children: [
