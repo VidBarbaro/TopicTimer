@@ -113,8 +113,8 @@ class BluetoothInfoProvider with ChangeNotifier {
     _scannerListener = FlutterBluePlus.scanResults.listen((results) {
       if (results.isNotEmpty) {
         ScanResult r = results.last; // the most recently found device
-        print(
-            '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
+        //print(
+        // '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
         if (r.advertisementData.localName == 'TopicWatch') {
           stopScan();
           _device = r.device;
