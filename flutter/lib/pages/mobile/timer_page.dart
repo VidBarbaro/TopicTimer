@@ -10,7 +10,7 @@ class MobileTimerPage extends StatelessWidget {
     return Column(
       children: [
         TopBar(
-          key: super.key,
+          key: UniqueKey(),
         ),
         TimerComp(key: super.key),
       ],

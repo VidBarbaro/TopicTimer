@@ -51,7 +51,7 @@ class _TopicWidgetState extends State<TopicWidget> {
                    Container(
                     width: 60.w,
                     padding: const EdgeInsets.fromLTRB(30,0,0,0),
-                    child:  Text(topic.id.toString(), style:  TextStyle(fontSize: 20, color: ColorProvider.get(CustomColor.text))))
+                    child:  Text(topic.name, style:  TextStyle(fontSize: 20, color: ColorProvider.get(CustomColor.text))))
                 ])),
                Row(
                 children: [

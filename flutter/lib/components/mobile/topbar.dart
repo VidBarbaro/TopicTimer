@@ -32,7 +32,7 @@ class TopBar extends StatelessWidget {
                   Consumer<TimerInfoProvider>(
                       builder: (context, timerInfoProvider, child) {
                     return ElevatedButton(
-                      onPressed: timerInfoProvider.isActive
+                      onPressed: timerInfoProvider.isButtonActive
                           ? null
                           : () => context
                               .read<TopBarConentProvider>()
@@ -83,7 +83,7 @@ class TopBar extends StatelessWidget {
                   Consumer<TimerInfoProvider>(
                       builder: (context, timerInfoProvider, child) {
                     return ElevatedButton(
-                        onPressed: timerInfoProvider.isActive
+                        onPressed: timerInfoProvider.isButtonActive
                             ? null
                             : () => context
                                 .read<TopBarConentProvider>()
