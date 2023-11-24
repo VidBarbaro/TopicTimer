@@ -10,23 +10,14 @@ class TopicWidget extends StatefulWidget {
   TopicModel topic;
   Function() callback;
   @override
-  State<TopicWidget> createState() => _TopicWidgetState();
+  State<TopicWidget> createState() => _TopicWidgetState(topic: topic, callback: callback);
 }
 
 class _TopicWidgetState extends State<TopicWidget> {
-  late TopicModel topic;
-  late Function() callback;
+  _TopicWidgetState({required this.topic, required this.callback});
+  TopicModel topic;
+  Function() callback;
   bool _isVisible = false;
-
-  @override
-  void initState()
-  {
-    topic = widget.topic;
-    callback = widget.callback;
-    super.initState();
-  }
-
-  
 
   @override
   Widget build(BuildContext context) {

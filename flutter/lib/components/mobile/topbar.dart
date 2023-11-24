@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/theme/color_provider.dart';
@@ -49,10 +50,8 @@ class TopBar extends StatelessWidget {
                   //Empty button for spacing the topbar
                   TextButton(
                     onPressed: () {},
-                    child: Icon(
-                      Icons.abc,
-                      color: ColorProvider.get(CustomColor.primary)
-                      ),
+                    child: Icon(Icons.abc,
+                        color: ColorProvider.get(CustomColor.primary)),
                   ),
                 Container(
                   width: 35.w,
@@ -109,16 +108,19 @@ class TopBar extends StatelessWidget {
         height: 5.h,
         color: ColorProvider.get(CustomColor.tertiary),
         alignment: Alignment.center,
-        child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
-          Icon(
-            Icons.watch, 
-            color: ColorProvider.get(CustomColor.background)),
-          Text(
-            'Disconnected',
-            style: TextStyle(color: ColorProvider.get(CustomColor.background), fontSize: 20),
-          )
-        ]),
-      )
+        child: Consumer<BluetoothInfoProvider>(
+            builder: (context, bluetoothInfoProvider, child) {
+          return Wrap(alignment: WrapAlignment.center, children: <Widget>[
+            Icon(Icons.watch, color: ColorProvider.get(CustomColor.background)),
+            Text(
+              bluetoothInfoProvider.getConnectionState(),
+              style: TextStyle(
+                  color: ColorProvider.get(CustomColor.background),
+                  fontSize: 20),
+            ),
+          ]);
+        }),
+      ),
     ]);
   }
 }

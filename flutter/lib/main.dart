@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
                   create: (context) => TimerInfoProvider(),
                 ),
                 ChangeNotifierProvider(
-                  create: (context) => BluetoothInfoProvider()),
+                    create: (context) => BluetoothInfoProvider()),
                 ChangeNotifierProvider(
                   create: (context) => ThemeChangeProvider(),
                 )
