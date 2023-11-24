@@ -151,7 +151,7 @@ class SetTrackedTimes {
 class SetTopics {
   final String _command = 'setTopics';
   String get command => _command;
-  TopicModel _topic = TopicModel(0, 'None', Colors.black);
+  TopicModel _topic = TopicModel('None', Colors.black);
 
   SetTopics({required TopicModel topic}) {
     _topic = topic;

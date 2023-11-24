@@ -46,8 +46,7 @@ class TimerComp extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Consumer<TimerInfoProvider>(
                             builder: (context, timerInfoProvider, child) {
-                          if (topBarConentProvider.getSelectedTopic().id !=
-                              -1) {
+                          if (topBarConentProvider.getTopics().isNotEmpty) {
                             return Text(
                               timerInfoProvider.toString(),
                               style: TextStyle(fontSize: 16.w),
