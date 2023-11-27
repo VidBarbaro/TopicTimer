@@ -31,8 +31,8 @@ class TopBar extends StatelessWidget {
                 alignment: WrapAlignment.spaceAround,
                 runAlignment: WrapAlignment.center,
                 children: [
-                  if (context.read<TopBarConentProvider>().getSelectedPage() ==
-                      'Timer')
+                  if (context.read<TopBarConentProvider>().pageIndex ==
+                      2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -41,7 +41,11 @@ class TopBar extends StatelessWidget {
                             : () => context
                                 .read<TopBarConentProvider>()
                                 .switchTopicLeft(),
-                        style: topBarButtonStyle,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                        ),
                         child: Icon(
                           Icons.arrow_back,
                           color: ColorProvider.get(CustomColor.primary),
@@ -82,8 +86,8 @@ class TopBar extends StatelessWidget {
                       },
                     ),
                   ),
-                  if (context.read<TopBarConentProvider>().getSelectedPage() ==
-                      'Timer')
+                  if (context.read<TopBarConentProvider>().pageIndex ==
+                      2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -92,7 +96,11 @@ class TopBar extends StatelessWidget {
                               : () => context
                                   .read<TopBarConentProvider>()
                                   .switchTopicRight(),
-                          style: topBarButtonStyle,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                          ),
                           child: Icon(
                             Icons.arrow_forward,
                             color: ColorProvider.get(CustomColor.primary),
@@ -102,7 +110,11 @@ class TopBar extends StatelessWidget {
                       'Topics')
                     ElevatedButton(
                         onPressed: () => addTopic(),
-                        style: topBarButtonStyle,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                        ),
                         child: Icon(
                           Icons.add,
                           color: ColorProvider.get(CustomColor.primary),
