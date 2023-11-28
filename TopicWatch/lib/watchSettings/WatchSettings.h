@@ -7,7 +7,8 @@ class WatchSettings
 {
 private:
 public:
-    static const int maxAmountOfViews = 100;
+    static const int amountOfNonTopicViews = 2;
+    static const int maxAmountOfViews = 100 + amountOfNonTopicViews;
     static const int minimalTrackingMinutes = 5;
     static const int borderSize = 4;
     static const int marginFromBorder = 9;

@@ -1,13 +1,31 @@
 #include "ViewController.h"
 
+ViewController::~ViewController()
+{
+    for (int i = 0; i < WatchSettings::maxAmountOfViews; i++)
+    {
+        delete _views[i];
+        _views[i] = nullptr;
+    }
+}
+
 void ViewController::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider)
 {
     _tft = tft;
     _border = border;
     _vRTCProvider = vRTCProvider;
 
-    addView();
-    _allViews[_currentViewIndex].draw();
+    SettingsView *sView = new SettingsView;
+    sView->init(_tft, _border, _vRTCProvider, &_hasBluetoothConnnection);
+    _views[_activeViewCount] = sView;
+    _activeViewCount++;
+
+    HomeView *hView = new HomeView;
+    hView->init(_tft, _border, _vRTCProvider, &_hasBluetoothConnnection);
+    _views[_activeViewCount] = hView;
+    _activeViewCount++;
+
+    drawCurrentView(true);
 }
 
 void ViewController::home()
@@ -17,13 +35,13 @@ void ViewController::home()
         return;
     }
 
-    if (_currentViewIndex == 0)
+    if (_viewIndex == 1)
     {
         return;
     }
 
-    _currentViewIndex = 0;
-    _allViews[_currentViewIndex].draw(true);
+    _viewIndex = 1;
+    drawCurrentView(true);
 }
 
 void ViewController::nextLeft()
@@ -33,20 +51,14 @@ void ViewController::nextLeft()
         return;
     }
 
-    _currentViewIndex--;
-    if (_currentViewIndex < 0)
+    _viewIndex--;
+    if (_viewIndex < 0 || _views[_viewIndex] == nullptr)
     {
-        _currentViewIndex = 0;
+        _viewIndex++;
         return;
     }
 
-    if (!_allViews[_currentViewIndex].isInitialized())
-    {
-        _currentViewIndex++;
-        return;
-    }
-
-    _allViews[_currentViewIndex].draw(true);
+    drawCurrentView(true);
 }
 
 void ViewController::nextRight()
@@ -56,54 +68,48 @@ void ViewController::nextRight()
         return;
     }
 
-    _currentViewIndex++;
-    if (_currentViewIndex >= WatchSettings::maxAmountOfViews)
+    _viewIndex++;
+    if (_viewIndex >= WatchSettings::maxAmountOfViews || _views[_viewIndex] == nullptr)
     {
-        _currentViewIndex = WatchSettings::maxAmountOfViews - 1;
-    }
-
-    if (!_allViews[_currentViewIndex].isInitialized())
-    {
-        _currentViewIndex--;
+        _viewIndex--;
         return;
     }
 
-    _allViews[_currentViewIndex].draw(true);
-}
-
-void ViewController::addView()
-{
-    _allViews[_activeViewCount].init(_tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex, &_hasBluetoothConnnection);
-
-    _activeViewCount++;
+    drawCurrentView(true);
 }
 
 void ViewController::addView(Topic topic)
 {
-    _allViews[_activeViewCount].init(topic, _tft, _border, _vRTCProvider, &_activeViewCount, &_currentViewIndex, &_hasBluetoothConnnection);
+    TopicView *tView = new TopicView;
+    tView->init(_tft, _border, _vRTCProvider, &_hasBluetoothConnnection, &_activeViewCount, &_viewIndex);
+    tView->setTopic(topic);
+    _views[_activeViewCount] = tView;
 
     _activeViewCount++;
 }
 
 void ViewController::removeView(int viewIndex)
 {
-    if (viewIndex > 0)
+    if (viewIndex > 1)
     {
         _activeViewCount--;
     }
 }
 
-void ViewController::drawCurrentView()
+void ViewController::drawCurrentView(int clearScreen)
 {
-    _allViews[_currentViewIndex].draw();
+    Serial.println(_views[_viewIndex]->getViewType());
+    _views[_viewIndex]->draw(clearScreen);
 }
 
 void ViewController::startTracking()
 {
-    if (_currentViewIndex > 0)
+    if (_views[_viewIndex]->getViewType() == ViewTypes::TOPIC)
     {
+        TopicView *tView = (TopicView *)_views[_viewIndex];
+        tView->startTracking();
+
         _currentViewIsTracking = true;
-        _allViews[_currentViewIndex].startTracking();
     }
 }
 
@@ -114,10 +120,12 @@ void ViewController::togglePauseTracking()
 
 void ViewController::stopTracking()
 {
-    if (_currentViewIndex > 0)
+    if (_currentViewIsTracking && _views[_viewIndex]->getViewType() == ViewTypes::TOPIC)
     {
+        TopicView *tView = (TopicView *)_views[_viewIndex];
+        tView->stopTracking();
+
         _currentViewIsTracking = false;
-        _allViews[_currentViewIndex].stopTracking();
     }
 }
 
@@ -129,11 +137,11 @@ int ViewController::getCurrentViewState()
 void ViewController::setHasBluetoothConnection()
 {
     _hasBluetoothConnnection = true;
-    _allViews[_currentViewIndex].draw(true);
+    drawCurrentView(true);
 }
 
 void ViewController::setHasNoBluetoothConnection()
 {
     _hasBluetoothConnnection = false;
-    _allViews[_currentViewIndex].draw(true);
+    drawCurrentView(true);
 }

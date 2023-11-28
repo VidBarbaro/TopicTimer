@@ -4,32 +4,34 @@
 #include "Border.h"
 #include "TFT_eSPI.h"
 #include "View.h"
+#include "HomeView.h"
+#include "TopicView.h"
+#include "SettingsView.h"
 #include "VirtualRTCProvider.h"
 #include "WatchSettings.h"
 
 class ViewController
 {
 private:
-    int _activeViewCount = 0;
-    View _allViews[WatchSettings::maxAmountOfViews];
+    View *_views[WatchSettings::maxAmountOfViews];
     Border *_border;
-    int _currentViewIndex;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
     int _currentViewIsTracking = false;
     int _hasBluetoothConnnection = false;
+    int _activeViewCount = 0;
+    int _viewIndex = 1;
 
 public:
     ViewController() = default;
-    ~ViewController() = default;
+    ~ViewController();
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider);
     void home();
     void nextLeft();
     void nextRight();
-    void addView();
     void addView(Topic topic);
     void removeView(int viewIndex);
-    void drawCurrentView();
+    void drawCurrentView(int clearScreen = false);
     void startTracking();
     void togglePauseTracking();
     void stopTracking();

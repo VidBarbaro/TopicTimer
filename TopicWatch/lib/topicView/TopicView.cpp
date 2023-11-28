@@ -1,44 +1,11 @@
-#include "View.h"
+#include "TopicView.h"
 
-void View::_clearCenter()
+void TopicView::_clearCenter()
 {
     _tft->fillRect(WatchSettings::borderSize, WatchSettings::borderSize, (_tft->width() - (2 * WatchSettings::borderSize)), (_tft->height() - (2 * WatchSettings::borderSize)), WatchSettings::topicTimer_BLACK);
 }
 
-void View::_drawHomeView(int clearScreen)
-{
-    if (clearScreen)
-    {
-        _clearCenter();
-    }
-
-    _tft->setTextSize(6);
-    _tft->setTextDatum(MC_DATUM);
-    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
-
-    _tft->setTextSize(2);
-    _tft->setTextDatum(BC_DATUM);
-    _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->day)) + '-' + StringHelper::padZeroLeft(String(_dateTime->month)) + '-' + StringHelper::padZeroLeft(String(_dateTime->year)),
-                     _tft->width() / 2,
-                     _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder));
-
-    _border->set(100, WatchSettings::topicTimer_BLACK);
-
-    _tft->setSwapBytes(true);
-    _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
-                    _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + (WatchSettings::iconSize * 2) + WatchSettings::iconMargin),
-                    WatchSettings::iconSize, WatchSettings::iconSize,
-                    *_hasBluetoothConnnection ? Bluetooth : NoBluetooth,
-                    TFT_PINK);
-    _tft->pushImage((WatchSettings::borderSize + WatchSettings::marginFromBorder),
-                    _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize),
-                    WatchSettings::iconSize, WatchSettings::iconSize,
-                    Settings,
-                    TFT_PINK);
-    _tft->setSwapBytes(false);
-}
-
-void View::_drawIdle(int clearScreen)
+void TopicView::_drawIdle(int clearScreen)
 {
     if (clearScreen)
     {
@@ -47,7 +14,7 @@ void View::_drawIdle(int clearScreen)
 
     _tft->setTextSize(2);
     _tft->setTextDatum(TC_DATUM);
-    _tft->drawString(String(*_currentViewIndex) + "/" + String(*_amountOfActiveViews - 1), _tft->width() / 2, (WatchSettings::borderSize + WatchSettings::marginFromBorder));
+    _tft->drawString(String(*_currentViewIndex - 1) + "/" + String(*_amountOfActiveViews - WatchSettings::amountOfNonTopicViews), _tft->width() / 2, (WatchSettings::borderSize + WatchSettings::marginFromBorder));
     _tft->drawString(_topic.name, _tft->width() / 2, (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::textMargin));
 
     _tft->setTextSize(6);
@@ -76,7 +43,7 @@ void View::_drawIdle(int clearScreen)
     _tft->setSwapBytes(false);
 }
 
-void View::_drawTracking(int clearScreen)
+void TopicView::_drawTracking(int clearScreen)
 {
     if (clearScreen)
     {
@@ -105,7 +72,7 @@ void View::_drawTracking(int clearScreen)
     _border->set(100, _topic.color);
 }
 
-void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection)
+void TopicView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex)
 {
     _tft = tft;
     _border = border;
@@ -114,60 +81,45 @@ void View::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider,
     _trackingDateTime = _vRTCProvider->getTrackingTime();
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
-    _initialized = true;
     _hasBluetoothConnnection = hasBluetoothConnnection;
 }
 
-void View::init(Topic topic, TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *amountOfActiveViews, int *currentViewIndex, int *hasBluetoothConnnection)
+void TopicView::draw(int clearScreen)
 {
-    _topic = topic;
-    _tft = tft;
-    _border = border;
-    _vRTCProvider = vRTCProvider;
-    _dateTime = _vRTCProvider->getTime();
-    _trackingDateTime = _vRTCProvider->getTrackingTime();
-    _amountOfActiveViews = amountOfActiveViews;
-    _currentViewIndex = currentViewIndex;
-    _initialized = true;
-    _hasBluetoothConnnection = hasBluetoothConnnection;
-}
-
-int View::isInitialized()
-{
-    return _initialized;
-}
-
-void View::draw(int clearScreen)
-{
-    if (_topic.id < 0)
-    {
-        _drawHomeView(clearScreen);
-        return;
-    }
-
     switch (_viewState)
     {
-    case ViewState::IDLE:
+    case TopicViewState::IDLE:
         _drawIdle(clearScreen);
         break;
-    case ViewState::TRACKING:
+    case TopicViewState::TRACKING:
         _drawTracking(clearScreen);
         break;
     default:
+        // something went wrong somewhere
         break;
     }
 }
 
-void View::startTracking()
+ViewTypes TopicView::getViewType() const
 {
-    _viewState = ViewState::TRACKING;
+    return ViewTypes::TOPIC;
+}
+
+void TopicView::setTopic(Topic topic)
+{
+    _topic = topic;
+}
+
+void TopicView::startTracking()
+{
+    _viewState = TopicViewState::TRACKING;
     _vRTCProvider->startTopicTimer();
     draw(true);
 }
 
-void View::stopTracking()
+void TopicView::stopTracking()
 {
-    _viewState = ViewState::IDLE;
+    _viewState = TopicViewState::IDLE;
     _vRTCProvider->stopTopicTimer();
     draw(true);
 }
