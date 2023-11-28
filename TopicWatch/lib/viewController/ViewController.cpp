@@ -98,7 +98,6 @@ void ViewController::removeView(int viewIndex)
 
 void ViewController::drawCurrentView(int clearScreen)
 {
-    Serial.println(_views[_viewIndex]->getViewType());
     _views[_viewIndex]->draw(clearScreen);
 }
 
