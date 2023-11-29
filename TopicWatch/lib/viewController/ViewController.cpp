@@ -28,6 +28,36 @@ void ViewController::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRT
     drawCurrentView(true);
 }
 
+void ViewController::click(int x, int y)
+{
+    if (_currentViewIsTracking)
+    {
+        return;
+    }
+
+    int itemArraySize = 0;
+    ClickableItem *itemArray = _views[_viewIndex]->getListOfClickableItems(&itemArraySize);
+
+    for (int i = 0; i < itemArraySize; i++)
+    {
+        if (x >= itemArray->x && x <= itemArray->x + itemArray->width &&
+            y >= itemArray->y && y <= itemArray->y + itemArray->height)
+        {
+            switch (itemArray->type)
+            {
+            case ClickableItemType::GO_TO_SETTINGS:
+                settings();
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+
+        itemArray++;
+    }
+}
+
 void ViewController::home()
 {
     if (_currentViewIsTracking)
@@ -41,6 +71,22 @@ void ViewController::home()
     }
 
     _viewIndex = 1;
+    drawCurrentView(true);
+}
+
+void ViewController::settings()
+{
+    if (_currentViewIsTracking)
+    {
+        return;
+    }
+
+    if (_viewIndex == 0)
+    {
+        return;
+    }
+
+    _viewIndex = 0;
     drawCurrentView(true);
 }
 
@@ -76,6 +122,22 @@ void ViewController::nextRight()
     }
 
     drawCurrentView(true);
+}
+
+void ViewController::nextUp()
+{
+    if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
+    {
+        SettingsView *sView = (SettingsView *)_views[_viewIndex];
+    }
+}
+
+void ViewController::nextDown()
+{
+    if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
+    {
+        SettingsView *sView = (SettingsView *)_views[_viewIndex];
+    }
 }
 
 void ViewController::addView(Topic topic)
@@ -128,7 +190,7 @@ void ViewController::stopTracking()
     }
 }
 
-int ViewController::getCurrentViewState()
+int ViewController::getCurrentViewTrackingState()
 {
     return _currentViewIsTracking;
 }
