@@ -43,7 +43,8 @@ namespace MDO
     // the pointer is the 'this' from the CST816Touch source
     /*virtual*/ void TouchSubscriber::touchNotification(CST816Touch *pTouch, int x, int y, bool bReleasedScreen)
     {
-        Serial.print("Touch");
+        y = map(y, 0, WatchSettings::screenVertical, WatchSettings::screenVertical, 0); // invert the y
+        Serial.println("Gesture TOUCH detected at x: " + String(x) + ", y: " + String(y));
         _touchCallback(pTouch, x, y, bReleasedScreen);
     }
 

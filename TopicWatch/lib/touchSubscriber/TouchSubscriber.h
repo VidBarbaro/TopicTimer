@@ -2,6 +2,7 @@
 #define TouchSubscriber_H
 
 #include "Arduino.h"
+#include "WatchSettings.h"
 #include "TouchSubscriberInterface.h"
 
 namespace MDO
