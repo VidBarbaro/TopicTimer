@@ -7,6 +7,8 @@ class WatchSettings
 {
 private:
 public:
+    static const int screenHorizontal = 320;
+    static const int screenVertical = 170;
     static const int amountOfNonTopicViews = 2;
     static const int maxAmountOfViews = 100 + amountOfNonTopicViews;
     static const int minimalTrackingMinutes = 5;
