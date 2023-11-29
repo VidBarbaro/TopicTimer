@@ -25,7 +25,7 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
         instance->_viewController.nextRight();
         break;
     case CST816Touch::gesture_t::GESTURE_DOUBLE_CLICK:
-        if (instance->_viewController.getCurrentViewState())
+        if (instance->_viewController.getCurrentViewTrackingState())
         {
             instance->_viewController.stopTracking();
         }
@@ -54,7 +54,7 @@ void ScreenProvider::onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedSc
     }
 
     ScreenProvider *instance = (ScreenProvider *)_instance;
-    // Nothing for now
+    instance->_viewController.click(x, y);
 }
 
 void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProvider)
@@ -64,17 +64,6 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
     _border.init(&_tft);
     _bleProvider = bleProvider;
     _vRTCProvider = vRTCProvider;
-    _viewController.init(&_tft, &_border, _vRTCProvider);
-    Topic tmpTopic;
-    tmpTopic.id = 0;
-    tmpTopic.name = "Sprint 3 delivery";
-    tmpTopic.color = WatchSettings::topicTimer_GREEN;
-    _viewController.addView(tmpTopic);
-    Topic tmpTopic2;
-    tmpTopic2.id = 1;
-    tmpTopic2.name = "Developing TopicTimer";
-    tmpTopic2.color = WatchSettings::topicTimer_ORANGE;
-    _viewController.addView(tmpTopic2);
 
     /*
      * Turn on and initialize the screen
@@ -110,7 +99,20 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
         Serial.println(CST816Touch::deviceTypeToString(eDeviceType));
     }
 
-    Serial.println("Touch screen initialization done");
+    /*
+     * Setup ViewController
+     */
+    _viewController.init(&_tft, &_border, _vRTCProvider);
+    Topic tmpTopic;
+    tmpTopic.id = 0;
+    tmpTopic.name = "Sprint 3 delivery";
+    tmpTopic.color = WatchSettings::topicTimer_GREEN;
+    _viewController.addView(tmpTopic);
+    Topic tmpTopic2;
+    tmpTopic2.id = 1;
+    tmpTopic2.name = "Developing TopicTimer";
+    tmpTopic2.color = WatchSettings::topicTimer_ORANGE;
+    _viewController.addView(tmpTopic2);
 }
 
 void ScreenProvider::setVirtualRTCProviderTime(int hours, int minutes, int seconds, int year, int month, int day)

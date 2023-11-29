@@ -19,13 +19,28 @@ enum ViewTypes
     SETTINGS
 };
 
+enum ClickableItemType
+{
+    GO_TO_SETTINGS,
+    SETTING
+};
+
+struct ClickableItem
+{
+    ClickableItemType type = ClickableItemType::SETTING;
+    int x = 0;
+    int y = 0;
+    int width = 0;
+    int height = 0;
+};
+
 class View
 {
 public:
-    // IDK HOW THIS WORKS WITH INTERFACES, ONCE I FIGURE THAT OUT I'LL UPDATE THIS
     virtual void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews = nullptr, int *currentViewIndex = nullptr) = 0;
     virtual void draw(int clearScreen = false) = 0;
     virtual ViewTypes getViewType() const { return ViewTypes::NONE; };
+    virtual ClickableItem *getListOfClickableItems(int *arraySize) = 0;
 };
 
 #endif

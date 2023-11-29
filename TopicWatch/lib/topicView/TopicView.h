@@ -29,10 +29,12 @@ private:
     int *_amountOfActiveViews;
     int *_currentViewIndex;
     int *_hasBluetoothConnnection;
+    ClickableItem _items[1];
 
     void _clearCenter();
     void _drawIdle(int clearScreen);
     void _drawTracking(int clearScreen);
+    void _setClickableItems();
 
 public:
     TopicView() = default;
@@ -41,6 +43,7 @@ public:
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex) override;
     void draw(int clearScreen = false) override;
     ViewTypes getViewType() const override;
+    ClickableItem *getListOfClickableItems(int *arraySize) override;
     void setTopic(Topic topic);
     void startTracking();
     void stopTracking();

@@ -72,6 +72,15 @@ void TopicView::_drawTracking(int clearScreen)
     _border->set(100, _topic.color);
 }
 
+void TopicView::_setClickableItems()
+{
+    _items[0].type = ClickableItemType::GO_TO_SETTINGS;
+    _items[0].x = (WatchSettings::borderSize + WatchSettings::marginFromBorder);
+    _items[0].y = _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize);
+    _items[0].width = WatchSettings::iconSize;
+    _items[0].height = WatchSettings::iconSize;
+}
+
 void TopicView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex)
 {
     _tft = tft;
@@ -82,6 +91,8 @@ void TopicView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProv
     _amountOfActiveViews = amountOfActiveViews;
     _currentViewIndex = currentViewIndex;
     _hasBluetoothConnnection = hasBluetoothConnnection;
+
+    _setClickableItems();
 }
 
 void TopicView::draw(int clearScreen)
@@ -103,6 +114,12 @@ void TopicView::draw(int clearScreen)
 ViewTypes TopicView::getViewType() const
 {
     return ViewTypes::TOPIC;
+}
+
+ClickableItem *TopicView::getListOfClickableItems(int *arraySize)
+{
+    *arraySize = sizeof(_items) / sizeof(_items[0]);
+    return &_items[0];
 }
 
 void TopicView::setTopic(Topic topic)

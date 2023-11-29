@@ -5,6 +5,15 @@ void HomeView::_clearCenter()
     _tft->fillRect(WatchSettings::borderSize, WatchSettings::borderSize, (_tft->width() - (2 * WatchSettings::borderSize)), (_tft->height() - (2 * WatchSettings::borderSize)), WatchSettings::topicTimer_BLACK);
 }
 
+void HomeView::_setClickableItems()
+{
+    _items[0].type = ClickableItemType::GO_TO_SETTINGS;
+    _items[0].x = (WatchSettings::borderSize + WatchSettings::marginFromBorder);
+    _items[0].y = _tft->height() - (WatchSettings::borderSize + WatchSettings::marginFromBorder + WatchSettings::iconSize);
+    _items[0].width = WatchSettings::iconSize;
+    _items[0].height = WatchSettings::iconSize;
+}
+
 void HomeView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex)
 {
     _tft = tft;
@@ -12,6 +21,8 @@ void HomeView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvi
     _vRTCProvider = vRTCProvider;
     _dateTime = _vRTCProvider->getTime();
     _hasBluetoothConnnection = hasBluetoothConnnection;
+
+    _setClickableItems();
 }
 
 void HomeView::draw(int clearScreen)
@@ -50,4 +61,10 @@ void HomeView::draw(int clearScreen)
 ViewTypes HomeView::getViewType() const
 {
     return ViewTypes::HOME;
+}
+
+ClickableItem *HomeView::getListOfClickableItems(int *arraySize)
+{
+    *arraySize = sizeof(_items) / sizeof(_items[0]);
+    return &_items[0];
 }
