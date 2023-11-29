@@ -152,8 +152,15 @@ void ViewController::addView(Topic topic)
 
 void ViewController::removeView(int viewIndex)
 {
-    if (viewIndex > 1)
+    if (viewIndex > 1 && viewIndex < WatchSettings::maxAmountOfViews)
     {
+        delete _views[viewIndex];
+        _views[viewIndex] = nullptr;
+
+        for (int i = viewIndex; i < WatchSettings::maxAmountOfViews - 2; ++i)
+        {
+            _views[i] = _views[i + 1];
+        }
         _activeViewCount--;
     }
 }
