@@ -1,45 +1,117 @@
 #ifndef WATCH_SETTINGS
 #define WATCH_SETTINGS
 
-#include "TFT_eSPI.h"
+#include "Arduino.h"
+#include "HexHelper.h"
+
+union Value
+{
+    int intValue;
+    uint16_t uint16_tValue;
+};
+
+enum WatchSettingType
+{
+    INT,
+    UINT16_T
+};
+
+struct WatchSetting
+{
+    String name = "";
+    int editable = false;
+    WatchSettingType type;
+    Value value;
+};
 
 class WatchSettings
 {
 private:
-public:
-    static const int screenHorizontal = 320;
-    static const int screenVertical = 170;
-    static const int amountOfNonTopicViews = 2;
-    static const int maxAmountOfViews = 100 + amountOfNonTopicViews;
-    static const int minimalTrackingMinutes = 5;
-    static const int borderSize = 4;
-    static const int marginFromBorder = 9;
-    static const int textMargin = 17;
-    static const int iconSize = 35;
-    static const int iconMargin = 5;
-    static const uint32_t topicTimer_GREEN_HEX = 0x009688;
-    static uint16_t topicTimer_GREEN;
-    static const uint32_t topicTimer_ORANGE_HEX = 0xFFC107;
-    static uint16_t topicTimer_ORANGE;
-    static const uint32_t topicTimer_BLUE_HEX = 0x03A9F4;
-    static uint16_t topicTimer_BLUE;
-    static const uint32_t topicTimer_GRAY_HEX = 0xF5F5F5;
-    static uint16_t topicTimer_GRAY;
-    static const uint32_t topicTimer_BLACK_HEX = 0x333333;
-    static uint16_t topicTimer_BLACK;
+    static const int _amountOfSettings = 15;
+    static WatchSetting _settings[_amountOfSettings];
 
+    static const uint32_t topicTimer_GREEN_HEX = 0x009688;
+    static const uint32_t topicTimer_ORANGE_HEX = 0xFFC107;
+    static const uint32_t topicTimer_BLUE_HEX = 0x03A9F4;
+    static const uint32_t topicTimer_GRAY_HEX = 0xF5F5F5;
+    static const uint32_t topicTimer_BLACK_HEX = 0x333333;
+
+public:
     WatchSettings() = delete;
     ~WatchSettings() = default;
 
-    static uint16_t convertHexTo565(uint32_t hexColor)
+    static void initializeSettings();
+    static WatchSetting *getEditableSettings();
+
+    template <typename T>
+    static const T get(int index)
     {
-        uint8_t red = (hexColor >> 16) & 0xFF;
-        uint8_t green = (hexColor >> 8) & 0xFF;
-        uint8_t blue = hexColor & 0xFF;
+        if (index < 0 || index >= _amountOfSettings)
+        {
+            return T{};
+        }
 
-        uint16_t color565 = ((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3);
+        const WatchSetting &setting = _settings[index];
 
-        return color565;
+        switch (setting.type)
+        {
+        case INT:
+            return (T)setting.value.intValue;
+        case UINT16_T:
+            return (T)setting.value.uint16_tValue;
+        default:
+            return T{};
+        }
+    }
+
+    template <typename T>
+    static const T get(String name)
+    {
+        for (int i = 0; i < _amountOfSettings; ++i)
+        {
+            if (_settings[i].name == name)
+            {
+                return get<T>(i);
+            }
+        }
+
+        return T{};
+    }
+
+    template <typename T>
+    static void set(int index, T newValue)
+    {
+        if (index < 0 || index >= _amountOfSettings)
+        {
+            return;
+        }
+
+        WatchSetting &setting = _settings[index];
+
+        switch (setting.type)
+        {
+        case WatchSettingType::INT:
+            setting.value.intValue = (int)newValue;
+            break;
+        case WatchSettingType::UINT16_T:
+            setting.value.uint16_tValue = (uint16_t)newValue;
+            break;
+        default:
+            break;
+        }
+    }
+
+    template <typename T>
+    static void set(String name, T newValue)
+    {
+        for (int i = 0; i < _amountOfSettings; ++i)
+        {
+            if (_settings[i].name == name)
+            {
+                set(i, newValue);
+                return;
+            }
+        }
     }
 };
 

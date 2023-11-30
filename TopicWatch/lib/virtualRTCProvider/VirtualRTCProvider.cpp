@@ -168,7 +168,7 @@ void VirtualRTCProvider::togglePauseTopicTimer()
 
 TrackingInfo VirtualRTCProvider::stopTopicTimer()
 {
-    if (_trackingDateTime.minutes < WatchSettings::minimalTrackingMinutes)
+    if (_trackingDateTime.minutes < WatchSettings::get<int>(String("minimalTrackingMinutes")))
     {
         clearDateTime(&_trackingInfo.startTime);
         clearDateTime(&_trackingInfo.endTime);

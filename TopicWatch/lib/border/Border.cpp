@@ -12,10 +12,10 @@ double Border::_getPrecentage(double progress, double goal)
 
 void Border::clear(uint32_t clearColor)
 {
-    _tft->fillRect(0, 0, WatchSettings::screenHorizontal, WatchSettings::borderSize, clearColor);                                                           // draw top
-    _tft->fillRect((WatchSettings::screenHorizontal - WatchSettings::borderSize), 0, WatchSettings::borderSize, WatchSettings::screenVertical, clearColor); // draw right
-    _tft->fillRect(0, (WatchSettings::screenVertical - WatchSettings::borderSize), WatchSettings::screenHorizontal, WatchSettings::borderSize, clearColor); // draw bottom
-    _tft->fillRect(0, 0, WatchSettings::borderSize, WatchSettings::screenVertical, clearColor);                                                             // draw left
+    _tft->fillRect(0, 0, WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), clearColor);                                                                                                   // draw top
+    _tft->fillRect((WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("borderSize"))), 0, WatchSettings::get<int>(String("borderSize")), WatchSettings::get<int>(String("screenVertical")), clearColor); // draw right
+    _tft->fillRect(0, (WatchSettings::get<int>(String("screenVertical")) - WatchSettings::get<int>(String("borderSize"))), WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), clearColor); // draw bottom
+    _tft->fillRect(0, 0, WatchSettings::get<int>(String("borderSize")), WatchSettings::get<int>(String("screenVertical")), clearColor);                                                                                                     // draw left
 }
 
 void Border::set(double precent)
@@ -27,27 +27,27 @@ void Border::set(double precent, uint32_t color)
 {
     double totalBorderWidth = (precent / 100) * 980;
 
-    if (totalBorderWidth <= WatchSettings::screenHorizontal)
+    if (totalBorderWidth <= WatchSettings::get<int>(String("screenHorizontal")))
     {
-        _tft->fillRect(0, 0, totalBorderWidth, WatchSettings::borderSize, color);
+        _tft->fillRect(0, 0, totalBorderWidth, WatchSettings::get<int>(String("borderSize")), color);
     }
-    else if (totalBorderWidth <= (WatchSettings::screenHorizontal + WatchSettings::screenVertical))
+    else if (totalBorderWidth <= (WatchSettings::get<int>(String("screenHorizontal")) + WatchSettings::get<int>(String("screenVertical"))))
     {
-        _tft->fillRect(0, 0, WatchSettings::screenHorizontal, WatchSettings::borderSize, color); // draw top
-        _tft->fillRect((WatchSettings::screenHorizontal - WatchSettings::borderSize), 0, WatchSettings::borderSize, (totalBorderWidth - WatchSettings::screenHorizontal), color);
+        _tft->fillRect(0, 0, WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), color); // draw top
+        _tft->fillRect((WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("borderSize"))), 0, WatchSettings::get<int>(String("borderSize")), (totalBorderWidth - WatchSettings::get<int>(String("screenHorizontal"))), color);
     }
-    else if (totalBorderWidth <= (WatchSettings::screenHorizontal + WatchSettings::screenVertical + WatchSettings::screenHorizontal))
+    else if (totalBorderWidth <= (WatchSettings::get<int>(String("screenHorizontal")) + WatchSettings::get<int>(String("screenVertical")) + WatchSettings::get<int>(String("screenHorizontal"))))
     {
-        _tft->fillRect(0, 0, WatchSettings::screenHorizontal, WatchSettings::borderSize, color);                                                           // draw top
-        _tft->fillRect((WatchSettings::screenHorizontal - WatchSettings::borderSize), 0, WatchSettings::borderSize, WatchSettings::screenVertical, color); // draw right
-        _tft->fillRect((WatchSettings::screenHorizontal - (totalBorderWidth - WatchSettings::screenHorizontal - WatchSettings::screenVertical)), (WatchSettings::screenVertical - WatchSettings::borderSize), (totalBorderWidth - WatchSettings::screenHorizontal - WatchSettings::screenVertical), WatchSettings::borderSize, color);
+        _tft->fillRect(0, 0, WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), color);                                                                                                   // draw top
+        _tft->fillRect((WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("borderSize"))), 0, WatchSettings::get<int>(String("borderSize")), WatchSettings::get<int>(String("screenVertical")), color); // draw right
+        _tft->fillRect((WatchSettings::get<int>(String("screenHorizontal")) - (totalBorderWidth - WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("screenVertical")))), (WatchSettings::get<int>(String("screenVertical")) - WatchSettings::get<int>(String("borderSize"))), (totalBorderWidth - WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("screenVertical"))), WatchSettings::get<int>(String("borderSize")), color);
     }
     else
     {
-        _tft->fillRect(0, 0, WatchSettings::screenHorizontal, WatchSettings::borderSize, color);                                                           // draw top
-        _tft->fillRect((WatchSettings::screenHorizontal - WatchSettings::borderSize), 0, WatchSettings::borderSize, WatchSettings::screenVertical, color); // draw right
-        _tft->fillRect(0, (WatchSettings::screenVertical - WatchSettings::borderSize), WatchSettings::screenHorizontal, WatchSettings::borderSize, color); // draw bottom
-        _tft->fillRect(0, (WatchSettings::screenVertical - (totalBorderWidth - WatchSettings::screenHorizontal - WatchSettings::screenVertical - WatchSettings::screenHorizontal)), WatchSettings::borderSize, (totalBorderWidth - WatchSettings::screenHorizontal - WatchSettings::screenVertical - WatchSettings::screenHorizontal), color);
+        _tft->fillRect(0, 0, WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), color);                                                                                                   // draw top
+        _tft->fillRect((WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("borderSize"))), 0, WatchSettings::get<int>(String("borderSize")), WatchSettings::get<int>(String("screenVertical")), color); // draw right
+        _tft->fillRect(0, (WatchSettings::get<int>(String("screenVertical")) - WatchSettings::get<int>(String("borderSize"))), WatchSettings::get<int>(String("screenHorizontal")), WatchSettings::get<int>(String("borderSize")), color); // draw bottom
+        _tft->fillRect(0, (WatchSettings::get<int>(String("screenVertical")) - (totalBorderWidth - WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("screenVertical")) - WatchSettings::get<int>(String("screenHorizontal")))), WatchSettings::get<int>(String("borderSize")), (totalBorderWidth - WatchSettings::get<int>(String("screenHorizontal")) - WatchSettings::get<int>(String("screenVertical")) - WatchSettings::get<int>(String("screenHorizontal"))), color);
     }
 }
 

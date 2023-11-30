@@ -26,10 +26,10 @@ private:
     VirtualRTCProvider *_vRTCProvider;
     DateTime *_dateTime;
     DateTime *_trackingDateTime;
+    ClickableItem _items[1];
     int *_amountOfActiveViews;
     int *_currentViewIndex;
     int *_hasBluetoothConnnection;
-    ClickableItem _items[1];
 
     void _clearCenter();
     void _drawIdle(int clearScreen);

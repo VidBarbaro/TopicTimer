@@ -20,6 +20,7 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
         break;
     case CST816Touch::gesture_t::GESTURE_DOWN:
         // Nothing for now
+        Serial.println(WatchSettings::get<int>(String("screenHorizontal")));
         break;
     case CST816Touch::gesture_t::GESTURE_LEFT:
         instance->_viewController.nextRight();
@@ -73,8 +74,8 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
 
     _tft.begin();
     _tft.setRotation(1);
-    _tft.fillScreen(WatchSettings::topicTimer_BLACK);
-    _tft.setTextColor(WatchSettings::topicTimer_GRAY, WatchSettings::topicTimer_BLACK);
+    _tft.fillScreen(WatchSettings::get<uint16_t>(String("topicTimer_BLACK")));
+    _tft.setTextColor(WatchSettings::get<uint16_t>(String("topicTimer_GRAY")), WatchSettings::get<uint16_t>(String("topicTimer_BLACK")));
 
     /*
      * Setup touchscreen
@@ -106,12 +107,12 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
     Topic tmpTopic;
     tmpTopic.id = 0;
     tmpTopic.name = "Sprint 3 delivery";
-    tmpTopic.color = WatchSettings::topicTimer_GREEN;
+    tmpTopic.color = WatchSettings::get<uint16_t>(String("topicTimer_GREEN"));
     _viewController.addView(tmpTopic);
     Topic tmpTopic2;
     tmpTopic2.id = 1;
     tmpTopic2.name = "Developing TopicTimer";
-    tmpTopic2.color = WatchSettings::topicTimer_ORANGE;
+    tmpTopic2.color = WatchSettings::get<uint16_t>(String("topicTimer_ORANGE"));
     _viewController.addView(tmpTopic2);
 }
 

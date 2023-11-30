@@ -1,6 +1,7 @@
 #ifndef VIEW_CONTROLLER
 #define VIEW_CONTROLLER
 
+#include "Arduino.h"
 #include "Border.h"
 #include "TFT_eSPI.h"
 #include "View.h"
@@ -13,7 +14,7 @@
 class ViewController
 {
 private:
-    View *_views[WatchSettings::maxAmountOfViews];
+    View *_views[102];
     Border *_border;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;

@@ -9,6 +9,8 @@ ScreenProvider sp;
 
 void setup()
 {
+    WatchSettings::initializeSettings();
+
     bleProvider.init();
     sp.init(&vrp, &bleProvider);
 }

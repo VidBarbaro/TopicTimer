@@ -9,8 +9,10 @@ private:
     Border *_border;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
-    int *_hasBluetoothConnnection;
     ClickableItem _items[1];
+    int *_hasBluetoothConnnection;
+    int _amountOfSettingsPerPage = 3;
+    int _settingsHeight = WatchSettings::get<int>(String("screenVertical")) / _amountOfSettingsPerPage;
 
     void _clearCenter();
     void _setClickableItems();

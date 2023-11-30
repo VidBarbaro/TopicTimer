@@ -2,7 +2,7 @@
 
 ViewController::~ViewController()
 {
-    for (int i = 0; i < WatchSettings::maxAmountOfViews; i++)
+    for (int i = 0; i < WatchSettings::get<int>(String("maxAmountOfViews")); i++)
     {
         delete _views[i];
         _views[i] = nullptr;
@@ -115,7 +115,7 @@ void ViewController::nextRight()
     }
 
     _viewIndex++;
-    if (_viewIndex >= WatchSettings::maxAmountOfViews || _views[_viewIndex] == nullptr)
+    if (_viewIndex >= WatchSettings::get<int>(String("maxAmountOfViews")) || _views[_viewIndex] == nullptr)
     {
         _viewIndex--;
         return;
@@ -152,12 +152,12 @@ void ViewController::addView(Topic topic)
 
 void ViewController::removeView(int viewIndex)
 {
-    if (viewIndex > 1 && viewIndex < WatchSettings::maxAmountOfViews)
+    if (viewIndex > 1 && viewIndex < WatchSettings::get<int>(String("maxAmountOfViews")))
     {
         delete _views[viewIndex];
         _views[viewIndex] = nullptr;
 
-        for (int i = viewIndex; i < WatchSettings::maxAmountOfViews - 2; ++i)
+        for (int i = viewIndex; i < WatchSettings::get<int>(String("maxAmountOfViews")) - 2; ++i)
         {
             _views[i] = _views[i + 1];
         }
