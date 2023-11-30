@@ -32,11 +32,11 @@ void HomeView::draw(int clearScreen)
         _clearCenter();
     }
 
-    _tft->setTextSize(6);
+    _tft->loadFont(AA_FONT_BIG);
     _tft->setTextDatum(MC_DATUM);
     _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
 
-    _tft->setTextSize(2);
+    _tft->loadFont(AA_FONT_SMALL);
     _tft->setTextDatum(BC_DATUM);
     _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->day)) + '-' + StringHelper::padZeroLeft(String(_dateTime->month)) + '-' + StringHelper::padZeroLeft(String(_dateTime->year)),
                      _tft->width() / 2,

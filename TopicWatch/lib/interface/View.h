@@ -11,6 +11,12 @@
 #include "VirtualRTCProvider.h"
 #include "WatchSettings.h"
 
+#include "NotoSansBold15.h"
+#include "NotoSansBold36.h"
+
+#define AA_FONT_SMALL NotoSansBold15
+#define AA_FONT_BIG NotoSansBold36
+
 enum ViewTypes
 {
     NONE,

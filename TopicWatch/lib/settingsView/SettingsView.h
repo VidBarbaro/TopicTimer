@@ -22,7 +22,7 @@ private:
 
 public:
     SettingsView() = default;
-    ~SettingsView() = default;
+    ~SettingsView() { _tft->unloadFont(); };
 
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews = nullptr, int *currentViewIndex = nullptr) override;
     void draw(int clearScreen = false) override;

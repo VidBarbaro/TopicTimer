@@ -38,7 +38,7 @@ private:
 
 public:
     TopicView() = default;
-    ~TopicView() = default;
+    ~TopicView() { _tft->unloadFont(); };
 
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex) override;
     void draw(int clearScreen = false) override;

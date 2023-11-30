@@ -34,9 +34,9 @@ void SettingsView::draw(int clearScreen)
 
         if (ws.displayName != "")
         {
-            _tft->setTextSize(2);
+            _tft->loadFont(AA_FONT_SMALL);
             _tft->setTextDatum(ML_DATUM);
-            _tft->drawString(ws.displayName, WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder), WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + (_settingsHeight / 3));
+            _tft->drawString(ws.displayName, WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder), WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + (_settingsHeight * i) + (_settingsHeight / 3));
         }
 
         if (i != _amountOfSettingsPerPage - 1)

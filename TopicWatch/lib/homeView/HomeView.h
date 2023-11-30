@@ -18,7 +18,7 @@ private:
 
 public:
     HomeView() = default;
-    ~HomeView() = default;
+    ~HomeView() { _tft->unloadFont(); };
 
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews = nullptr, int *currentViewIndex = nullptr) override;
     void draw(int clearScreen = false) override;

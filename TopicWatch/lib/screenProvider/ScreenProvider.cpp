@@ -20,7 +20,6 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
         break;
     case CST816Touch::gesture_t::GESTURE_DOWN:
         // Nothing for now
-        Serial.println(WatchSettings::get<int>(screenHorizontal));
         break;
     case CST816Touch::gesture_t::GESTURE_LEFT:
         instance->_viewController.nextRight();
@@ -75,7 +74,7 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
     _tft.begin();
     _tft.setRotation(1);
     _tft.fillScreen(WatchSettings::get<uint16_t>(topicTimer_BLACK));
-    _tft.setTextColor(WatchSettings::get<uint16_t>(topicTimer_GRAY), WatchSettings::get<uint16_t>(topicTimer_BLACK));
+    _tft.setTextColor(WatchSettings::get<uint16_t>(topicTimer_GRAY), WatchSettings::get<uint16_t>(topicTimer_BLACK), true);
 
     /*
      * Setup touchscreen
