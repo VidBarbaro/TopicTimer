@@ -16,9 +16,29 @@ enum WatchSettingType
     UINT16_T
 };
 
+enum WatchSettingNames
+{
+    screenHorizontal,
+    screenVertical,
+    amountOfNonTopicViews,
+    maxAmountOfViews,
+    minimalTrackingMinutes,
+    borderSize,
+    marginFromBorder,
+    textMargin,
+    iconSize,
+    iconMargin,
+    topicTimer_GREEN,
+    topicTimer_ORANGE,
+    topicTimer_BLUE,
+    topicTimer_GRAY,
+    topicTimer_BLACK
+};
+
 struct WatchSetting
 {
-    String name = "";
+    WatchSettingNames name;
+    String displayName = "";
     int editable = false;
     WatchSettingType type;
     Value value;
@@ -41,7 +61,7 @@ public:
     ~WatchSettings() = default;
 
     static void initializeSettings();
-    static WatchSetting *getEditableSettings();
+    static WatchSetting *getEditableSettings(int *amountOfEditableSettings);
 
     template <typename T>
     static const T get(int index)
@@ -65,7 +85,7 @@ public:
     }
 
     template <typename T>
-    static const T get(String name)
+    static const T get(WatchSettingNames name)
     {
         for (int i = 0; i < _amountOfSettings; ++i)
         {
@@ -102,7 +122,7 @@ public:
     }
 
     template <typename T>
-    static void set(String name, T newValue)
+    static void set(WatchSettingNames name, T newValue)
     {
         for (int i = 0; i < _amountOfSettings; ++i)
         {

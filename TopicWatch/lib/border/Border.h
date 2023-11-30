@@ -10,7 +10,7 @@ class Border
 private:
     TFT_eSPI *_tft;
     uint16_t _defaultColor = TFT_WHITE;
-    int _screenCircumference = (WatchSettings::get<int>(String("screenHorizontal")) * 2) + (WatchSettings::get<int>(String("screenVertical")) * 2);
+    int _screenCircumference = (WatchSettings::get<int>(screenHorizontal) * 2) + (WatchSettings::get<int>(screenVertical) * 2);
 
     double _getPrecentage(double progress, double goal);
 
