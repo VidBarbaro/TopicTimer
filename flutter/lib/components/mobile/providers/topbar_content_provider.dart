@@ -7,6 +7,7 @@ import 'package:topictimer_flutter_application/components/mobile/models/topic_mo
 
 class TopBarConentProvider with ChangeNotifier {
   int _pageIndex = 2;
+  int get pageIndex => _pageIndex;
   int _selectedTopicIndex = 0;
 
   List<TopicModel> topics = TopicProvider.getTopics();
