@@ -176,6 +176,9 @@ class BluetoothInfoProvider with ChangeNotifier {
       case 'getTime':
         sendTime();
         break;
+      case 'setTrackedTime':
+        //Do somethings to track time
+        throw Exception('Not implemented yet');
       default:
         print('Unhandled message');
         break;
