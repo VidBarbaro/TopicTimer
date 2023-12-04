@@ -33,7 +33,7 @@ void BLEProvider::init()
 
 void BLEProvider::sendTimeRequest(void)
 {
-    StaticJsonDocument<100> doc;
+    StaticJsonDocument<128> doc;
 
     doc["command"] = "getTime";
     String message = " ";   
@@ -43,7 +43,7 @@ void BLEProvider::sendTimeRequest(void)
 
 void BLEProvider::sendTopicsRequest(void)
 {
-    StaticJsonDocument<100> doc;
+    StaticJsonDocument<128> doc;
 
     doc["command"] = "getTopics";
     String message = " ";   

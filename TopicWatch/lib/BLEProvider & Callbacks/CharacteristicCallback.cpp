@@ -20,9 +20,16 @@ void CharacteristicCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     handleMessage(pCharacteristic->getValue().c_str());
 }
 
+void CharacteristicCallbacks::onNotify(NimBLECharacteristic* pCharacteristic)
+{
+    Serial.print(pCharacteristic->getUUID().toString().c_str());
+    Serial.print(": onNotify(), value: ");
+    Serial.println(pCharacteristic->getValue().c_str());
+}
+
 /// @brief 
 /// @param message 
-/// @return TRUE if succesfull OR FAlSE for failure 
+/// @return TRUE if succesfull OR FALSE for failure 
 bool CharacteristicCallbacks::handleMessage(String message)
 {
     Serial.println("message: ");
@@ -30,14 +37,16 @@ bool CharacteristicCallbacks::handleMessage(String message)
     BLEProvider* bleProvider = (BLEProvider*)_provider;
     if(message == NULL || message == " ")
     {
-        Serial.println("Message is fucked niffo");
+        Serial.println("Message is invalid");
         return false;
     }
     //JSON string is double serialized, to it needs twice deserialized
-    StaticJsonDocument<512> temp, doc;
+    DynamicJsonDocument doc(2048), temp(2048);
     DeserializationError error = deserializeJson(temp, message);
     error = deserializeJson(doc, temp.as<const char*>());
 
+    Serial.print("Command found: ");
+    Serial.println(doc["command"].as<String>());
     Serial.print("[RECEIVED]: ");
     serializeJson(doc, Serial);
     if(error == DeserializationError::Ok)
@@ -54,6 +63,12 @@ bool CharacteristicCallbacks::handleMessage(String message)
             int d = doc["data"]["date"]["day"];
 
             VirtualRTCProvider::setTime(h, m, s, y, mo, d);
+            return true;
+        }
+        else if(doc["command"] == "setTopics")
+        {
+            //do something with the received topic
+            return true;
         }
         else
         {
@@ -66,10 +81,11 @@ bool CharacteristicCallbacks::handleMessage(String message)
     {
         if (error = DeserializationError::NoMemory)
         {
-            Serial.println("Json doc too small");
+            Serial.println("Json doc too small (NoMemory)");
+            return false;
         }
 
-        Serial.println("error deserialzing Json");
+        Serial.println("Unknown error deserialzing Json");
         return false;
     }
     return true;

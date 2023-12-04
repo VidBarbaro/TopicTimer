@@ -12,6 +12,7 @@ class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
         void* _provider;
         void onRead(NimBLECharacteristic* pCharacteristic);
         void onWrite(NimBLECharacteristic* pCharacteristic);
+        void onNotify(NimBLECharacteristic* pCharacteristic);
         bool handleMessage(String message);
 };
 
