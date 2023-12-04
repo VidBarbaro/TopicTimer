@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 
 //For sending BLE messages a JSON object is needed,
@@ -105,18 +104,6 @@ class SetTimeMessage {
       };
 }
 
-//Get message used for asking a command from the watch (GetTime & GetTopics)
-class GetMessage {
-  String _command = 'None'; //getTime OR getTopics
-  String get command => _command;
-
-  GetMessage({required command}) {
-    _command = command;
-  }
-
-  Map<String, dynamic> toJson() => {'command': _command};
-}
-
 class TopicData {
   int _id = 0;
   int get id => _id;
@@ -135,15 +122,21 @@ class TopicData {
     _endTime = endTime;
   }
 
+  TopicData.empty() {
+    _id = 0;
+    _beginTime = DateTimeJSON.empty();
+    _endTime = DateTimeJSON.empty();
+  }
+
   Map<String, dynamic> toJson() => {
-        'id': _id,
-        'beginTime:': _beginTime.toJson(),
-        'endTime': _endTime.toJson()
+        '"id"': _id,
+        '"beginTime:"': _beginTime.toJson(),
+        '"endTime"': _endTime.toJson()
       };
 }
 
 class SetTrackedTimes {
-  final String _command = 'setTrackedTimes';
+  final String _command = '"setTrackedTimes"';
   String get command => _command;
   TopicData _data = TopicData(
       id: 0, beginTime: DateTimeJSON.empty(), endTime: DateTimeJSON.empty());
@@ -152,18 +145,18 @@ class SetTrackedTimes {
     _data = data;
   }
   Map<String, dynamic> toJson() =>
-      {'command': _command, 'data': _data.toJson()};
+      {'"command"': _command, '"data"': _data.toJson()};
 }
 
 class SetTopics {
-  final String _command = 'setTopics';
+  final String _command = '"setTopics"';
   String get command => _command;
-  TopicModel _topic = TopicModel('None', Colors.black);
+  TopicModel _topic = TopicModel.empty();
 
   SetTopics({required TopicModel topic}) {
     _topic = topic;
   }
 
   Map<String, dynamic> toJson() =>
-      {'command': _command, 'data': _topic.toJson()};
+      {'"command"': _command, '"data"': _topic.toJson()};
 }
