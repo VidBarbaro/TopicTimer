@@ -17,7 +17,7 @@ void TopicView::_drawIdle(int clearScreen)
     _tft->drawString(String(*_currentViewIndex - 1) + "/" + String(*_amountOfActiveViews - WatchSettings::get<int>(amountOfNonTopicViews)), _tft->width() / 2, (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder)));
     _tft->drawString(_topic.name, _tft->width() / 2, (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + WatchSettings::get<int>(textMargin)));
 
-    _tft->loadFont(AA_FONT_BIG);
+    _tft->loadFont(AA_FONT_BIGGEST);
     _tft->setTextDatum(MC_DATUM);
     _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
 
@@ -54,7 +54,7 @@ void TopicView::_drawTracking(int clearScreen)
     _tft->setTextDatum(TC_DATUM);
     _tft->drawString(_topic.name, _tft->width() / 2, (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder)));
 
-    _tft->loadFont(AA_FONT_BIG);
+    _tft->loadFont(AA_FONT_BIGGEST);
     _tft->setTextDatum(MC_DATUM);
     _tft->drawString(StringHelper::padZeroLeft(String(_trackingDateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_trackingDateTime->minutes)) + ':' + StringHelper::padZeroLeft(String(_trackingDateTime->seconds)),
                      _tft->width() / 2,
@@ -114,6 +114,11 @@ void TopicView::draw(int clearScreen)
 ViewTypes TopicView::getViewType() const
 {
     return ViewTypes::TOPIC;
+}
+
+int TopicView::getViewState() const
+{
+    return _viewState == TopicViewState::IDLE ? 0 : 1;
 }
 
 ClickableItem *TopicView::getListOfClickableItems(int *arraySize)

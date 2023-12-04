@@ -18,7 +18,6 @@ private:
     Border *_border;
     TFT_eSPI *_tft;
     VirtualRTCProvider *_vRTCProvider;
-    int _currentViewIsTracking = false;
     int _hasBluetoothConnnection = false;
     int _activeViewCount = 0;
     int _viewIndex = 1;
@@ -40,7 +39,9 @@ public:
     void startTracking();
     void togglePauseTracking();
     void stopTracking();
-    int getCurrentViewTrackingState();
+    void stopEditing();
+    int getCurrentViewState();
+    int getCurrentViewType();
     void setHasBluetoothConnection();
     void setHasNoBluetoothConnection();
 };

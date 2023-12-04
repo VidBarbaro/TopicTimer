@@ -32,7 +32,7 @@ void HomeView::draw(int clearScreen)
         _clearCenter();
     }
 
-    _tft->loadFont(AA_FONT_BIG);
+    _tft->loadFont(AA_FONT_BIGGEST);
     _tft->setTextDatum(MC_DATUM);
     _tft->drawString(StringHelper::padZeroLeft(String(_dateTime->hours)) + ':' + StringHelper::padZeroLeft(String(_dateTime->minutes)), _tft->width() / 2, _tft->height() / 2);
 
