@@ -15,6 +15,8 @@ void ServerCallbacks::onConnect(NimBLEServer *pServer, ble_gap_conn_desc *desc)
 
     bleProvider->setConnectionState(true);
 
+    bleProvider->freeCharacteristic();
+
     bleProvider->sendTimeRequest();
 
     bleProvider->sendTopicsRequest();

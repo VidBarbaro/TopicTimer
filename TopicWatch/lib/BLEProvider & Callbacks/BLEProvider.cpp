@@ -94,8 +94,10 @@ bool BLEProvider::write(String value)
     }
     Serial.print("[SENDING]: ");
     Serial.println(value);
+
     _pCharacteristic->setValue(value);
     _pCharacteristic->notify();
+
     return true;
 }
 
@@ -113,4 +115,11 @@ int BLEProvider::getConnectionState()
     int returnValue = _stateChanged ? _connectionState : -1;
     _stateChanged = false;
     return returnValue;
+}
+
+void BLEProvider::freeCharacteristic()
+{
+    Serial.println("[BLE] Connection value set to: Free");
+    _pCharacteristic->setValue("Free");
+    _pCharacteristic->notify();
 }

@@ -28,6 +28,7 @@ public:
     void sendTrackedTimes(void);
     void setConnectionState(bool newState);
     int getConnectionState(void);
+    void freeCharacteristic(void);
 };
 
 #endif
