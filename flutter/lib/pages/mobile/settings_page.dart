@@ -15,6 +15,7 @@ class MobileSettingsPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
+          callback: (){},
         ),
         const Text(
             'This page is being used for BLE testing with the embedded device, please do not change the content of this page'),

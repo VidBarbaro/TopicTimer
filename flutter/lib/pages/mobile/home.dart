@@ -29,7 +29,7 @@ class HomePageMobileState extends State<HomePageMobile> {
 
   List<Widget> createScreens() {
     return [
-      MobileTopicsPage(),
+      const MobileTopicsPage(),
       const MobilePlanningPage(),
       const MobileTimerPage(),
       const MobilePersonalPage(),

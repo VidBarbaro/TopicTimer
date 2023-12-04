@@ -10,6 +10,7 @@ class MobilePlanningPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
+          callback: (){},
         )
       ],
     );

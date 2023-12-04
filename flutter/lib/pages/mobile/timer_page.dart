@@ -11,6 +11,7 @@ class MobileTimerPage extends StatelessWidget {
       children: [
         TopBar(
           key: UniqueKey(),
+          callback: (){},
         ),
         TimerComp(key: super.key),
       ],

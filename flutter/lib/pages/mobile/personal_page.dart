@@ -13,6 +13,7 @@ class MobilePersonalPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
+          callback: (){},
         ),
         // ProfileDetailsComp
         ProfileDetailsComp(key: super.key),

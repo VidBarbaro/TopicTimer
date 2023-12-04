@@ -41,7 +41,7 @@ class TopBarConentProvider with ChangeNotifier {
     if(topics.isNotEmpty){
     return topics[_selectedTopicIndex];
   }
-  return TopicModel('Timer',Colors.transparent);
+  return TopicModel('Supersecretemptycheckname-sfkjnskfndkfns4343i34fiu43uif43h34943f934n9n43f98',Colors.transparent);
   }
   
   List<TopicModel> getTopics()  => topics;

@@ -22,7 +22,7 @@ List<TopicModel> topiclist = TopicProvider.getTopics();
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TopBar(),
+        TopBar(callback: callback),
         if(topiclist.isNotEmpty)
         Column(
            children: [for(var topic in topiclist) TopicWidget(key: UniqueKey(), topic : topic, callback: callback)],
