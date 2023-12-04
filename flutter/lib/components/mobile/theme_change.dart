@@ -11,7 +11,6 @@ class ThemeChangeComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String dropdownValue = list.first;
-    final themeChange = ThemeChangeProvider();
     return Consumer<ThemeChangeProvider>(
         builder: (context, themeChangeProvider, child) {
       
@@ -28,9 +27,9 @@ class ThemeChangeComponent extends StatelessWidget {
                     ),
                     onChanged: (String? value) {
                       // This is called when the user selects an item.
-                      print('test test test');
+                      print('test test test $value');
                       print(ThemeChangeProvider.theme?[CustomColor.primary]);
-                      context.read<ThemeChangeProvider>().changeTheme();
+                      context.read<ThemeChangeProvider>().changeTheme(value!);
                       dropdownValue = value!;
                       //themeChangeProvider.changeTheme();
                     },

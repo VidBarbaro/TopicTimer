@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 
 //For sending BLE messages a JSON object is needed,
@@ -17,6 +16,13 @@ class Time {
     _minutes = minutes;
     _seconds = seconds;
   }
+
+  Time.empty() {
+    _hours = 0;
+    _minutes = 0;
+    _seconds = 0;
+  }
+
   Map<String, dynamic> toJson() =>
       {'"hours"': _hours, '"minutes"': _minutes, '"seconds"': _seconds};
 }
@@ -35,6 +41,12 @@ class Date {
     _days = days;
   }
 
+  Date.empty() {
+    _years = 0;
+    _months = 0;
+    _days = 0;
+  }
+
   Map<String, dynamic> toJson() =>
       {'"year"': _years, '"month"': _months, '"day"': _days};
 }
@@ -48,6 +60,11 @@ class DateTimeJSON {
   DateTimeJSON({required time, required date}) {
     _time = time;
     _date = date;
+  }
+
+  DateTimeJSON.empty() {
+    _time = Time.empty();
+    _date = Date.empty();
   }
 
   DateTimeJSON.now() {
@@ -87,30 +104,13 @@ class SetTimeMessage {
       };
 }
 
-//Get message used for asking a command from the watch (GetTime & GetTopics)
-class GetMessage {
-  String _command = 'None'; //getTime OR getTopics
-  String get command => _command;
-
-  GetMessage({required command}) {
-    _command = command;
-  }
-
-  Map<String, dynamic> toJson() => {'command': _command};
-}
-
 class TopicData {
   int _id = 0;
   int get id => _id;
 
-  DateTimeJSON _beginTime = DateTimeJSON(
-      time: Time(hours: 0, minutes: 0, seconds: 0),
-      date: Date(years: 0, months: 0, days: 0));
-
+  DateTimeJSON _beginTime = DateTimeJSON.empty();
   DateTimeJSON get beginTime => _beginTime;
-  DateTimeJSON _endTime = DateTimeJSON(
-      time: Time(hours: 0, minutes: 0, seconds: 0),
-      date: Date(years: 0, months: 0, days: 0));
+  DateTimeJSON _endTime = DateTimeJSON.empty();
   DateTimeJSON get endTime => _endTime;
 
   TopicData(
@@ -122,41 +122,41 @@ class TopicData {
     _endTime = endTime;
   }
 
+  TopicData.empty() {
+    _id = 0;
+    _beginTime = DateTimeJSON.empty();
+    _endTime = DateTimeJSON.empty();
+  }
+
   Map<String, dynamic> toJson() => {
-        'id': _id,
-        'beginTime:': _beginTime.toJson(),
-        'endTime': _endTime.toJson()
+        '"id"': _id,
+        '"beginTime:"': _beginTime.toJson(),
+        '"endTime"': _endTime.toJson()
       };
 }
 
 class SetTrackedTimes {
-  final String _command = 'setTrackedTimes';
+  final String _command = '"setTrackedTimes"';
   String get command => _command;
   TopicData _data = TopicData(
-      id: 0,
-      beginTime: DateTimeJSON(
-          time: Time(hours: 0, minutes: 0, seconds: 0),
-          date: Date(years: 0, months: 0, days: 0)),
-      endTime: DateTimeJSON(
-          time: Time(hours: 0, minutes: 0, seconds: 0),
-          date: Date(years: 0, months: 0, days: 0)));
+      id: 0, beginTime: DateTimeJSON.empty(), endTime: DateTimeJSON.empty());
 
   SetTrackedTimes({required TopicData data}) {
     _data = data;
   }
   Map<String, dynamic> toJson() =>
-      {'command': _command, 'data': _data.toJson()};
+      {'"command"': _command, '"data"': _data.toJson()};
 }
 
 class SetTopics {
-  final String _command = 'setTopics';
+  final String _command = '"setTopics"';
   String get command => _command;
-  TopicModel _topic = TopicModel('None', Colors.black);
+  TopicModel _topic = TopicModel.empty();
 
   SetTopics({required TopicModel topic}) {
     _topic = topic;
   }
 
   Map<String, dynamic> toJson() =>
-      {'command': _command, 'data': _topic.toJson()};
+      {'"command"': _command, '"data"': _topic.toJson()};
 }

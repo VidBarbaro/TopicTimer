@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
@@ -78,7 +79,7 @@ class BluetoothInfoProvider with ChangeNotifier {
             _characteristic?.setNotifyValue(true);
             _messageListener =
                 _characteristic?.lastValueStream.listen((event) async {
-              if (_characteristic!.properties.read) {
+              if (_characteristic!.properties.notify) {
                 try {
                   List<int> value = await _characteristic!.read();
                   String message = String.fromCharCodes(value);
@@ -99,9 +100,9 @@ class BluetoothInfoProvider with ChangeNotifier {
     if (_scannerListener != null) {
       _scannerListener?.cancel();
     }
-    if (_connectionListener != null) {
-      _connectionListener?.cancel();
-    }
+    // if (_connectionListener != null) {
+    //   _connectionListener?.cancel();
+    // }
     if (_messageListener != null) {
       _messageListener?.cancel();
     }
@@ -142,8 +143,25 @@ class BluetoothInfoProvider with ChangeNotifier {
     writeMessage(messageJSON.toJson().toString());
   }
 
-  void writeMessage(String message) {
+  ///Response to 'gettopics' command
+  ///Returns TRUE if succesfull OR FALSE if failed
+  bool sendTopics() {
+    if (TopicProvider.topiclist.isEmpty) {
+      return false;
+    }
+    for (int i = 0; i < TopicProvider.topiclist.length; i++) {
+      SetTopics messageJSON = SetTopics(topic: TopicProvider.topiclist[i]);
+      print(messageJSON.toJson().toString());
+      writeMessage(messageJSON.toJson().toString());
+    }
+    return true;
+  }
+
+  Future<void> writeMessage(String message) async {
     String messageString = jsonEncode(message);
+    if (!_device!.isConnected) {
+      return;
+    }
     if (_characteristic == null) {
       return;
     }
@@ -152,33 +170,31 @@ class BluetoothInfoProvider with ChangeNotifier {
     //messageString = messageString.substring(1, messageString.length - 1);
     List<int> numbers = messageString.codeUnits.toList();
 
-    _characteristic?.write(numbers);
+    await _characteristic?.write(numbers);
   }
 
   void handleMessage(String message) {
-    if (message.isEmpty) {
+    if (message.isEmpty || message.length < 8) {
       //Null check
       return;
     }
-    dynamic messageJSON;
-    try {
-      messageJSON = jsonDecode(message) as Map<String, dynamic>;
-    } catch (ex) {
-      print(ex);
-    }
+    Map<String, dynamic> messageJSON = jsonDecode(message);
 
-    if (messageJSON == null) {
+    if (messageJSON.isEmpty) {
       //empty message with no command received, ignore the message
       return;
     }
 
-    switch (messageJSON['command']) {
-      case 'getTime':
+    if (messageJSON.containsKey('command')) {
+      if (messageJSON['command'] == 'getTime') {
+        print('[BLE] Received: getTime command');
         sendTime();
-        break;
-      default:
+      } else if (messageJSON['command'] == 'getTopics') {
+        print('[BLE] Received: getTopics command');
+        sendTopics();
+      } else {
         print('Unhandled message');
-        break;
+      }
     }
   }
 }

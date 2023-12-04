@@ -23,8 +23,8 @@ class ThemeChangeProvider with ChangeNotifier {
   //   return _theme;
   // }
 
-static void setTheme() {
-  if(defaultTheme == true){
+static void setTheme(String value) {
+  if(value == 'Default'){
   _theme =  {
     CustomColor.primary: const Color(0xff009688),
     CustomColor.secondary: const Color(0xffFFC107),
@@ -32,7 +32,7 @@ static void setTheme() {
     CustomColor.background: const Color(0xffF5F5F5),
     CustomColor.text: const Color(0xff333333),
   };}
-  else {
+  else if (value == 'Dark') {
   _theme = {
     CustomColor.primary: Color.fromARGB(255, 0, 0, 0),
     CustomColor.secondary: Color.fromARGB(255, 116, 88, 3),
@@ -42,10 +42,10 @@ static void setTheme() {
   };}
 }
       
-  void changeTheme() {
-    defaultTheme = !defaultTheme;
-    setTheme();
-    print(_theme);
+  void changeTheme(String value) {
+    // defaultTheme = !defaultTheme;
+    setTheme(value);
+    // print(_theme);
     // getTheme();
     // if(_color == Colors.black)
     // {

@@ -119,8 +119,8 @@ class _TopBarState extends State<TopBar> {
                 alignment: WrapAlignment.spaceAround,
                 runAlignment: WrapAlignment.center,
                 children: [
-                  if (context.read<TopBarConentProvider>().getSelectedPage() ==
-                      'Timer')
+                  if (context.read<TopBarConentProvider>().pageIndex ==
+                      2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -129,7 +129,11 @@ class _TopBarState extends State<TopBar> {
                             : () => context
                                 .read<TopBarConentProvider>()
                                 .switchTopicLeft(),
-                        style: topBarButtonStyle,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                        ),
                         child: Icon(
                           Icons.arrow_back,
                           color: ColorProvider.get(CustomColor.primary),
@@ -168,8 +172,8 @@ class _TopBarState extends State<TopBar> {
                       },
                     ),
                   ),
-                  if (context.read<TopBarConentProvider>().getSelectedPage() ==
-                      'Timer')
+                  if (context.read<TopBarConentProvider>().pageIndex ==
+                      2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -178,7 +182,11 @@ class _TopBarState extends State<TopBar> {
                               : () => context
                                   .read<TopBarConentProvider>()
                                   .switchTopicRight(),
-                          style: topBarButtonStyle,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                          ),
                           child: Icon(
                             Icons.arrow_forward,
                             color: ColorProvider.get(CustomColor.primary),
@@ -188,7 +196,11 @@ class _TopBarState extends State<TopBar> {
                       'Topics')
                     ElevatedButton(
                         onPressed: () => addTopic(),
-                        style: topBarButtonStyle,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            elevation: 5,
+                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
+                        ),
                         child: Icon(
                           Icons.add,
                           color: ColorProvider.get(CustomColor.primary),
