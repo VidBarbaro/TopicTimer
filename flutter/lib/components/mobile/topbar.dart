@@ -34,7 +34,6 @@ class _TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     final TextEditingController topicnameController = TextEditingController();
     Color pickerColor = Color(0xff029eff);
-    Color currentColor = Color(0xff029eff);
     void changeColor(Color color) {
       setState(() => pickerColor = color);
     }
@@ -43,66 +42,69 @@ class _TopBarState extends State<TopBar> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                'Add Topic',
+                'Create Topic',
                 style: TextStyle(color: ColorProvider.get(CustomColor.text)),
+                textAlign: TextAlign.center,
               ),
-              content: Column(
+              content: SingleChildScrollView(
+                  child: Column(
                 children: [
+                  Text(
+                    'Name the topic',
+                    style: TextStyle(
+                      color: ColorProvider.get(CustomColor.text),
+                      fontSize: 5.w,
+                    ),
+                  ),
                   TextField(
                     controller: topicnameController,
+                    textAlign: TextAlign.center,
                     decoration:
                         InputDecoration(hintText: 'Enter the topic name'),
                   ),
-                  TextButton(
-                      onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(
-                                'Pick a color!',
-                                style: TextStyle(
-                                    color: ColorProvider.get(CustomColor.text)),
-                              ),
-                              content: SingleChildScrollView(
-                                child: ColorPicker(
-                                  pickerColor: pickerColor,
-                                  onColorChanged: changeColor,
-                                ),
-                              ),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  child: const Text('Got it'),
-                                  onPressed: () {
-                                    setState(() => currentColor = pickerColor);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                      child: 
-                          Text(
-                            'tap to pick a topic color',
-                            style: TextStyle(
-                                color: ColorProvider.get(CustomColor.text),
-                                fontSize: 5.w,
-                                decoration: TextDecoration.none),
-                          )
-                        )
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(7, 10, 7, 7),
+                    child: Text(
+                      'Pick a topic color',
+                      style: TextStyle(
+                        color: ColorProvider.get(CustomColor.text),
+                        fontSize: 5.w,
+                      ),
+                    ),
+                  ),
+                  ColorPicker(
+                    pickerColor: pickerColor,
+                    onColorChanged: changeColor,
+                    colorPickerWidth: 200,
+                    paletteType: PaletteType.hueWheel,
+                    enableAlpha: false,
+                    labelTypes: [],
+                  ),
                 ],
-              ),
+              )),
+              actionsAlignment: MainAxisAlignment.spaceBetween,
               actions: [
                 TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: ColorProvider.get(CustomColor.primary)),
+                    )),
+                TextButton(
                     onPressed: () {
-                      if(topicnameController.text.isEmpty) {
-                        TopicProvider.createTopic(TopicModel('No Name', currentColor));
+                      if (topicnameController.text.isEmpty) {
+                        TopicProvider.createTopic(
+                            TopicModel('No Name', pickerColor));
                       } else {
-                        TopicProvider.createTopic(TopicModel(topicnameController.text, currentColor));
+                        TopicProvider.createTopic(
+                            TopicModel(topicnameController.text, pickerColor));
                       }
                       Navigator.of(context).pop();
                       callback();
                     },
                     child: Text(
-                      'Submit',
+                      'Create',
                       style: TextStyle(
                           color: ColorProvider.get(CustomColor.primary)),
                     ))
@@ -119,8 +121,7 @@ class _TopBarState extends State<TopBar> {
                 alignment: WrapAlignment.spaceAround,
                 runAlignment: WrapAlignment.center,
                 children: [
-                  if (context.read<TopBarConentProvider>().pageIndex ==
-                      2)
+                  if (context.read<TopBarConentProvider>().pageIndex == 2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -130,10 +131,11 @@ class _TopBarState extends State<TopBar> {
                                 .read<TopBarConentProvider>()
                                 .switchTopicLeft(),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            backgroundColor:
+                                ColorProvider.get(CustomColor.background),
                             elevation: 5,
-                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
-                        ),
+                            disabledBackgroundColor:
+                                ColorProvider.get(CustomColor.primary)),
                         child: Icon(
                           Icons.arrow_back,
                           color: ColorProvider.get(CustomColor.primary),
@@ -172,8 +174,7 @@ class _TopBarState extends State<TopBar> {
                       },
                     ),
                   ),
-                  if (context.read<TopBarConentProvider>().pageIndex ==
-                      2)
+                  if (context.read<TopBarConentProvider>().pageIndex == 2)
                     Consumer<TimerInfoProvider>(
                         builder: (context, timerInfoProvider, child) {
                       return ElevatedButton(
@@ -183,10 +184,11 @@ class _TopBarState extends State<TopBar> {
                                   .read<TopBarConentProvider>()
                                   .switchTopicRight(),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorProvider.get(CustomColor.background),
-                            elevation: 5,
-                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
-                          ),
+                              backgroundColor:
+                                  ColorProvider.get(CustomColor.background),
+                              elevation: 5,
+                              disabledBackgroundColor:
+                                  ColorProvider.get(CustomColor.primary)),
                           child: Icon(
                             Icons.arrow_forward,
                             color: ColorProvider.get(CustomColor.primary),
@@ -197,10 +199,11 @@ class _TopBarState extends State<TopBar> {
                     ElevatedButton(
                         onPressed: () => addTopic(),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorProvider.get(CustomColor.background),
+                            backgroundColor:
+                                ColorProvider.get(CustomColor.background),
                             elevation: 5,
-                            disabledBackgroundColor: ColorProvider.get(CustomColor.primary)
-                        ),
+                            disabledBackgroundColor:
+                                ColorProvider.get(CustomColor.primary)),
                         child: Icon(
                           Icons.add,
                           color: ColorProvider.get(CustomColor.primary),
