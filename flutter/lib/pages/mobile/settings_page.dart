@@ -14,6 +14,7 @@ class MobileSettingsPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
+          callback: (){},
         ),
         // THEME CHANGER
         const ThemeChangeComponent()

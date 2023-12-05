@@ -13,13 +13,8 @@ class TopicProvider {
     return topiclist;
   }
 
-  static TopicModel getTopicById(UniqueKey id) =>
-      topiclist.firstWhere((topic) => topic.id == id);
-  void createTopic(TopicModel topic) => topiclist.add(topic);
-  static void deleteTopic(UniqueKey id) =>
-      topiclist.removeWhere((topic) => topic.id == id);
-  void updateTopic(TopicModel topic) {
-    deleteTopic(topic.id);
-    createTopic(topic);
-  }
+  static TopicModel getTopicById(UniqueKey id) => topiclist.firstWhere((topic) => topic.id == id);
+  static void createTopic(TopicModel topic) => topiclist.add(topic);
+  static void deleteTopic(UniqueKey id) => topiclist.removeWhere((topic) => topic.id == id);
+  static void updateTopic(TopicModel topic) => topiclist[topiclist.indexWhere((topicitem) => topicitem.id == topic.id)] = topic;
 }
