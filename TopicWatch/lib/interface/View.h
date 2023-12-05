@@ -13,9 +13,11 @@
 
 #include "NotoSansBold15.h"
 #include "NotoSansBold36.h"
+#include "NotoSansBold56.h"
 
 #define AA_FONT_SMALL NotoSansBold15
 #define AA_FONT_BIG NotoSansBold36
+#define AA_FONT_BIGGEST NotoSansBold56
 
 enum ViewTypes
 {
@@ -46,6 +48,7 @@ public:
     virtual void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews = nullptr, int *currentViewIndex = nullptr) = 0;
     virtual void draw(int clearScreen = false) = 0;
     virtual ViewTypes getViewType() const { return ViewTypes::NONE; };
+    virtual int getViewState() const { return 0; };
     virtual ClickableItem *getListOfClickableItems(int *arraySize) = 0;
 };
 

@@ -10,7 +10,7 @@ struct Topic
     uint16_t color;
 };
 
-enum TopicViewState
+enum class TopicViewState
 {
     IDLE,
     TRACKING,
@@ -43,6 +43,7 @@ public:
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex) override;
     void draw(int clearScreen = false) override;
     ViewTypes getViewType() const override;
+    int getViewState() const override;
     ClickableItem *getListOfClickableItems(int *arraySize) override;
     void setTopic(Topic topic);
     void startTracking();

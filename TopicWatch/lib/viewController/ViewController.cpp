@@ -30,7 +30,7 @@ void ViewController::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRT
 
 void ViewController::click(int x, int y)
 {
-    if (_currentViewIsTracking)
+    if (_views[_viewIndex]->getViewState())
     {
         return;
     }
@@ -45,6 +45,12 @@ void ViewController::click(int x, int y)
         {
             switch (itemArray->type)
             {
+            case ClickableItemType::SETTING:
+            {
+                SettingsView *sView = (SettingsView *)_views[_viewIndex];
+                sView->editSetting(i);
+                break;
+            }
             case ClickableItemType::GO_TO_SETTINGS:
                 settings();
                 break;
@@ -60,7 +66,7 @@ void ViewController::click(int x, int y)
 
 void ViewController::home()
 {
-    if (_currentViewIsTracking)
+    if (_views[_viewIndex]->getViewState())
     {
         return;
     }
@@ -76,7 +82,7 @@ void ViewController::home()
 
 void ViewController::settings()
 {
-    if (_currentViewIsTracking)
+    if (_views[_viewIndex]->getViewState())
     {
         return;
     }
@@ -92,8 +98,13 @@ void ViewController::settings()
 
 void ViewController::nextLeft()
 {
-    if (_currentViewIsTracking)
+    if (_views[_viewIndex]->getViewState())
     {
+        if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
+        {
+            SettingsView *sView = (SettingsView *)_views[_viewIndex];
+            sView->decreaseValue();
+        }
         return;
     }
 
@@ -109,8 +120,13 @@ void ViewController::nextLeft()
 
 void ViewController::nextRight()
 {
-    if (_currentViewIsTracking)
+    if (_views[_viewIndex]->getViewState())
     {
+        if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
+        {
+            SettingsView *sView = (SettingsView *)_views[_viewIndex];
+            sView->incrementValue();
+        }
         return;
     }
 
@@ -176,8 +192,6 @@ void ViewController::startTracking()
     {
         TopicView *tView = (TopicView *)_views[_viewIndex];
         tView->startTracking();
-
-        _currentViewIsTracking = true;
     }
 }
 
@@ -188,18 +202,32 @@ void ViewController::togglePauseTracking()
 
 void ViewController::stopTracking()
 {
-    if (_currentViewIsTracking && _views[_viewIndex]->getViewType() == ViewTypes::TOPIC)
+    if (_views[_viewIndex]->getViewType() == ViewTypes::TOPIC && _views[_viewIndex]->getViewState())
     {
         TopicView *tView = (TopicView *)_views[_viewIndex];
         tView->stopTracking();
-
-        _currentViewIsTracking = false;
     }
 }
 
-int ViewController::getCurrentViewTrackingState()
+void ViewController::stopEditing()
 {
-    return _currentViewIsTracking;
+    if (_views[_viewIndex]->getViewType() != ViewTypes::SETTINGS)
+    {
+        return;
+    }
+
+    SettingsView *sView = (SettingsView *)_views[_viewIndex];
+    sView->stopEditing();
+}
+
+int ViewController::getCurrentViewState()
+{
+    return _views[_viewIndex]->getViewState();
+}
+
+int ViewController::getCurrentViewType()
+{
+    return _views[_viewIndex]->getViewType();
 }
 
 void ViewController::setHasBluetoothConnection()

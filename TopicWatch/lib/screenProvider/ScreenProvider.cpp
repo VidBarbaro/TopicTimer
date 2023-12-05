@@ -25,13 +25,26 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
         instance->_viewController.nextRight();
         break;
     case CST816Touch::gesture_t::GESTURE_DOUBLE_CLICK:
-        if (instance->_viewController.getCurrentViewTrackingState())
+        switch (instance->_viewController.getCurrentViewType())
         {
-            instance->_viewController.stopTracking();
-        }
-        else
-        {
-            instance->_viewController.startTracking();
+        case ViewTypes::TOPIC:
+            if (instance->_viewController.getCurrentViewState())
+            {
+                instance->_viewController.stopTracking();
+            }
+            else
+            {
+                instance->_viewController.startTracking();
+            }
+            break;
+        case ViewTypes::SETTINGS:
+            if (instance->_viewController.getCurrentViewState())
+            {
+                instance->_viewController.stopEditing();
+            }
+            break;
+        default:
+            break;
         }
 
         break;
