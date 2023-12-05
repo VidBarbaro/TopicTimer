@@ -7,9 +7,9 @@ CharacteristicCallbacks::CharacteristicCallbacks(void* provider)
 
 void CharacteristicCallbacks::onRead(NimBLECharacteristic* pCharacteristic)
 {
-    // Serial.print(pCharacteristic->getUUID().toString().c_str());
-    // Serial.print(": onRead(), value: ");
-    // Serial.println(pCharacteristic->getValue().c_str());
+    Serial.print(pCharacteristic->getUUID().toString().c_str());
+    Serial.print(": onRead(), value: ");
+    Serial.println(pCharacteristic->getValue().c_str());
 }
 
 void CharacteristicCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)

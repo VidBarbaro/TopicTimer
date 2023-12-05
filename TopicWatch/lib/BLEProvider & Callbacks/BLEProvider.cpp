@@ -38,7 +38,7 @@ void BLEProvider::sendTimeRequest(void)
     doc["command"] = "getTime";
     String message = " ";   
     serializeJson(doc, message);
-    write(message);
+    enqueMessage(message);
 }
 
 void BLEProvider::sendTopicsRequest(void)
@@ -48,7 +48,7 @@ void BLEProvider::sendTopicsRequest(void)
     doc["command"] = "getTopics";
     String message = " ";   
     serializeJson(doc, message);
-    write(message);
+    enqueMessage(message);
 }
 
 void BLEProvider::sendTrackedTimes(void)
@@ -122,4 +122,34 @@ void BLEProvider::freeCharacteristic()
     Serial.println("[BLE] Connection value set to: Free");
     _pCharacteristic->setValue("Free");
     _pCharacteristic->notify();
+}
+
+bool BLEProvider::enqueMessage(String message)
+{
+    if(message.length() == 0)
+    {
+        return false;
+    }
+    Serial.print("Enqued mesasge: ");
+    Serial.println(message.c_str());
+    messageBuffer.push_back(message);
+    return true;
+}
+
+void BLEProvider::update()
+{
+    if(messageBuffer.size() == 0)
+    {
+        //no messages to send, abort
+        return;
+    }
+
+    if(_pCharacteristic->getValue() == "Free")
+    {
+        String firstMessage = messageBuffer.front();
+        Serial.print("Sending: ");
+        Serial.println(firstMessage);
+        write(firstMessage);
+        messageBuffer.pop_front();
+    }   
 }

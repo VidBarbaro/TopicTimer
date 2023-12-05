@@ -7,6 +7,7 @@
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
 #include "VirtualRTCProvider.h"
+#include <list.h>
 
 class BLEProvider
 {
@@ -17,6 +18,8 @@ private:
     NimBLECharacteristic *_pCharacteristic; // Primary characteristic to write too
     int _connectionState = false;
     int _stateChanged = false;
+    std::list<String> messageBuffer;
+    
 
 public:
     BLEProvider() = default;
@@ -29,6 +32,8 @@ public:
     void setConnectionState(bool newState);
     int getConnectionState(void);
     void freeCharacteristic(void);
+    bool enqueMessage(String message);
+    void update(void);
 };
 
 #endif

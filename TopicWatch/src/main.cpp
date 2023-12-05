@@ -9,6 +9,7 @@ ScreenProvider sp;
 
 void setup()
 {
+    Serial.begin(115200);
     WatchSettings::initializeSettings();
 
     bleProvider.init();
@@ -18,4 +19,5 @@ void setup()
 void loop()
 {
     sp.update();
+    bleProvider.update();
 }
