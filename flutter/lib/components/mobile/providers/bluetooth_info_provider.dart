@@ -171,6 +171,14 @@ class BluetoothInfoProvider with ChangeNotifier {
     List<int> numbers = messageString.codeUnits.toList();
 
     await _characteristic?.write(numbers);
+
+    // while (_characteristic?.lastValue != 'Free') {
+    //   await _characteristic?.write(numbers);
+    // }
+  }
+
+  Future<void> freeCharacteristic() async {
+    await _characteristic?.write('Free' as List<int>);
   }
 
   void handleMessage(String message) {
@@ -196,5 +204,6 @@ class BluetoothInfoProvider with ChangeNotifier {
         print('Unhandled message');
       }
     }
+    freeCharacteristic();
   }
 }
