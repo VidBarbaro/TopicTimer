@@ -42,6 +42,8 @@ struct WatchSetting
     int editable = false;
     WatchSettingType type;
     Value value;
+    Value maxValue;
+    Value minValue;
 };
 
 class WatchSettings
@@ -64,7 +66,7 @@ public:
     static WatchSetting *getEditableSettings(int *amountOfEditableSettings);
 
     template <typename T>
-    static const T get(int index)
+    static const T get(int index, bool getMaxValue = false)
     {
         if (index < 0 || index >= _amountOfSettings)
         {
@@ -76,22 +78,22 @@ public:
         switch (setting.type)
         {
         case INT:
-            return (T)setting.value.intValue;
+            return getMaxValue ? (T)setting.maxValue.intValue : (T)setting.value.intValue;
         case UINT16_T:
-            return (T)setting.value.uint16_tValue;
+            return getMaxValue ? (T)setting.maxValue.uint16_tValue : (T)setting.value.uint16_tValue;
         default:
             return T{};
         }
     }
 
     template <typename T>
-    static const T get(WatchSettingNames name)
+    static const T get(WatchSettingNames name, bool getMaxValue = false)
     {
         for (int i = 0; i < _amountOfSettings; ++i)
         {
             if (_settings[i].name == name)
             {
-                return get<T>(i);
+                return get<T>(i, getMaxValue);
             }
         }
 
