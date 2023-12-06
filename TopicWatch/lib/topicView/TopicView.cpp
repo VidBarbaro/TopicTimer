@@ -45,6 +45,7 @@ void TopicView::_drawIdle(int clearScreen)
 
 void TopicView::_drawTracking(int clearScreen)
 {
+    // TODO See if I can fix the shift when seconds ends with 1
     if (clearScreen)
     {
         _clearCenter();
