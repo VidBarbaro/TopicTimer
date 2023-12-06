@@ -25,12 +25,16 @@ void WatchSettings::initializeSettings()
     _settings[4].editable = true;
     _settings[4].displayName = "Minimal tracking minutes";
     _settings[4].type = WatchSettingType::INT;
+    _settings[4].maxValue.intValue = 5;
+    _settings[4].minValue.intValue = 0;
     set<int>(minimalTrackingMinutes, 1);
 
     _settings[5].name = borderSize;
     _settings[5].type = WatchSettingType::INT;
     _settings[5].editable = true;
     _settings[5].displayName = "Border size";
+    _settings[5].maxValue.intValue = 10;
+    _settings[5].minValue.intValue = 0;
     set<int>(borderSize, 5);
 
     _settings[6].name = marginFromBorder;
