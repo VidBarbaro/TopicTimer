@@ -41,9 +41,8 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
         return false;
     }
     // JSON string is double serialized, to it needs twice deserialized
-    DynamicJsonDocument doc(2048), temp(2048);
-    DeserializationError error = deserializeJson(temp, message);
-    error = deserializeJson(doc, temp.as<const char *>());
+    DynamicJsonDocument doc(2048);
+    DeserializationError error = deserializeJson(doc, message);
 
     Serial.print("Command found: ");
     Serial.println(doc["command"].as<String>());

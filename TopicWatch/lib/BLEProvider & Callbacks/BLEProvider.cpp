@@ -19,8 +19,8 @@ void BLEProvider::init()
 
     _pServiceTime = _pServer->createService(BLE_UUID_SERVICE_TIME);
     _pServiceTopic = _pServer->createService(BLE_UUID_SERVICE_TOPIC);
-    _pCharacteristicTime = _pServiceTime->createCharacteristic(BLE_UUID_CHARACTERISTIC_TIME, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::INDICATE);
-    _pCharacteristicTopic = _pServiceTime->createCharacteristic(BLE_UUID_CHARACTERISTIC_TOPIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::INDICATE);
+    _pCharacteristicTime = _pServiceTime->createCharacteristic(BLE_UUID_CHARACTERISTIC_TIME, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
+    _pCharacteristicTopic = _pServiceTopic->createCharacteristic(BLE_UUID_CHARACTERISTIC_TOPIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
     _pCharacteristicTime->setCallbacks(new CharacteristicCallbacks(_instance));
     _pCharacteristicTopic->setCallbacks(new CharacteristicCallbacks(_instance));
 
