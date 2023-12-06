@@ -98,16 +98,19 @@ class HomePageMobileState extends State<HomePageMobile> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeChangeProvider>(
-    builder: (context, themeChangeProvider, child) {
-      context.read<BluetoothInfoProvider>().enableBluetooth();
+        builder: (context, themeChangeProvider, child) {
+      context.read<BluetoothInfoProvider>().bluetoothEnabled();
       return PersistentTabView(context,
           screens: createScreens(),
           items: createNavBarItems(),
           controller: navBarController,
-          backgroundColor: ColorProvider.get(CustomColor.primary) ?? Colors.white,
+          backgroundColor:
+              ColorProvider.get(CustomColor.primary) ?? Colors.white,
           decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
           navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
-        context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
+        context
+            .read<TopBarConentProvider>()
+            .setPageIndex(navBarController.index);
       },
           screenTransitionAnimation: const ScreenTransitionAnimation(
             // Screen transition animation on change of selected tab.
@@ -115,7 +118,6 @@ class HomePageMobileState extends State<HomePageMobile> {
             curve: Curves.ease,
             duration: Duration(milliseconds: 100),
           ));
-    }
-  );
-}
+    });
+  }
 }
