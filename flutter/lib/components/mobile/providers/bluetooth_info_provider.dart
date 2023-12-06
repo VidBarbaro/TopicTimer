@@ -15,7 +15,16 @@ class BluetoothInfoProvider with ChangeNotifier {
       _scannerListener; //scannerListener is triggered when a new message is received
   StreamSubscription<BluetoothConnectionState>?
       _connectionListener; //connectionListener is triggered when the connection gets updated
-  StreamSubscription<List<int>>? _messageListener; //
+  StreamSubscription<List<int>>? _messageListenerTime;
+  StreamSubscription<List<int>>? _messageListenerTopic; // //
+
+  final String _bleUuidServiceTime = "a6846862-7efa-11ee-b962-0242ac120002";
+  final String _bleUuidServiceTopic = "a6846863-7efa-11ee-b962-0242ac120002";
+  final String _bleUuidCharacteristicTime =
+      "a6846b78-7efa-11ee-b962-0242ac120002";
+  final String _bleUuidCharacteristicTopic =
+      "a6846b79-7efa-11ee-b962-0242ac120002";
+
   bool _connected = false;
   String getConnectionState() {
     if (_connected) {
@@ -65,46 +74,89 @@ class BluetoothInfoProvider with ChangeNotifier {
           notifyListeners();
           connectToDevice(device);
         } else if (event == BluetoothConnectionState.connected) {
+          _device = device;
           _connected = true;
           notifyListeners();
+          getSetupServicesAndCharacteristics();
         }
       });
-      List<BluetoothService> services = await device.discoverServices();
-      for (BluetoothService service in services) {
+    }
+  }
+
+  void getSetupServicesAndCharacteristics() async {
+    print(
+        "Setup dikke kanker zooi neef wat n kut kut kut kut kut zooi, groetjes");
+    List<BluetoothService> services = await _device!
+        .discoverServices(); //TODO exception thrown disconnect device
+
+    for (BluetoothService service in services) {
+      if (service.uuid.toString() == _bleUuidServiceTime) {
         for (BluetoothCharacteristic characteristic
             in service.characteristics) {
-          if (characteristic.uuid.toString() ==
-              'a6846b78-7efa-11ee-b962-0242ac120002') {
-            _characteristic = characteristic;
-            _characteristic?.setNotifyValue(true);
-            _messageListener =
-                _characteristic?.lastValueStream.listen((event) async {
-              if (_characteristic!.properties.notify) {
-                try {
-                  List<int> value = await _characteristic!.read();
-                  String message = String.fromCharCodes(value);
-                  handleMessage(
-                      message); //Somehow the message can't be printed to the monitor
-                } catch (ex) {
-                  _messageListener?.cancel();
-                }
-              }
+          if (characteristic.uuid.toString() == _bleUuidCharacteristicTime) {
+            print("Setting callback for time characteristic");
+            _messageListenerTime =
+                characteristic.onValueReceived.listen((value) async {
+              // do something with chracteristic
+              String message = String.fromCharCodes(value);
+              handleMessage(message, characteristic);
             });
+            print("Setting notify");
+            await characteristic.setNotifyValue(true);
+          }
+        }
+      } else if (service.uuid.toString() == _bleUuidServiceTopic) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.uuid.toString() == _bleUuidCharacteristicTopic) {
+            print("Setting callback for topic characteristic");
+            _messageListenerTopic =
+                characteristic.onValueReceived.listen((value) async {
+              // do something with chracteristic
+              String message = String.fromCharCodes(value);
+              handleMessage(message, characteristic);
+            });
+            print("Setting notify");
+            await characteristic.setNotifyValue(true);
           }
         }
       }
     }
+
+    // for (BluetoothService service in services) {
+    //   for (BluetoothCharacteristic characteristic
+    //       in service.characteristics) {
+    //     if (characteristic.uuid.toString() ==
+    //         'a6846b78-7efa-11ee-b962-0242ac120002') {
+    //       _characteristic = characteristic;
+    //       _characteristic?.setNotifyValue(true);
+    //       _messageListener =
+    //           _characteristic?.lastValueStream.listen((event) async {
+    //         if (_characteristic!.properties.notify) {
+    //           try {
+    //             List<int> value = await _characteristic!.read();
+    //             String message = String.fromCharCodes(value);
+    //             handleMessage(
+    //                 message); //Somehow the message can't be printed to the monitor
+    //           } catch (ex) {
+    //             _messageListener?.cancel();
+    //           }
+    //         }
+    //       });
+    //     }
+    //   }
+    // }
   }
 
   void disconnectDevice() {
     if (_scannerListener != null) {
       _scannerListener?.cancel();
     }
-    // if (_connectionListener != null) {
-    //   _connectionListener?.cancel();
-    // }
-    if (_messageListener != null) {
-      _messageListener?.cancel();
+    if (_messageListenerTime != null) {
+      _messageListenerTime?.cancel();
+    }
+    if (_messageListenerTopic != null) {
+      _messageListenerTopic?.cancel();
     }
   }
 
@@ -118,7 +170,6 @@ class BluetoothInfoProvider with ChangeNotifier {
         // '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
         if (r.advertisementData.localName == 'TopicWatch') {
           stopScan();
-          _device = r.device;
           connectToDevice(r.device);
         }
       }
@@ -129,7 +180,7 @@ class BluetoothInfoProvider with ChangeNotifier {
     FlutterBluePlus.stopScan();
   }
 
-  //setTime (send time to watch)
+//setTime (send time to watch)
   void sendTime() {
     SetTimeMessage messageJSON = SetTimeMessage(
         date: Date(
@@ -181,7 +232,8 @@ class BluetoothInfoProvider with ChangeNotifier {
     await _characteristic?.write('Free' as List<int>);
   }
 
-  void handleMessage(String message) {
+  void handleMessage(String message, BluetoothCharacteristic characteristic) {
+    print("Received something");
     if (message.isEmpty || message.length < 8) {
       //Null check
       return;
@@ -204,6 +256,5 @@ class BluetoothInfoProvider with ChangeNotifier {
         print('Unhandled message');
       }
     }
-    freeCharacteristic();
   }
 }
