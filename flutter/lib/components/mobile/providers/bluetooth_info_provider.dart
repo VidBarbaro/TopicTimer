@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
@@ -30,6 +28,11 @@ class BluetoothInfoProvider with ChangeNotifier {
   StreamSubscription<List<int>>? _topicCharacteristicListener;
   QualifiedCharacteristic? _timeCharacteristic;
   QualifiedCharacteristic? _topicCharacteristic;
+
+  void setConnectionState(bool isConnected) {
+    _connected = isConnected;
+    notifyListeners();
+  }
 
   String getConnectionState() {
     if (_connected) {
@@ -83,7 +86,7 @@ class BluetoothInfoProvider with ChangeNotifier {
   void disableBluetooth() {
     stopScan();
     _device = null;
-    _connected = false;
+    setConnectionState(false);
     _connectionListener?.cancel();
     _connectionListener = null;
     _timeCharacteristicListener?.cancel();
@@ -99,7 +102,6 @@ class BluetoothInfoProvider with ChangeNotifier {
 
   bool connectToDevice(DiscoveredDevice device) {
     print('[connectToDevice] connecting...');
-    print(device.serviceUuids.toString());
     _connectionListener ??= _flutterReactiveBle
         .connectToDevice(
       id: device.id,
@@ -115,19 +117,19 @@ class BluetoothInfoProvider with ChangeNotifier {
         case DeviceConnectionState.disconnecting:
         case DeviceConnectionState.disconnected:
           print('[connectToDevice] disconnecting/disconnected');
-          _connected = false;
+          setConnectionState(false);
           disableBluetooth();
           startScan();
           break;
         case DeviceConnectionState.connected:
           print('[connectToDevice] connected');
           _device = device;
-          _connected = true;
+          setConnectionState(true);
           stopScan();
           subscribeToCharacteristic(device);
           break;
         case DeviceConnectionState.connecting:
-          _connected = false;
+          setConnectionState(false);
           print('[connectToDevice] connecting');
           break;
       }
@@ -226,11 +228,12 @@ class BluetoothInfoProvider with ChangeNotifier {
     if (_connected) {
       print('Writing...');
       print(message);
+      // KNOWN BUG, WHEN THE DEVICE IS DISCONNECTED DURING THIS THE APP CRASHES
       await _flutterReactiveBle.writeCharacteristicWithResponse(characteristic,
           value: message.codeUnits);
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   void handleMessage(String message) async {
