@@ -17,15 +17,21 @@ void BLEProvider::init()
 
     _pServer = NimBLEDevice::createServer();
 
-    _pService = _pServer->createService("a6846862-7efa-11ee-b962-0242ac120002");
-    _pCharacteristic = _pService->createCharacteristic("a6846b78-7efa-11ee-b962-0242ac120002", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
-    _pCharacteristic->setCallbacks(new CharacteristicCallbacks(_instance));
-    _pServer->setCallbacks(new ServerCallbacks(_instance));
+    _pServiceTime = _pServer->createService(BLE_UUID_SERVICE_TIME);
+    _pServiceTopic = _pServer->createService(BLE_UUID_SERVICE_TOPIC);
+    _pCharacteristicTime = _pServiceTime->createCharacteristic(BLE_UUID_CHARACTERISTIC_TIME, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::INDICATE);
+    _pCharacteristicTopic = _pServiceTime->createCharacteristic(BLE_UUID_CHARACTERISTIC_TOPIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::INDICATE);
+    _pCharacteristicTime->setCallbacks(new CharacteristicCallbacks(_instance));
+    _pCharacteristicTopic->setCallbacks(new CharacteristicCallbacks(_instance));
 
-    _pService->start();
+        _pServer->setCallbacks(new ServerCallbacks(_instance));
+
+    _pServiceTime->start();
+    _pServiceTopic->start();
 
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-    pAdvertising->addServiceUUID(_pService->getUUID());
+    pAdvertising->addServiceUUID(_pServiceTime->getUUID());
+    pAdvertising->addServiceUUID(_pServiceTopic->getUUID());
 
     pAdvertising->setScanResponse(true);
     pAdvertising->start();
@@ -36,9 +42,9 @@ void BLEProvider::sendTimeRequest(void)
     StaticJsonDocument<128> doc;
 
     doc["command"] = "getTime";
-    String message = " ";   
+    String message = " ";
     serializeJson(doc, message);
-    enqueMessage(message);
+    write(message, _pCharacteristicTime);
 }
 
 void BLEProvider::sendTopicsRequest(void)
@@ -46,15 +52,15 @@ void BLEProvider::sendTopicsRequest(void)
     StaticJsonDocument<128> doc;
 
     doc["command"] = "getTopics";
-    String message = " ";   
+    String message = " ";
     serializeJson(doc, message);
-    enqueMessage(message);
+    write(message, _pCharacteristicTopic);
 }
 
 void BLEProvider::sendTrackedTimes(void)
 {
     StaticJsonDocument<300> doc;
-    //Dummy data
+    // Dummy data
     doc["command"] = "setTrackedTime";
     doc["data"]["topic"]["id"] = 1;
     doc["data"]["beginTime"]["time"]["hours"] = 11;
@@ -71,23 +77,23 @@ void BLEProvider::sendTrackedTimes(void)
     doc["data"]["endTime"]["date"]["month"] = 06;
     doc["data"]["endTime"]["date"]["day"] = 03;
 
-    String message = " ";   
+    String message = " ";
     serializeJson(doc, message);
-    write(message);
+    write(message, _pCharacteristicTopic);
 }
 
-/// @brief 
-/// @param value 
-/// @return TRUE if succesfull OR FALSE for failure  
-bool BLEProvider::write(String value)
+/// @brief
+/// @param value
+/// @return TRUE if succesfull OR FALSE for failure
+bool BLEProvider::write(String value, NimBLECharacteristic *characteristic)
 {
-    if(value == NULL)
+    if (value == NULL)
     {
         Serial.println("[ERROR]: in function: BLEProvider::write param is NULL");
         return false;
     }
 
-    if(_pCharacteristic == NULL)
+    if (characteristic == NULL)
     {
         Serial.println("[ERROR]: Characteristic is NULL");
         return false;
@@ -95,9 +101,8 @@ bool BLEProvider::write(String value)
     Serial.print("[SENDING]: ");
     Serial.println(value);
 
-    _pCharacteristic->setValue(value);
-    _pCharacteristic->notify();
-
+    characteristic->setValue(value);
+    characteristic->indicate();
     return true;
 }
 
@@ -115,41 +120,4 @@ int BLEProvider::getConnectionState()
     int returnValue = _stateChanged ? _connectionState : -1;
     _stateChanged = false;
     return returnValue;
-}
-
-void BLEProvider::freeCharacteristic()
-{
-    Serial.println("[BLE] Connection value set to: Free");
-    _pCharacteristic->setValue("Free");
-    _pCharacteristic->notify();
-}
-
-bool BLEProvider::enqueMessage(String message)
-{
-    if(message.length() == 0)
-    {
-        return false;
-    }
-    Serial.print("Enqued mesasge: ");
-    Serial.println(message.c_str());
-    messageBuffer.push_back(message);
-    return true;
-}
-
-void BLEProvider::update()
-{
-    if(messageBuffer.size() == 0)
-    {
-        //no messages to send, abort
-        return;
-    }
-
-    if(_pCharacteristic->getValue() == "Free")
-    {
-        String firstMessage = messageBuffer.front();
-        Serial.print("Sending: ");
-        Serial.println(firstMessage);
-        write(firstMessage);
-        messageBuffer.pop_front();
-    }   
 }

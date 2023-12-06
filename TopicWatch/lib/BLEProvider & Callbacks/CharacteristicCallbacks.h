@@ -6,14 +6,15 @@
 
 class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
 {
-    public:
-        CharacteristicCallbacks(void* provider);
-    private:
-        void* _provider;
-        void onRead(NimBLECharacteristic* pCharacteristic);
-        void onWrite(NimBLECharacteristic* pCharacteristic);
-        void onNotify(NimBLECharacteristic* pCharacteristic);
-        bool handleMessage(String message);
+public:
+    CharacteristicCallbacks(void *provider);
+
+private:
+    void *_provider;
+    void onRead(NimBLECharacteristic *pCharacteristic);
+    void onWrite(NimBLECharacteristic *pCharacteristic);
+    void onNotify(NimBLECharacteristic *pCharacteristic);
+    bool handleMessage(String message, NimBLECharacteristic *pCharacteristic);
 };
 
 #endif

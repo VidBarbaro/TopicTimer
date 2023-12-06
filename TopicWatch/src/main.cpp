@@ -19,5 +19,4 @@ void setup()
 void loop()
 {
     sp.update();
-    bleProvider.update();
 }

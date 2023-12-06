@@ -14,26 +14,21 @@ class BLEProvider
 private:
     BLEProvider *_instance;
     NimBLEServer *_pServer;
-    NimBLEService *_pService;
-    NimBLECharacteristic *_pCharacteristic; // Primary characteristic to write too
+    NimBLEService *_pServiceTime, *_pServiceTopic;
+    NimBLECharacteristic *_pCharacteristicTime, *_pCharacteristicTopic; // Primary characteristic to write too
     int _connectionState = false;
     int _stateChanged = false;
-    std::list<String> messageBuffer;
-    
 
 public:
     BLEProvider() = default;
     ~BLEProvider() = default;
     void init();
-    bool write(String value);
+    bool write(String value, NimBLECharacteristic* characteristic);
     void sendTimeRequest(void);
     void sendTopicsRequest(void);
     void sendTrackedTimes(void);
     void setConnectionState(bool newState);
     int getConnectionState(void);
-    void freeCharacteristic(void);
-    bool enqueMessage(String message);
-    void update(void);
 };
 
 #endif
