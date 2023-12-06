@@ -24,7 +24,7 @@ void BLEProvider::init()
     _pCharacteristicTime->setCallbacks(new CharacteristicCallbacks(_instance));
     _pCharacteristicTopic->setCallbacks(new CharacteristicCallbacks(_instance));
 
-        _pServer->setCallbacks(new ServerCallbacks(_instance));
+    _pServer->setCallbacks(new ServerCallbacks(_instance));
 
     _pServiceTime->start();
     _pServiceTopic->start();
