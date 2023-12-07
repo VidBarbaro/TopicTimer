@@ -163,6 +163,7 @@ class _TopBarState extends State<TopBar> {
                             'Timer') {
                           return Text(
                             topBarConentProvider.getSelectedTopic().name,
+                            maxLines: 1,
                             style: TextStyle(fontSize: 5.w),
                           );
                         } else {
