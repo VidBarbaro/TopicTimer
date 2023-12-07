@@ -3,6 +3,7 @@
 
 #include <NimBLEDevice.h>
 #include "BLEProvider.h"
+#include "ViewController.h"
 
 class CharacteristicCallbacks : public NimBLECharacteristicCallbacks
 {

@@ -5,7 +5,7 @@
 
 struct Topic
 {
-    int id = -1;
+    String id = "";
     String name = "";
     uint16_t color;
 };

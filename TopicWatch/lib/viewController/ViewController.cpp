@@ -1,5 +1,13 @@
 #include "ViewController.h"
 
+View *ViewController::_views[102];
+Border *ViewController::_border = nullptr;
+TFT_eSPI *ViewController::_tft = nullptr;
+VirtualRTCProvider *ViewController::_vRTCProvider = nullptr;
+int ViewController::_hasBluetoothConnnection = false;
+int ViewController::_activeViewCount = 0;
+int ViewController::_viewIndex = 1;
+
 ViewController::~ViewController()
 {
     for (int i = 0; i < WatchSettings::get<int>(maxAmountOfViews); i++)
@@ -156,8 +164,13 @@ void ViewController::nextDown()
     }
 }
 
-void ViewController::addView(Topic topic)
+void ViewController::addTopic(Topic topic)
 {
+    if (_activeViewCount < WatchSettings::get<int>(amountOfNonTopicViews) || _tft == nullptr || _border == nullptr || _vRTCProvider == nullptr)
+    {
+        return;
+    }
+
     TopicView *tView = new TopicView;
     tView->init(_tft, _border, _vRTCProvider, &_hasBluetoothConnnection, &_activeViewCount, &_viewIndex);
     tView->setTopic(topic);
@@ -166,17 +179,72 @@ void ViewController::addView(Topic topic)
     _activeViewCount++;
 }
 
-void ViewController::removeView(int viewIndex)
+void ViewController::editTopic(int index, Topic topic)
 {
-    if (viewIndex > 1 && viewIndex < WatchSettings::get<int>(maxAmountOfViews))
+    if (_activeViewCount < WatchSettings::get<int>(amountOfNonTopicViews) ||
+        index < WatchSettings::get<int>(amountOfNonTopicViews) ||
+        index > WatchSettings::get<int>(maxAmountOfViews) - 1 ||
+        _views[index] == nullptr)
     {
-        delete _views[viewIndex];
-        _views[viewIndex] = nullptr;
+        return;
+    }
 
-        for (int i = viewIndex; i < WatchSettings::get<int>(maxAmountOfViews) - 2; ++i)
+    TopicView *tView = (TopicView *)_views[index];
+    tView->setTopic(topic);
+}
+
+void ViewController::removeTopic(int index)
+{
+    if (_activeViewCount < WatchSettings::get<int>(amountOfNonTopicViews) ||
+        index < WatchSettings::get<int>(amountOfNonTopicViews) ||
+        index > WatchSettings::get<int>(maxAmountOfViews) - 1)
+    {
+        Serial.println("Fail save triggered!");
+        return;
+    }
+
+    if (index == _viewIndex)
+    {
+        Serial.println("Index to remove is current view");
+
+        _viewIndex = 1;
+        _views[_viewIndex]->draw(true);
+    }
+    // TODO FIX CRASH WHEN REMOVING LAST TOPIC
+    Serial.println("Deleting... the view at index!");
+    delete _views[index];
+    _views[index] = nullptr;
+    Serial.println("Deleted the view at index!");
+
+    for (int i = index; i < WatchSettings::get<int>(maxAmountOfViews) - 2; ++i)
+    {
+        Serial.println("Shifting array");
+        _views[i] = _views[i + 1];
+    }
+
+    _views[WatchSettings::get<int>(maxAmountOfViews) - 1] = nullptr;
+    _activeViewCount--;
+    Serial.println("Done!");
+}
+
+void ViewController::removeAllTopics()
+{
+    if (_activeViewCount < WatchSettings::get<int>(amountOfNonTopicViews))
+    {
+        return;
+    }
+
+    _viewIndex = 1;
+
+    for (int i = WatchSettings::get<int>(amountOfNonTopicViews); i < WatchSettings::get<int>(maxAmountOfViews); i++)
+    {
+        if (_views[i] == nullptr)
         {
-            _views[i] = _views[i + 1];
+            break;
         }
+
+        delete _views[i];
+        _views[i] = nullptr;
         _activeViewCount--;
     }
 }

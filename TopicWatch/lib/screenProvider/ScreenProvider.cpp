@@ -116,16 +116,6 @@ void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProv
      * Setup ViewController
      */
     _viewController.init(&_tft, &_border, _vRTCProvider);
-    Topic tmpTopic;
-    tmpTopic.id = 0;
-    tmpTopic.name = "Sprint 3 delivery";
-    tmpTopic.color = WatchSettings::get<uint16_t>(topicTimer_GREEN);
-    _viewController.addView(tmpTopic);
-    Topic tmpTopic2;
-    tmpTopic2.id = 1;
-    tmpTopic2.name = "Developing TopicTimer";
-    tmpTopic2.color = WatchSettings::get<uint16_t>(topicTimer_ORANGE);
-    _viewController.addView(tmpTopic2);
 }
 
 void ScreenProvider::setVirtualRTCProviderTime(int hours, int minutes, int seconds, int year, int month, int day)

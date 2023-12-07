@@ -40,7 +40,7 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
         Serial.println("Message is invalid");
         return false;
     }
-    // JSON string is double serialized, to it needs twice deserialized
+
     DynamicJsonDocument doc(2048);
     DeserializationError error = deserializeJson(doc, message);
 
@@ -64,9 +64,26 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
             VirtualRTCProvider::setTime(h, m, s, y, mo, d);
             return true;
         }
-        else if (doc["command"] == "setTopics")
+        else if (doc["command"] == "addTopic")
         {
-            // do something with the received topic
+            Topic tmpTopic;
+            tmpTopic.id = doc["data"]["id"].as<String>();
+            tmpTopic.name = doc["data"]["name"].as<String>();
+            tmpTopic.color = HexHelper::convertTo565(doc["data"]["color"].as<uint32_t>());
+
+            int topicIndex = doc["index"].as<int>();
+            topicIndex >= 0 ? ViewController::editTopic(topicIndex + WatchSettings::get<int>(amountOfNonTopicViews), tmpTopic) : ViewController::addTopic(tmpTopic);
+            return true;
+        }
+        else if (doc["command"] == "removeTopic")
+        {
+            int topicIndex = doc["index"].as<int>();
+            ViewController::removeTopic(topicIndex + WatchSettings::get<int>(amountOfNonTopicViews));
+            return true;
+        }
+        else if (doc["command"] == "removeAllTopics")
+        {
+            ViewController::removeAllTopics();
             return true;
         }
         else

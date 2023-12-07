@@ -14,13 +14,13 @@
 class ViewController
 {
 private:
-    View *_views[102];
-    Border *_border;
-    TFT_eSPI *_tft;
-    VirtualRTCProvider *_vRTCProvider;
-    int _hasBluetoothConnnection = false;
-    int _activeViewCount = 0;
-    int _viewIndex = 1;
+    static View *_views[102];
+    static Border *_border;
+    static TFT_eSPI *_tft;
+    static VirtualRTCProvider *_vRTCProvider;
+    static int _hasBluetoothConnnection;
+    static int _activeViewCount;
+    static int _viewIndex;
 
 public:
     ViewController() = default;
@@ -33,8 +33,10 @@ public:
     void nextRight();
     void nextUp();
     void nextDown();
-    void addView(Topic topic);
-    void removeView(int viewIndex);
+    static void addTopic(Topic topic);
+    static void editTopic(int index, Topic topic);
+    static void removeTopic(int index);
+    static void removeAllTopics();
     void drawCurrentView(int clearScreen = false);
     void startTracking();
     void togglePauseTracking();

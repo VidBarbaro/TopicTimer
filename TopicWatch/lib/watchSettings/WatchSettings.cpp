@@ -55,23 +55,23 @@ void WatchSettings::initializeSettings()
 
     _settings[10].name = topicTimer_GREEN;
     _settings[10].type = WatchSettingType::UINT16_T;
-    set<uint16_t>(topicTimer_GREEN, HexHelper::convertHexTo565(WatchSettings::topicTimer_GREEN_HEX));
+    set<uint16_t>(topicTimer_GREEN, HexHelper::convertTo565(WatchSettings::topicTimer_GREEN_HEX));
 
     _settings[11].name = topicTimer_ORANGE;
     _settings[11].type = WatchSettingType::UINT16_T;
-    set<uint16_t>(topicTimer_ORANGE, HexHelper::convertHexTo565(WatchSettings::topicTimer_ORANGE_HEX));
+    set<uint16_t>(topicTimer_ORANGE, HexHelper::convertTo565(WatchSettings::topicTimer_ORANGE_HEX));
 
     _settings[12].name = topicTimer_BLUE;
     _settings[12].type = WatchSettingType::UINT16_T;
-    set<uint16_t>(topicTimer_BLUE, HexHelper::convertHexTo565(WatchSettings::topicTimer_BLUE_HEX));
+    set<uint16_t>(topicTimer_BLUE, HexHelper::convertTo565(WatchSettings::topicTimer_BLUE_HEX));
 
     _settings[13].name = topicTimer_GRAY;
     _settings[13].type = WatchSettingType::UINT16_T;
-    set<uint16_t>(topicTimer_GRAY, HexHelper::convertHexTo565(WatchSettings::topicTimer_GRAY_HEX));
+    set<uint16_t>(topicTimer_GRAY, HexHelper::convertTo565(WatchSettings::topicTimer_GRAY_HEX));
 
     _settings[14].name = topicTimer_BLACK;
     _settings[14].type = WatchSettingType::UINT16_T;
-    set<uint16_t>(topicTimer_BLACK, HexHelper::convertHexTo565(WatchSettings::topicTimer_BLACK_HEX));
+    set<uint16_t>(topicTimer_BLACK, HexHelper::convertTo565(WatchSettings::topicTimer_BLACK_HEX));
 }
 
 WatchSetting *WatchSettings::getEditableSettings(int *amountOfEditableSettings)
