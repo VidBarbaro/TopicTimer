@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sizer/sizer.dart';
@@ -188,14 +186,17 @@ class _TopicWidgetState extends State<TopicWidget> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap),
                   child: Row(children: [
                     Container(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        padding: const EdgeInsets.all(10),
                         width: 15.w,
                         color: topic.color,
                         alignment: Alignment.center,
+                        child: Container(
+                          color: ColorProvider.get(CustomColor.background), 
+                          padding: const EdgeInsets.fromLTRB(2, 1, 2, 1),
                         child: Text(topic.name[0],
                             style: TextStyle(
                                 fontSize: 20,
-                                color: ColorProvider.get(CustomColor.text)))),
+                                color: ColorProvider.get(CustomColor.text))))),
                     Container(
                         width: 60.w,
                         padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
