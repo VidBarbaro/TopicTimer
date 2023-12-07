@@ -120,7 +120,7 @@ class _TopicWidgetState extends State<TopicWidget> {
                   child: Column(
                 children: [
                   Text(
-                    "Are you sure you want to delete '"+topic.name+"' ? ",
+                    "Are you sure you want to delete '" + topic.name + "' ? ",
                     style: TextStyle(
                       color: ColorProvider.get(CustomColor.text),
                       fontSize: 5.w,
@@ -128,17 +128,15 @@ class _TopicWidgetState extends State<TopicWidget> {
                     textAlign: TextAlign.center,
                   ),
                   Container(
-                    padding: EdgeInsets.only(top: 20),
-                    child:
-                  Text(
-                    'This action is irreversible!',
-                    style: TextStyle(
-                      color: ColorProvider.get(CustomColor.secondary),
-                      fontSize: 5.5.w,
-                      decoration: TextDecoration.underline
-                    ),
-                    textAlign: TextAlign.center,
-                  )),
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text(
+                        'This action is irreversible!',
+                        style: TextStyle(
+                            color: ColorProvider.get(CustomColor.secondary),
+                            fontSize: 5.5.w,
+                            decoration: TextDecoration.underline),
+                        textAlign: TextAlign.center,
+                      )),
                 ],
               )),
               actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -190,13 +188,35 @@ class _TopicWidgetState extends State<TopicWidget> {
                         width: 15.w,
                         color: topic.color,
                         alignment: Alignment.center,
-                        child: Container(
-                          color: ColorProvider.get(CustomColor.background), 
-                          padding: const EdgeInsets.fromLTRB(2, 1, 2, 1),
-                        child: Text(topic.name[0],
-                            style: TextStyle(
+                        child: Stack(
+                          children: [
+                            Text(
+                              topic.name[0],
+                              style: TextStyle(
                                 fontSize: 20,
-                                color: ColorProvider.get(CustomColor.text))))),
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 3
+                                  ..color = ColorProvider.get(CustomColor.background)!,
+                              ),
+                            ),
+                            Text(
+                              topic.name[0],
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: ColorProvider.get(CustomColor.text),
+                              ),
+                            ),
+                          ],
+                        )
+                        // Container(
+                        //   color: ColorProvider.get(CustomColor.background),
+                        //   padding: const EdgeInsets.fromLTRB(2, 1, 2, 1),
+                        // child: Text(topic.name[0],
+                        //     style: TextStyle(
+                        //         fontSize: 20,
+                        //         color: ColorProvider.get(CustomColor.text))))
+                        ),
                     Container(
                         width: 60.w,
                         padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
