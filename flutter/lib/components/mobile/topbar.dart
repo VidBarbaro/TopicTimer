@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
@@ -10,108 +9,92 @@ import 'package:topictimer_flutter_application/components/mobile/providers/timer
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 import 'package:topictimer_flutter_application/theme/color_provider.dart';
 import 'package:topictimer_flutter_application/theme/custom_color.dart';
-import 'package:animations/animations.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class TopBar extends StatefulWidget {
-  TopBar({super.key, required this.callback});
-  Function() callback;
-  @override
-  State<TopBar> createState() => _TopBarState(callback: callback);
-}
-
-class _TopBarState extends State<TopBar> {
-  _TopBarState({required this.callback});
-  Function() callback;
-  final ButtonStyle topBarButtonStyle = ElevatedButton.styleFrom(
-      backgroundColor: ColorProvider.get(CustomColor.background),
-      elevation: 5,
-      disabledBackgroundColor: ColorProvider.get(CustomColor.primary));
-// THINGS TO DISCUSS WITH MICHEL
-// the changing of the pages, why dont the two left and right pointer buttons dissapear
-// why doesnt the plus button appear on the topics page
+class TopBar extends StatelessWidget {
+  const TopBar({super.key});
   @override
   Widget build(BuildContext context) {
-    final TextEditingController topicnameController = TextEditingController();
-    Color pickerColor = Color(0xff029eff);
-    void changeColor(Color color) {
-      setState(() => pickerColor = color);
-    }
+    return Consumer<ThemeChangeProvider>(
+        builder: (context, themeChangeProvider, child) {
+      final TextEditingController topicnameController = TextEditingController();
+      Color pickerColor = const Color(0xff029eff);
 
-    void addTopic() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                'Create Topic',
-                style: TextStyle(color: ColorProvider.get(CustomColor.text)),
-                textAlign: TextAlign.center,
-              ),
-              content: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Text(
-                    'Name the topic',
-                    style: TextStyle(
-                      color: ColorProvider.get(CustomColor.text),
-                      fontSize: 5.w,
-                    ),
-                  ),
-                  TextField(
-                    controller: topicnameController,
-                    textAlign: TextAlign.center,
-                    decoration:
-                        InputDecoration(hintText: 'Enter the topic name'),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(7, 10, 7, 7),
-                    child: Text(
-                      'Pick a topic color',
+      void addTopic() => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(
+                  'Create Topic',
+                  style: TextStyle(color: ColorProvider.get(CustomColor.text)),
+                  textAlign: TextAlign.center,
+                ),
+                content: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    Text(
+                      'Name the topic',
                       style: TextStyle(
                         color: ColorProvider.get(CustomColor.text),
                         fontSize: 5.w,
                       ),
                     ),
-                  ),
-                  ColorPicker(
-                    pickerColor: pickerColor,
-                    onColorChanged: changeColor,
-                    colorPickerWidth: 200,
-                    paletteType: PaletteType.hueWheel,
-                    enableAlpha: false,
-                    labelTypes: [],
-                  ),
+                    TextField(
+                      controller: topicnameController,
+                      textAlign: TextAlign.center,
+                      decoration:
+                          InputDecoration(hintText: 'Enter the topic name'),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(7, 10, 7, 7),
+                      child: Text(
+                        'Pick a topic color',
+                        style: TextStyle(
+                          color: ColorProvider.get(CustomColor.text),
+                          fontSize: 5.w,
+                        ),
+                      ),
+                    ),
+                    ColorPicker(
+                      pickerColor: pickerColor,
+                      onColorChanged: (Color newColor) {
+                        pickerColor = newColor;
+                      },
+                      colorPickerWidth: 200,
+                      paletteType: PaletteType.hueWheel,
+                      enableAlpha: false,
+                      labelTypes: [],
+                    ),
+                  ],
+                )),
+                actionsAlignment: MainAxisAlignment.spaceBetween,
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            color: ColorProvider.get(CustomColor.primary)),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        if (topicnameController.text.isEmpty) {
+                          context
+                              .read<TopicProvider>()
+                              .createTopic(TopicModel('No Name', pickerColor));
+                        } else {
+                          context.read<TopicProvider>().createTopic(TopicModel(
+                              topicnameController.text, pickerColor));
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Create',
+                        style: TextStyle(
+                            color: ColorProvider.get(CustomColor.primary)),
+                      ))
                 ],
-              )),
-              actionsAlignment: MainAxisAlignment.spaceBetween,
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                          color: ColorProvider.get(CustomColor.primary)),
-                    )),
-                TextButton(
-                    onPressed: () {
-                      if (topicnameController.text.isEmpty) {
-                        TopicProvider.createTopic(
-                            TopicModel('No Name', pickerColor));
-                      } else {
-                        TopicProvider.createTopic(
-                            TopicModel(topicnameController.text, pickerColor));
-                      }
-                      Navigator.of(context).pop();
-                      callback();
-                    },
-                    child: Text(
-                      'Create',
-                      style: TextStyle(
-                          color: ColorProvider.get(CustomColor.primary)),
-                    ))
-              ],
-            ));
-    return Consumer<ThemeChangeProvider>(
-        builder: (context, themeChangeProvider, child) {
+              ));
+
       return Column(children: [
         Container(
             width: 100.w,
@@ -197,17 +180,18 @@ class _TopBarState extends State<TopBar> {
                   if (context.read<TopBarConentProvider>().getSelectedPage() ==
                       'Topics')
                     ElevatedButton(
-                        onPressed: () => addTopic(),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                ColorProvider.get(CustomColor.background),
-                            elevation: 5,
-                            disabledBackgroundColor:
-                                ColorProvider.get(CustomColor.primary)),
-                        child: Icon(
-                          Icons.add,
-                          color: ColorProvider.get(CustomColor.primary),
-                        )),
+                      onPressed: () => addTopic(),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              ColorProvider.get(CustomColor.background),
+                          elevation: 5,
+                          disabledBackgroundColor:
+                              ColorProvider.get(CustomColor.primary)),
+                      child: Icon(
+                        Icons.add,
+                        color: ColorProvider.get(CustomColor.primary),
+                      ),
+                    ),
                 ])),
         Container(
           width: 100.w,

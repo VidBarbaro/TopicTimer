@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 
-
-
-
 class TopBarConentProvider with ChangeNotifier {
   int _pageIndex = 2;
   int get pageIndex => _pageIndex;
@@ -21,31 +18,32 @@ class TopBarConentProvider with ChangeNotifier {
   ///Returns the new topic
   void switchTopicLeft() {
     if (topics.isNotEmpty) {
-    _selectedTopicIndex--;
-    if (_selectedTopicIndex < 0) {
-      _selectedTopicIndex = topics.length - 1;
+      _selectedTopicIndex--;
+      if (_selectedTopicIndex < 0) {
+        _selectedTopicIndex = topics.length - 1;
+      }
+      notifyListeners();
     }
-    notifyListeners();
-  }}
+  }
 
   void switchTopicRight() {
     if (topics.isNotEmpty) {
-     _selectedTopicIndex++;
-    if (_selectedTopicIndex == topics.length) {
-      _selectedTopicIndex = 0;
-    }
-    notifyListeners();
-  }
+      _selectedTopicIndex++;
+      if (_selectedTopicIndex == topics.length) {
+        _selectedTopicIndex = 0;
       }
+      notifyListeners();
+    }
+  }
 
   TopicModel getSelectedTopic() {
-    if(topics.isNotEmpty){
-    return topics[_selectedTopicIndex];
+    if (topics.isNotEmpty) {
+      return topics[_selectedTopicIndex];
+    }
+    return TopicModel('No topics', Colors.transparent);
   }
-  return TopicModel('Supersecretemptycheckname-sfkjnskfndkfns4343i34fiu43uif43h34943f934n9n43f98',Colors.transparent);
-  }
-  
-  List<TopicModel> getTopics()  => topics;
+
+  List<TopicModel> getTopics() => topics;
 
   String getSelectedPage() {
     switch (_pageIndex) {

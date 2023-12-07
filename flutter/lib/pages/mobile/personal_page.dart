@@ -13,13 +13,14 @@ class MobilePersonalPage extends StatelessWidget {
       children: [
         TopBar(
           key: super.key,
-          callback: (){},
         ),
         // ProfileDetailsComp
         ProfileDetailsComp(key: super.key),
         // SchoolDetailsComp
         SchoolDetailsComp(key: super.key),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         // PasswordChangeComp
         Expanded(child: PasswordChangeComp(key: super.key))
       ],

@@ -4,30 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
-  DiscoveredDevice? _device;
+  static DiscoveredDevice? _device;
 
   static const String _baseUUID = '0000-1000-8000-00805f9b34fb';
-  final String _bleUuidServiceTime = '961db84e-$_baseUUID';
-  final String _bleUuidServiceTopic = '961dbf38-$_baseUUID';
+  static const String _bleUuidServiceTime = '961db84e-$_baseUUID';
+  static const String _bleUuidServiceTopic = '961dbf38-$_baseUUID';
 
-  final String _bleUuidCharacteristicTime = '961dc0dc-$_baseUUID';
-  final String _bleUuidCharacteristicTopic = '961dc24e-$_baseUUID';
+  static const String _bleUuidCharacteristicTime = '961dc0dc-$_baseUUID';
+  static const String _bleUuidCharacteristicTopic = '961dc24e-$_baseUUID';
 
-  final _flutterReactiveBle = FlutterReactiveBle();
+  static final _flutterReactiveBle = FlutterReactiveBle();
 
-  bool _bluetoothIsEnabled = false;
-  bool _connected = false;
+  static bool _bluetoothIsEnabled = false;
+  static bool _connected = false;
 
-  StreamSubscription<DiscoveredDevice>? _scanListener;
-  StreamSubscription<BleStatus>? _statusListener;
-  StreamSubscription<ConnectionStateUpdate>? _connectionListener;
+  static StreamSubscription<DiscoveredDevice>? _scanListener;
+  static StreamSubscription<BleStatus>? _statusListener;
+  static StreamSubscription<ConnectionStateUpdate>? _connectionListener;
 
-  StreamSubscription<List<int>>? _timeCharacteristicListener;
-  StreamSubscription<List<int>>? _topicCharacteristicListener;
-  QualifiedCharacteristic? _timeCharacteristic;
-  QualifiedCharacteristic? _topicCharacteristic;
+  static StreamSubscription<List<int>>? _timeCharacteristicListener;
+  static StreamSubscription<List<int>>? _topicCharacteristicListener;
+  static QualifiedCharacteristic? _timeCharacteristic;
+  static QualifiedCharacteristic? _topicCharacteristic;
 
   void setConnectionState(bool isConnected) {
     _connected = isConnected;
@@ -111,7 +112,7 @@ class BluetoothInfoProvider with ChangeNotifier {
       },
       connectionTimeout: const Duration(seconds: 2),
     )
-        .listen((connectionState) {
+        .listen((connectionState) async {
       connectionState.connectionState;
       switch (connectionState.connectionState) {
         case DeviceConnectionState.disconnecting:
@@ -124,6 +125,10 @@ class BluetoothInfoProvider with ChangeNotifier {
         case DeviceConnectionState.connected:
           print('[connectToDevice] connected');
           _device = device;
+          if (_connected == false) {
+            await _flutterReactiveBle.requestMtu(
+                deviceId: _device!.id, mtu: 247);
+          }
           setConnectionState(true);
           stopScan();
           subscribeToCharacteristic(device);
@@ -156,9 +161,7 @@ class BluetoothInfoProvider with ChangeNotifier {
       // code to handle errors
     });
 
-    List<int> timeCharacteristicValue =
-        await _flutterReactiveBle.readCharacteristic(_timeCharacteristic!);
-    handleMessage(String.fromCharCodes(timeCharacteristicValue));
+    await _flutterReactiveBle.readCharacteristic(_timeCharacteristic!);
 
     _topicCharacteristic = QualifiedCharacteristic(
         serviceId: sList[3].id,
@@ -171,9 +174,7 @@ class BluetoothInfoProvider with ChangeNotifier {
       // code to handle errors
     });
 
-    List<int> topicCharacteristicValue =
-        await _flutterReactiveBle.readCharacteristic(_topicCharacteristic!);
-    handleMessage(String.fromCharCodes(topicCharacteristicValue));
+    await _flutterReactiveBle.readCharacteristic(_topicCharacteristic!);
   }
 
   bool startScan() {
@@ -195,7 +196,7 @@ class BluetoothInfoProvider with ChangeNotifier {
   }
 
 //setTime (send time to watch)
-  Future<void> sendTime() async {
+  static Future<void> sendTime() async {
     SetTimeMessage messageJSON = SetTimeMessage(
         date: Date(
             years: DateTime.now().year,
@@ -205,26 +206,59 @@ class BluetoothInfoProvider with ChangeNotifier {
             hours: DateTime.now().hour,
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second));
-    await writeMessage(messageJSON.toJson().toString(), _timeCharacteristic!);
+    await writeMessage(messageJSON.toJson().toString(), _timeCharacteristic);
   }
 
-  ///Response to 'gettopics' command
-  ///Returns TRUE if succesfull OR FALSE if failed
-  Future<bool> sendTopics() async {
-    if (TopicProvider.topiclist.isEmpty) {
-      return false;
-    }
-    for (int i = 0; i < TopicProvider.topiclist.length; i++) {
-      SetTopics messageJSON = SetTopics(topic: TopicProvider.topiclist[i]);
-      print(messageJSON.toJson().toString());
-      await writeMessage(
-          messageJSON.toJson().toString(), _topicCharacteristic!);
-    }
+  ///Sends and writes the topic on the specifiek param: index
+  ///leave index -1 to prevent overwriting
+  static Future<bool> sendTopic(int index, List<TopicModel> topicList) async {
+    AddTopicMessage message =
+        AddTopicMessage.basedOnIndex(index: index, topicList: topicList);
+
+    await writeMessage(message.toJson().toString(), _topicCharacteristic);
     return true;
   }
 
-  Future<bool> writeMessage(
-      String message, QualifiedCharacteristic characteristic) async {
+  ///Response to 'gettopics' command and sends all topics
+  ///Returns TRUE if succesfull OR FALSE if failed
+  static Future<bool> sendAllTopics(List<TopicModel> topicList) async {
+    if (topicList.isEmpty) {
+      //List is empty, nothing to send
+      return false;
+    }
+
+    AddTopicMessage message = AddTopicMessage.all(topicList: topicList);
+    while (message.secondMessage != null) {
+      await writeMessage(message.toJson().toString(), _topicCharacteristic!);
+      message = message.secondMessage!;
+    }
+    await writeMessage(message.toJson().toString(), _topicCharacteristic);
+    return true;
+  }
+
+  static Future<bool> sendRemoveTopic({int index = -1}) async {
+    if (index < 0) {
+      return false;
+    }
+    RemoveTopicMessage message = RemoveTopicMessage(index: index);
+
+    await writeMessage(message.toJson().toString(), _topicCharacteristic);
+    return true;
+  }
+
+  static Future<bool> sendRemoveAllTopics() async {
+    RemoveAllTopicsMessage message = RemoveAllTopicsMessage();
+
+    await writeMessage(message.toJson().toString(), _topicCharacteristic);
+    return true;
+  }
+
+  static Future<bool> writeMessage(
+      String message, QualifiedCharacteristic? characteristic) async {
+    if (characteristic == null) {
+      return false;
+    }
+
     if (_connected) {
       print('Writing...');
       print(message);
@@ -254,7 +288,8 @@ class BluetoothInfoProvider with ChangeNotifier {
         await sendTime();
       } else if (messageJSON['command'] == 'getTopics') {
         print('[BLE] Received: getTopics command');
-        await sendTopics();
+        await sendRemoveAllTopics();
+        await sendAllTopics(TopicProvider.getTopics());
       } else {
         print('Unhandled message');
       }

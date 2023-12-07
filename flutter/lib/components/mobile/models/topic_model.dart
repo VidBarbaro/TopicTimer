@@ -7,9 +7,6 @@ class TopicModel {
   String name = 'This topic was not initialized correctly';
   Color color = Colors.transparent;
 
-  Map<String, dynamic> toJson() => {
-        '"id"': '"$id"',
-        '"name"': '"$name"',
-        '"colour"': color.value.toString()
-      };
+  Map<String, dynamic> toJson() =>
+      {'"id"': '"$id"', '"name"': '"$name"', '"color"': color.value.toString()};
 }

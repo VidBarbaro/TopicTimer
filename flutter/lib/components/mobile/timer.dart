@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
@@ -45,7 +46,7 @@ class TimerComp extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Consumer<TimerInfoProvider>(
                             builder: (context, timerInfoProvider, child) {
-                          if (topBarConentProvider.getTopics().isNotEmpty) {
+                          if (TopicProvider.getTopics().isNotEmpty) {
                             return Text(
                               timerInfoProvider.toString(),
                               style: TextStyle(fontSize: 16.w),
@@ -68,7 +69,7 @@ class TimerComp extends StatelessWidget {
             }),
             Consumer<TopBarConentProvider>(
                 builder: (context, topBarConentProvider, child) {
-              if (topBarConentProvider.getTopics().isNotEmpty) {
+              if (TopicProvider.getTopics().isNotEmpty) {
                 return Consumer<TimerInfoProvider>(
                     builder: (context, timerInfoProvider, child) {
                   return Row(

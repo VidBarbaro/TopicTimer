@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 
-class TopicProvider {
-  static List<TopicModel> topiclist = [
-    TopicModel('Software', Colors.red),
-    TopicModel('Technology', Colors.green),
-    TopicModel('Research', Colors.orange),
-    TopicModel('Meeting', Colors.blue)
-  ];
+class TopicProvider with ChangeNotifier {
+  static final List<TopicModel> _topicList =
+      List<TopicModel>.empty(growable: true);
+
+  TopicProvider();
+
+  TopicModel getTopicById(UniqueKey id) =>
+      _topicList.firstWhere((topic) => topic.id == id);
 
   static List<TopicModel> getTopics() {
-    return topiclist;
+    return _topicList;
   }
 
-  static TopicModel getTopicById(UniqueKey id) => topiclist.firstWhere((topic) => topic.id == id);
-  static void createTopic(TopicModel topic) => topiclist.add(topic);
-  static void deleteTopic(UniqueKey id) => topiclist.removeWhere((topic) => topic.id == id);
-  static void updateTopic(TopicModel topic) => topiclist[topiclist.indexWhere((topicitem) => topicitem.id == topic.id)] = topic;
+  void createTopic(TopicModel topic) {
+    _topicList.add(topic);
+    BluetoothInfoProvider.sendTopic(-1, _topicList);
+    notifyListeners();
+  }
+
+  void deleteTopic(UniqueKey id) {
+    int indexToRemove =
+        _topicList.indexWhere((topicitem) => topicitem.id == id);
+    _topicList.removeAt(indexToRemove);
+    BluetoothInfoProvider.sendRemoveTopic(index: indexToRemove);
+    notifyListeners();
+  }
+
+  void updateTopic(TopicModel topic) {
+    int indexToUpdate =
+        _topicList.indexWhere((topicitem) => topicitem.id == topic.id);
+    _topicList[indexToUpdate] = topic;
+    BluetoothInfoProvider.sendTopic(indexToUpdate, _topicList);
+    notifyListeners();
+  }
 }

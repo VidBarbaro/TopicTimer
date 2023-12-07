@@ -1,3 +1,4 @@
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 
 //For sending BLE messages a JSON object is needed,
@@ -148,15 +149,53 @@ class SetTrackedTimes {
       {'"command"': _command, '"data"': _data.toJson()};
 }
 
-class SetTopics {
-  final String _command = '"setTopics"';
+class AddTopicMessage {
+  String _command = '';
+  AddTopicMessage? _secondMessage;
+  AddTopicMessage? get secondMessage => _secondMessage;
   String get command => _command;
+  int _index = -1;
   TopicModel _topic = TopicModel.empty();
 
-  SetTopics({required TopicModel topic}) {
-    _topic = topic;
+  AddTopicMessage.all({index = 0, required List<TopicModel> topicList}) {
+    _command = '"addTopic"';
+    if (topicList.length - 1 == index) {
+    } else {
+      _secondMessage =
+          AddTopicMessage.all(index: index + 1, topicList: topicList);
+    }
+    _topic = topicList[index];
   }
 
+  AddTopicMessage.basedOnIndex(
+      {required int index, required List<TopicModel> topicList}) {
+    _command = '"addTopic"';
+    _index = index;
+    if (topicList.isEmpty) {
+      return;
+    }
+    _topic = index == -1 ? topicList[topicList.length - 1] : topicList[index];
+  }
   Map<String, dynamic> toJson() =>
-      {'"command"': _command, '"data"': _topic.toJson()};
+      {'"command"': _command, '"index"': _index, '"data"': _topic.toJson()};
+}
+
+class RemoveTopicMessage {
+  final String _command = '"removeTopic"';
+  int _index = -1;
+
+  RemoveTopicMessage({required int index}) {
+    if (index < 0) {
+      return;
+    }
+    _index = index;
+  }
+
+  Map<String, dynamic> toJson() => {'"command"': _command, '"index"': _index};
+}
+
+class RemoveAllTopicsMessage {
+  final String _command = '"removeAllTopics"';
+
+  Map<String, dynamic> toJson() => {'"command"': _command};
 }
