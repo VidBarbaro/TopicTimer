@@ -1,22 +1,39 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
-  //These variables aren't used outside the class, but could be handy later on for updating the UI
-  BluetoothDevice? _device; //Bluetoothdevice which is the TopicTimer
-  BluetoothCharacteristic? _characteristic; //Characterestic to write to
-  StreamSubscription<List<ScanResult>>?
-      _scannerListener; //scannerListener is triggered when a new message is received
-  StreamSubscription<BluetoothConnectionState>?
-      _connectionListener; //connectionListener is triggered when the connection gets updated
-  StreamSubscription<List<int>>? _messageListener; //
+  DiscoveredDevice? _device;
+
+  static const String _baseUUID = '0000-1000-8000-00805f9b34fb';
+  final String _bleUuidServiceTime = '961db84e-$_baseUUID';
+  final String _bleUuidServiceTopic = '961dbf38-$_baseUUID';
+
+  final String _bleUuidCharacteristicTime = '961dc0dc-$_baseUUID';
+  final String _bleUuidCharacteristicTopic = '961dc24e-$_baseUUID';
+
+  final _flutterReactiveBle = FlutterReactiveBle();
+
+  bool _bluetoothIsEnabled = false;
   bool _connected = false;
+
+  StreamSubscription<DiscoveredDevice>? _scanListener;
+  StreamSubscription<BleStatus>? _statusListener;
+  StreamSubscription<ConnectionStateUpdate>? _connectionListener;
+
+  StreamSubscription<List<int>>? _timeCharacteristicListener;
+  StreamSubscription<List<int>>? _topicCharacteristicListener;
+  QualifiedCharacteristic? _timeCharacteristic;
+  QualifiedCharacteristic? _topicCharacteristic;
+
+  void setConnectionState(bool isConnected) {
+    _connected = isConnected;
+    notifyListeners();
+  }
+
   String getConnectionState() {
     if (_connected) {
       return 'Connected';
@@ -25,112 +42,160 @@ class BluetoothInfoProvider with ChangeNotifier {
     }
   }
 
-  void enableBluetooth() async {
-    if (!await FlutterBluePlus.isSupported) {
-      print('[ERROR] Bluetooth not supported by this device');
-      return;
-    }
-
-    if (await Permission.bluetoothScan.request().isGranted) {
-      if (await Permission.bluetoothConnect.request().isGranted) {
-        FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
-          print(state);
-          if (state == BluetoothAdapterState.on) {
-            //Do your action
-            print('[SUCCESS] initialised bluetooth adapter');
-            startScan();
-          } else {
-            print('[ERROR] Bleutooth adapter could not be started');
-            return;
-          }
-        });
-      }
-      if (Platform.isAndroid) {
-        await FlutterBluePlus.turnOn();
-      }
-    }
-  }
-
-  Future<void> connectToDevice(BluetoothDevice device) async {
-    try {
-      await device.connect();
-    } catch (ex) {
-      print(ex.toString());
-    }
-    if (device.isConnected) {
-      //set up connectionListener
-      _connectionListener = device.connectionState.listen((event) {
-        if (event == BluetoothConnectionState.disconnected) {
-          _connected = false;
-          notifyListeners();
-          connectToDevice(device);
-        } else if (event == BluetoothConnectionState.connected) {
-          _connected = true;
-          notifyListeners();
-        }
-      });
-      List<BluetoothService> services = await device.discoverServices();
-      for (BluetoothService service in services) {
-        for (BluetoothCharacteristic characteristic
-            in service.characteristics) {
-          if (characteristic.uuid.toString() ==
-              'a6846b78-7efa-11ee-b962-0242ac120002') {
-            _characteristic = characteristic;
-            _characteristic?.setNotifyValue(true);
-            _messageListener =
-                _characteristic?.lastValueStream.listen((event) async {
-              if (_characteristic!.properties.notify) {
-                try {
-                  List<int> value = await _characteristic!.read();
-                  String message = String.fromCharCodes(value);
-                  handleMessage(
-                      message); //Somehow the message can't be printed to the monitor
-                } catch (ex) {
-                  _messageListener?.cancel();
-                }
-              }
-            });
-          }
-        }
-      }
-    }
-  }
-
-  void disconnectDevice() {
-    if (_scannerListener != null) {
-      _scannerListener?.cancel();
-    }
-    // if (_connectionListener != null) {
-    //   _connectionListener?.cancel();
-    // }
-    if (_messageListener != null) {
-      _messageListener?.cancel();
-    }
-  }
-
-  void startScan() async {
-    print('Start scanning');
-    await FlutterBluePlus.startScan();
-    _scannerListener = FlutterBluePlus.scanResults.listen((results) {
-      if (results.isNotEmpty) {
-        ScanResult r = results.last; // the most recently found device
-        //print(
-        // '${r.device.remoteId}: "${r.advertisementData.localName}" found!');
-        if (r.advertisementData.localName == 'TopicWatch') {
-          stopScan();
-          _device = r.device;
-          connectToDevice(r.device);
-        }
+  bool bluetoothEnabled() {
+    _statusListener ??= _flutterReactiveBle.statusStream.listen((status) {
+      switch (status) {
+        case BleStatus.poweredOff:
+          print('[bluetoothEnabled] BLE powered off');
+          _bluetoothIsEnabled = false;
+          disableBluetooth();
+          break;
+        case BleStatus.unauthorized:
+          print('[bluetoothEnabled] BLE unauthorized');
+          _bluetoothIsEnabled = false;
+          disableBluetooth();
+          break;
+        case BleStatus.unknown:
+          print('[bluetoothEnabled] BLE unknown');
+          _bluetoothIsEnabled = false;
+          break;
+        case BleStatus.unsupported:
+          print('[bluetoothEnabled] BLE unsupported');
+          _bluetoothIsEnabled = false;
+          disableBluetooth();
+          break;
+        case BleStatus.ready:
+          print('[bluetoothEnabled] BLE ready');
+          _bluetoothIsEnabled = true;
+          startScan();
+          break;
+        case BleStatus.locationServicesDisabled:
+          print('[bluetoothEnabled] BLE location services disabled');
+          _bluetoothIsEnabled = true;
+          startScan();
+          break;
+        default:
+          _bluetoothIsEnabled = false;
+          disableBluetooth();
+          break;
       }
     });
+    return _bluetoothIsEnabled;
   }
 
-  void stopScan() async {
-    FlutterBluePlus.stopScan();
+  void disableBluetooth() {
+    stopScan();
+    _device = null;
+    setConnectionState(false);
+    _connectionListener?.cancel();
+    _connectionListener = null;
+    _timeCharacteristicListener?.cancel();
+    _timeCharacteristicListener = null;
+    _topicCharacteristicListener?.cancel();
+    _topicCharacteristicListener = null;
   }
 
-  //setTime (send time to watch)
-  void sendTime() {
+  void stopScan() {
+    _scanListener?.cancel();
+    _scanListener = null;
+  }
+
+  bool connectToDevice(DiscoveredDevice device) {
+    print('[connectToDevice] connecting...');
+    _connectionListener ??= _flutterReactiveBle
+        .connectToDevice(
+      id: device.id,
+      servicesWithCharacteristicsToDiscover: {
+        Uuid.parse(_bleUuidServiceTime): [],
+        Uuid.parse(_bleUuidServiceTopic): []
+      },
+      connectionTimeout: const Duration(seconds: 2),
+    )
+        .listen((connectionState) {
+      connectionState.connectionState;
+      switch (connectionState.connectionState) {
+        case DeviceConnectionState.disconnecting:
+        case DeviceConnectionState.disconnected:
+          print('[connectToDevice] disconnecting/disconnected');
+          setConnectionState(false);
+          disableBluetooth();
+          startScan();
+          break;
+        case DeviceConnectionState.connected:
+          print('[connectToDevice] connected');
+          _device = device;
+          setConnectionState(true);
+          stopScan();
+          subscribeToCharacteristic(device);
+          break;
+        case DeviceConnectionState.connecting:
+          setConnectionState(false);
+          print('[connectToDevice] connecting');
+          break;
+      }
+    }, onError: (Object error) {
+      String sError = error.toString();
+      print('[connectToDevice] error: $sError');
+    });
+    return true;
+  }
+
+  void subscribeToCharacteristic(DiscoveredDevice device) async {
+    print('[subscribeToCharacteristic] subscribing...');
+    List<Service> sList =
+        await _flutterReactiveBle.getDiscoveredServices(device.id);
+
+    _timeCharacteristic = QualifiedCharacteristic(
+        serviceId: sList[2].id,
+        characteristicId: Uuid.parse(_bleUuidCharacteristicTime),
+        deviceId: device.id);
+    _flutterReactiveBle.subscribeToCharacteristic(_timeCharacteristic!).listen(
+        (data) {
+      handleMessage(String.fromCharCodes(data));
+    }, onError: (dynamic error) {
+      // code to handle errors
+    });
+
+    List<int> timeCharacteristicValue =
+        await _flutterReactiveBle.readCharacteristic(_timeCharacteristic!);
+    handleMessage(String.fromCharCodes(timeCharacteristicValue));
+
+    _topicCharacteristic = QualifiedCharacteristic(
+        serviceId: sList[3].id,
+        characteristicId: Uuid.parse(_bleUuidCharacteristicTopic),
+        deviceId: device.id);
+    _flutterReactiveBle.subscribeToCharacteristic(_topicCharacteristic!).listen(
+        (data) {
+      handleMessage(String.fromCharCodes(data));
+    }, onError: (dynamic error) {
+      // code to handle errors
+    });
+
+    List<int> topicCharacteristicValue =
+        await _flutterReactiveBle.readCharacteristic(_topicCharacteristic!);
+    handleMessage(String.fromCharCodes(topicCharacteristicValue));
+  }
+
+  bool startScan() {
+    if (_bluetoothIsEnabled) {
+      print('[startScan] Bluetooth enabled, starting scan...');
+      _scanListener ??= _flutterReactiveBle.scanForDevices(withServices: [
+        Uuid.parse(_bleUuidServiceTime),
+        Uuid.parse(_bleUuidServiceTopic)
+      ], scanMode: ScanMode.balanced).listen((device) {
+        print('[startScan] Found device with given services');
+        connectToDevice(device);
+      }, onError: (Object error) {
+        String sError = error.toString();
+        print('[startScan] error: $sError');
+      });
+      return true;
+    }
+    return false;
+  }
+
+//setTime (send time to watch)
+  Future<void> sendTime() async {
     SetTimeMessage messageJSON = SetTimeMessage(
         date: Date(
             years: DateTime.now().year,
@@ -140,48 +205,38 @@ class BluetoothInfoProvider with ChangeNotifier {
             hours: DateTime.now().hour,
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second));
-    writeMessage(messageJSON.toJson().toString());
+    await writeMessage(messageJSON.toJson().toString(), _timeCharacteristic!);
   }
 
   ///Response to 'gettopics' command
   ///Returns TRUE if succesfull OR FALSE if failed
-  bool sendTopics() {
+  Future<bool> sendTopics() async {
     if (TopicProvider.topiclist.isEmpty) {
       return false;
     }
     for (int i = 0; i < TopicProvider.topiclist.length; i++) {
       SetTopics messageJSON = SetTopics(topic: TopicProvider.topiclist[i]);
       print(messageJSON.toJson().toString());
-      writeMessage(messageJSON.toJson().toString());
+      await writeMessage(
+          messageJSON.toJson().toString(), _topicCharacteristic!);
     }
     return true;
   }
 
-  Future<void> writeMessage(String message) async {
-    String messageString = jsonEncode(message);
-    if (!_device!.isConnected) {
-      return;
+  Future<bool> writeMessage(
+      String message, QualifiedCharacteristic characteristic) async {
+    if (_connected) {
+      print('Writing...');
+      print(message);
+      // KNOWN BUG, WHEN THE DEVICE IS DISCONNECTED DURING THIS THE APP CRASHES
+      await _flutterReactiveBle.writeCharacteristicWithResponse(characteristic,
+          value: message.codeUnits);
+      return true;
     }
-    if (_characteristic == null) {
-      return;
-    }
-    print('[BLE] Sending: ');
-    print(messageString);
-    //messageString = messageString.substring(1, messageString.length - 1);
-    List<int> numbers = messageString.codeUnits.toList();
-
-    await _characteristic?.write(numbers);
-
-    // while (_characteristic?.lastValue != 'Free') {
-    //   await _characteristic?.write(numbers);
-    // }
+    return false;
   }
 
-  Future<void> freeCharacteristic() async {
-    await _characteristic?.write('Free' as List<int>);
-  }
-
-  void handleMessage(String message) {
+  void handleMessage(String message) async {
     if (message.isEmpty || message.length < 8) {
       //Null check
       return;
@@ -196,14 +251,13 @@ class BluetoothInfoProvider with ChangeNotifier {
     if (messageJSON.containsKey('command')) {
       if (messageJSON['command'] == 'getTime') {
         print('[BLE] Received: getTime command');
-        sendTime();
+        await sendTime();
       } else if (messageJSON['command'] == 'getTopics') {
         print('[BLE] Received: getTopics command');
-        sendTopics();
+        await sendTopics();
       } else {
         print('Unhandled message');
       }
     }
-    freeCharacteristic();
   }
 }

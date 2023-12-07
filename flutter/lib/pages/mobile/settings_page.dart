@@ -9,12 +9,12 @@ class MobileSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BluetoothInfoProvider>().enableBluetooth();
+    context.read<BluetoothInfoProvider>().bluetoothEnabled();
     return Column(
       children: [
         TopBar(
           key: super.key,
-          callback: (){},
+          callback: () {},
         ),
         // THEME CHANGER
         const ThemeChangeComponent()

@@ -42,54 +42,58 @@ class HomePageMobileState extends State<HomePageMobile> {
       PersistentBottomNavBarItem(
           title: 'Topics',
           textStyle: TextStyle(
-            color: ColorProvider.get(CustomColor.tertiary),
+            color: ColorProvider.get(CustomColor.background),
           ),
           activeColorPrimary:
               ColorProvider.get(CustomColor.secondary) ?? Colors.white,
           icon: Icon(Icons.subject,
               color: ColorProvider.get(CustomColor.secondary)),
           inactiveIcon: Icon(Icons.subject,
-              color: ColorProvider.get(CustomColor.tertiary))),
+              color: ColorProvider.get(CustomColor.background))),
       PersistentBottomNavBarItem(
           title: 'Planning',
-          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          textStyle:
+              TextStyle(color: ColorProvider.get(CustomColor.background)),
           activeColorPrimary:
               ColorProvider.get(CustomColor.secondary) ?? Colors.white,
           icon: Icon(Icons.calendar_today,
               color: ColorProvider.get(CustomColor.secondary)),
           inactiveIcon: Icon(Icons.calendar_today,
-              color: ColorProvider.get(CustomColor.tertiary))),
+              color: ColorProvider.get(CustomColor.background))),
       // HAVE TO ASK MICHEL, is the button active the whole time because it's weird with changing colors and stays on the color as it is active the whole time
       // this it has to do something with intial index but not sure
       PersistentBottomNavBarItem(
           title: 'Timer',
-          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          textStyle:
+              TextStyle(color: ColorProvider.get(CustomColor.background)),
           activeColorPrimary:
               ColorProvider.get(CustomColor.secondary) ?? Colors.white,
-          icon:
-              Icon(Icons.timer, color: ColorProvider.get(CustomColor.tertiary)),
+          icon: Icon(Icons.timer,
+              color: ColorProvider.get(CustomColor.background)),
           inactiveIcon: Icon(Icons.timer,
               color: ColorProvider.get(CustomColor.background))),
       PersistentBottomNavBarItem(
           title: 'Personal',
-          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          textStyle:
+              TextStyle(color: ColorProvider.get(CustomColor.background)),
           activeColorPrimary:
               ColorProvider.get(CustomColor.secondary) ?? Colors.white,
           icon: Icon(Icons.person,
               color: ColorProvider.get(CustomColor.secondary)),
           inactiveIcon: Icon(
             Icons.person,
-            color: ColorProvider.get(CustomColor.tertiary),
+            color: ColorProvider.get(CustomColor.background),
           )),
       PersistentBottomNavBarItem(
           title: 'Settings',
-          textStyle: TextStyle(color: ColorProvider.get(CustomColor.tertiary)),
+          textStyle:
+              TextStyle(color: ColorProvider.get(CustomColor.background)),
           activeColorPrimary:
               ColorProvider.get(CustomColor.secondary) ?? Colors.white,
           icon: Icon(Icons.settings,
               color: ColorProvider.get(CustomColor.secondary)),
           inactiveIcon: Icon(Icons.settings,
-              color: ColorProvider.get(CustomColor.tertiary)))
+              color: ColorProvider.get(CustomColor.background)))
     ];
   }
 
@@ -98,16 +102,19 @@ class HomePageMobileState extends State<HomePageMobile> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeChangeProvider>(
-    builder: (context, themeChangeProvider, child) {
-      context.read<BluetoothInfoProvider>().enableBluetooth();
+        builder: (context, themeChangeProvider, child) {
+      context.read<BluetoothInfoProvider>().bluetoothEnabled();
       return PersistentTabView(context,
           screens: createScreens(),
           items: createNavBarItems(),
           controller: navBarController,
-          backgroundColor: ColorProvider.get(CustomColor.primary) ?? Colors.white,
+          backgroundColor:
+              ColorProvider.get(CustomColor.primary) ?? Colors.white,
           decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
           navBarStyle: NavBarStyle.style15, onItemSelected: (value) {
-        context.read<TopBarConentProvider>().setPageIndex(navBarController.index);
+        context
+            .read<TopBarConentProvider>()
+            .setPageIndex(navBarController.index);
       },
           screenTransitionAnimation: const ScreenTransitionAnimation(
             // Screen transition animation on change of selected tab.
@@ -115,7 +122,6 @@ class HomePageMobileState extends State<HomePageMobile> {
             curve: Curves.ease,
             duration: Duration(milliseconds: 100),
           ));
-    }
-  );
-}
+    });
+  }
 }
