@@ -43,6 +43,7 @@ dependencies:
   animations: ^2.0.8
   flutter_colorpicker: ^1.0.3
   flutter_reactive_ble: ^5.2.0
+  calendar_picker: ^0.0.1-alpha
 
 dev_dependencies:
   flutter_test:

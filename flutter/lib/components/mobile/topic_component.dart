@@ -178,18 +178,39 @@ class TopicWidget extends StatelessWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap),
                     child: Row(children: [
                       Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          padding: const EdgeInsets.all(10),
                           width: 15.w,
                           color: topic.color,
                           alignment: Alignment.center,
-                          child: Text(topic.name[0],
-                              style: TextStyle(
+                          child: Stack(
+                            children: [
+                              Text(
+                                topic.name[0],
+                                style: TextStyle(
                                   fontSize: 20,
-                                  color: ColorProvider.get(CustomColor.text)))),
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 3
+                                    ..color = ColorProvider.get(
+                                        CustomColor.background)!,
+                                ),
+                              ),
+                              Text(
+                                topic.name[0],
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: ColorProvider.get(CustomColor.text),
+                                ),
+                              ),
+                            ],
+                          )),
                       Container(
                           width: 60.w,
                           padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                           child: Text(topic.name,
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
                               style: TextStyle(
                                   fontSize: 20,
                                   color: ColorProvider.get(CustomColor.text))))
@@ -226,11 +247,17 @@ class TopicWidget extends StatelessWidget {
                 visible: isVisible,
                 child: Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    child: Text(
-                        'Additional Topic information is displayed here',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: ColorProvider.get(CustomColor.text)))))
+                    child: Column(children: [
+                      Text(topic.name,
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: ColorProvider.get(CustomColor.text))),
+                      Text('Additional Topic information is displayed here',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: ColorProvider.get(CustomColor.text)))
+                    ])))
           ]));
     });
   }

@@ -146,6 +146,7 @@ class TopBar extends StatelessWidget {
                             'Timer') {
                           return Text(
                             topBarConentProvider.getSelectedTopic().name,
+                            maxLines: 1,
                             style: TextStyle(fontSize: 5.w),
                           );
                         } else {
