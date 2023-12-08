@@ -15,12 +15,16 @@ class MobileTopicsPage extends StatelessWidget {
         children: [
           const TopBar(),
           if (TopicProvider.getTopics().isNotEmpty)
+           Expanded(
+              child: SingleChildScrollView(
+                  child:
+
             Column(
               children: [
                 for (var topic in TopicProvider.getTopics())
                   TopicWidget(key: UniqueKey(), topic: topic)
               ],
-            )
+            )))
           else
             Text(
               "It seems like you don't have any topics to display yet",
