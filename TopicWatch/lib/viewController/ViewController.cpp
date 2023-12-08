@@ -1,12 +1,14 @@
 #include "ViewController.h"
 
-View *ViewController::_views[102];
+View *ViewController::_views[MAX_VIEWS];
 Border *ViewController::_border = nullptr;
 TFT_eSPI *ViewController::_tft = nullptr;
 VirtualRTCProvider *ViewController::_vRTCProvider = nullptr;
 int ViewController::_hasBluetoothConnnection = false;
 int ViewController::_activeViewCount = 0;
 int ViewController::_viewIndex = 1;
+int ViewController::_viewListIsBeingUpdated = false;
+int ViewController::_clearScreen = false;
 
 ViewController::~ViewController()
 {
@@ -203,28 +205,35 @@ void ViewController::removeTopic(int index)
         return;
     }
 
+    _viewListIsBeingUpdated = true;
+
     if (index == _viewIndex)
     {
-        Serial.println("Index to remove is current view");
-
         _viewIndex = 1;
-        _views[_viewIndex]->draw(true);
     }
-    // TODO FIX CRASH WHEN REMOVING LAST TOPIC
-    Serial.println("Deleting... the view at index!");
+
     delete _views[index];
     _views[index] = nullptr;
-    Serial.println("Deleted the view at index!");
 
-    for (int i = index; i < WatchSettings::get<int>(maxAmountOfViews) - 2; ++i)
+    for (int i = index; i < WatchSettings::get<int>(maxAmountOfViews) - 1; i++)
     {
-        Serial.println("Shifting array");
         _views[i] = _views[i + 1];
+        if (_views[i + 1] == nullptr)
+        {
+            break;
+        }
     }
 
     _views[WatchSettings::get<int>(maxAmountOfViews) - 1] = nullptr;
     _activeViewCount--;
-    Serial.println("Done!");
+
+    if (_viewIndex >= _activeViewCount)
+    {
+        _viewIndex = _activeViewCount - 1;
+    }
+
+    _viewListIsBeingUpdated = false;
+    _clearScreen = true;
 }
 
 void ViewController::removeAllTopics()
@@ -234,6 +243,7 @@ void ViewController::removeAllTopics()
         return;
     }
 
+    _viewListIsBeingUpdated = true;
     _viewIndex = 1;
 
     for (int i = WatchSettings::get<int>(amountOfNonTopicViews); i < WatchSettings::get<int>(maxAmountOfViews); i++)
@@ -247,10 +257,31 @@ void ViewController::removeAllTopics()
         _views[i] = nullptr;
         _activeViewCount--;
     }
+
+    _viewListIsBeingUpdated = false;
+    _clearScreen = true;
 }
 
 void ViewController::drawCurrentView(int clearScreen)
 {
+    if (_viewListIsBeingUpdated)
+    {
+        return;
+    }
+
+    if (_views[_viewIndex] == nullptr)
+    {
+        home();
+        return;
+    }
+
+    if (_clearScreen)
+    {
+        _views[_viewIndex]->draw(true);
+        _clearScreen = false;
+        return;
+    }
+
     _views[_viewIndex]->draw(clearScreen);
 }
 

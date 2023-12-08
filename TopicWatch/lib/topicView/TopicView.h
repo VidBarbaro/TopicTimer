@@ -38,7 +38,7 @@ private:
 
 public:
     TopicView() = default;
-    ~TopicView() { _tft->unloadFont(); };
+    ~TopicView();
 
     void init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex) override;
     void draw(int clearScreen = false) override;
@@ -46,6 +46,7 @@ public:
     int getViewState() const override;
     ClickableItem *getListOfClickableItems(int *arraySize) override;
     void setTopic(Topic topic);
+    Topic getTopic();
     void startTracking();
     void stopTracking();
 };

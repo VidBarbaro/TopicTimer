@@ -1,5 +1,18 @@
 #include "TopicView.h"
 
+TopicView::~TopicView()
+{
+    _tft->unloadFont();
+    _tft = nullptr;
+    _border = nullptr;
+    _dateTime = nullptr;
+    _trackingDateTime = nullptr;
+    _vRTCProvider = nullptr;
+    _amountOfActiveViews = nullptr;
+    _currentViewIndex = nullptr;
+    _hasBluetoothConnnection = nullptr;
+}
+
 void TopicView::_clearCenter()
 {
     _tft->fillRect(WatchSettings::get<int>(borderSize), WatchSettings::get<int>(borderSize), (_tft->width() - (2 * WatchSettings::get<int>(borderSize))), (_tft->height() - (2 * WatchSettings::get<int>(borderSize))), WatchSettings::get<uint16_t>(topicTimer_BLACK));
@@ -98,6 +111,18 @@ void TopicView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProv
 
 void TopicView::draw(int clearScreen)
 {
+    if (_tft == nullptr ||
+        _border == nullptr ||
+        _vRTCProvider == nullptr ||
+        _dateTime == nullptr ||
+        _trackingDateTime == nullptr ||
+        _amountOfActiveViews == nullptr ||
+        _currentViewIndex == nullptr ||
+        _hasBluetoothConnnection == nullptr)
+    {
+        return;
+    }
+
     switch (_viewState)
     {
     case TopicViewState::IDLE:
@@ -131,6 +156,11 @@ ClickableItem *TopicView::getListOfClickableItems(int *arraySize)
 void TopicView::setTopic(Topic topic)
 {
     _topic = topic;
+}
+
+Topic TopicView::getTopic()
+{
+    return _topic;
 }
 
 void TopicView::startTracking()

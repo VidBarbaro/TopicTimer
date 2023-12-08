@@ -106,6 +106,14 @@ void SettingsView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCP
 
 void SettingsView::draw(int clearScreen)
 {
+    if (_tft == nullptr ||
+        _border == nullptr ||
+        _vRTCProvider == nullptr ||
+        _hasBluetoothConnnection == nullptr)
+    {
+        return;
+    }
+
     if (clearScreen)
     {
         _clearCenter();

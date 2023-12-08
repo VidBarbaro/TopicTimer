@@ -11,16 +11,20 @@
 #include "VirtualRTCProvider.h"
 #include "WatchSettings.h"
 
+#define MAX_VIEWS 102
+
 class ViewController
 {
 private:
-    static View *_views[102];
+    static View *_views[MAX_VIEWS];
     static Border *_border;
     static TFT_eSPI *_tft;
     static VirtualRTCProvider *_vRTCProvider;
     static int _hasBluetoothConnnection;
     static int _activeViewCount;
     static int _viewIndex;
+    static int _viewListIsBeingUpdated;
+    static int _clearScreen;
 
 public:
     ViewController() = default;

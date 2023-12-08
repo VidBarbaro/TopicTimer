@@ -27,6 +27,15 @@ void HomeView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvi
 
 void HomeView::draw(int clearScreen)
 {
+    if (_tft == nullptr ||
+        _border == nullptr ||
+        _vRTCProvider == nullptr ||
+        _dateTime == nullptr ||
+        _hasBluetoothConnnection == nullptr)
+    {
+        return;
+    }
+
     if (clearScreen)
     {
         _clearCenter();
