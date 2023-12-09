@@ -211,16 +211,18 @@ void SettingsView::incrementValue()
     switch (setting.type)
     {
     case WatchSettingType::INT:
-        if (setting.value.intValue + 1 <= setting.maxValue.intValue)
+        if (setting.value.intValue + 1 > setting.maxValue.intValue)
         {
-            WatchSettings::set<int>(setting.name, ++setting.value.intValue);
+            return;
         }
+        WatchSettings::set<int>(setting.name, ++setting.value.intValue);
         break;
     case WatchSettingType::UINT16_T:
-        if (setting.value.intValue + 1 <= setting.maxValue.intValue)
+        if (setting.value.intValue + 1 > setting.maxValue.intValue)
         {
-            WatchSettings::set<uint16_t>(setting.name, ++setting.value.uint16_tValue);
+            return;
         }
+        WatchSettings::set<uint16_t>(setting.name, ++setting.value.uint16_tValue);
         break;
     default:
         break;
@@ -241,16 +243,18 @@ void SettingsView::decreaseValue()
     switch (setting.type)
     {
     case WatchSettingType::INT:
-        if (setting.value.intValue - 1 >= setting.minValue.intValue)
+        if (setting.value.intValue - 1 < setting.minValue.intValue)
         {
-            WatchSettings::set<int>(setting.name, --setting.value.intValue);
+            return;
         }
+        WatchSettings::set<int>(setting.name, --setting.value.intValue);
         break;
     case WatchSettingType::UINT16_T:
-        if (setting.value.uint16_tValue - 1 >= setting.minValue.intValue)
+        if (setting.value.uint16_tValue - 1 < setting.minValue.intValue)
         {
-            WatchSettings::set<uint16_t>(setting.name, --setting.value.uint16_tValue);
+            return;
         }
+        WatchSettings::set<uint16_t>(setting.name, --setting.value.uint16_tValue);
         break;
     default:
         break;
