@@ -32,7 +32,12 @@ enum WatchSettingNames
     topicTimer_ORANGE,
     topicTimer_BLUE,
     topicTimer_GRAY,
-    topicTimer_BLACK
+    topicTimer_BLACK,
+    vibrationLevel,
+    vibrationPattern,
+    soundLevel,
+    soundPattern,
+    AMOUNT_OF_SETTINGS // MAKE SURE THIS IS ALWAYS THE LAST ENUM
 };
 
 struct WatchSetting
@@ -49,8 +54,7 @@ struct WatchSetting
 class WatchSettings
 {
 private:
-    static const int _amountOfSettings = 15;
-    static WatchSetting _settings[_amountOfSettings];
+    static WatchSetting _settings[AMOUNT_OF_SETTINGS];
 
     static const uint32_t topicTimer_GREEN_HEX = 0x009688;
     static const uint32_t topicTimer_ORANGE_HEX = 0xFFC107;
@@ -68,7 +72,7 @@ public:
     template <typename T>
     static const T get(int index, bool getMaxValue = false)
     {
-        if (index < 0 || index >= _amountOfSettings)
+        if (index < 0 || index >= AMOUNT_OF_SETTINGS)
         {
             return T{};
         }
@@ -89,7 +93,7 @@ public:
     template <typename T>
     static const T get(WatchSettingNames name, bool getMaxValue = false)
     {
-        for (int i = 0; i < _amountOfSettings; ++i)
+        for (int i = 0; i < AMOUNT_OF_SETTINGS; ++i)
         {
             if (_settings[i].name == name)
             {
@@ -103,7 +107,7 @@ public:
     template <typename T>
     static void set(int index, T newValue)
     {
-        if (index < 0 || index >= _amountOfSettings)
+        if (index < 0 || index >= AMOUNT_OF_SETTINGS)
         {
             return;
         }
@@ -126,7 +130,7 @@ public:
     template <typename T>
     static void set(WatchSettingNames name, T newValue)
     {
-        for (int i = 0; i < _amountOfSettings; ++i)
+        for (int i = 0; i < AMOUNT_OF_SETTINGS; ++i)
         {
             if (_settings[i].name == name)
             {

@@ -1,6 +1,6 @@
 #include "WatchSettings.h"
 
-WatchSetting WatchSettings::_settings[_amountOfSettings];
+WatchSetting WatchSettings::_settings[AMOUNT_OF_SETTINGS];
 
 void WatchSettings::initializeSettings()
 {
@@ -22,7 +22,7 @@ void WatchSettings::initializeSettings()
 
     _settings[4].name = minimalTrackingMinutes;
     _settings[4].type = WatchSettingType::INT;
-    _settings[4].editable = true;
+    _settings[4].editable = false;
     _settings[4].displayName = "Minimal tracking minutes";
     _settings[4].type = WatchSettingType::INT;
     _settings[4].maxValue.intValue = 5;
@@ -72,14 +72,46 @@ void WatchSettings::initializeSettings()
     _settings[14].name = topicTimer_BLACK;
     _settings[14].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_BLACK, HexHelper::convertTo565(WatchSettings::topicTimer_BLACK_HEX));
+
+    _settings[15].name = vibrationLevel;
+    _settings[15].type = WatchSettingType::INT;
+    _settings[15].editable = true;
+    _settings[15].displayName = "Vibration level";
+    _settings[15].maxValue.intValue = 10;
+    _settings[15].minValue.intValue = 0;
+    set<int>(vibrationLevel, 5);
+
+    _settings[16].name = vibrationPattern;
+    _settings[16].type = WatchSettingType::INT;
+    _settings[16].editable = true;
+    _settings[16].displayName = "Vibration pattern";
+    _settings[16].maxValue.intValue = 5;
+    _settings[16].minValue.intValue = 1;
+    set<int>(vibrationPattern, 1);
+
+    _settings[17].name = soundLevel;
+    _settings[17].type = WatchSettingType::INT;
+    _settings[17].editable = true;
+    _settings[17].displayName = "Sound level";
+    _settings[17].maxValue.intValue = 10;
+    _settings[17].minValue.intValue = 0;
+    set<int>(soundLevel, 5);
+
+    _settings[18].name = soundPattern;
+    _settings[18].type = WatchSettingType::INT;
+    _settings[18].editable = true;
+    _settings[18].displayName = "Sound pattern";
+    _settings[18].maxValue.intValue = 5;
+    _settings[18].minValue.intValue = 1;
+    set<int>(soundPattern, 1);
 }
 
 WatchSetting *WatchSettings::getEditableSettings(int *amountOfEditableSettings)
 {
-    WatchSetting *editableSettings = new WatchSetting[_amountOfSettings];
+    WatchSetting *editableSettings = new WatchSetting[AMOUNT_OF_SETTINGS];
     int count = 0;
 
-    for (int i = 0; i < _amountOfSettings; ++i)
+    for (int i = 0; i < AMOUNT_OF_SETTINGS; ++i)
     {
         if (_settings[i].editable)
         {

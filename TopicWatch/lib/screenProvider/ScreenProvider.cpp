@@ -13,13 +13,13 @@ void ScreenProvider::onGesture(CST816Touch *pTouch, int iGestureId, bool bReleas
     switch (iGestureId)
     {
     case CST816Touch::gesture_t::GESTURE_UP:
-        // Nothing for now
+        instance->_viewController.nextDown();
         break;
     case CST816Touch::gesture_t::GESTURE_RIGHT:
         instance->_viewController.nextLeft();
         break;
     case CST816Touch::gesture_t::GESTURE_DOWN:
-        // Nothing for now
+        instance->_viewController.nextUp();
         break;
     case CST816Touch::gesture_t::GESTURE_LEFT:
         instance->_viewController.nextRight();

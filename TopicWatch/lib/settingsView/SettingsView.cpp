@@ -7,8 +7,15 @@ void SettingsView::_clearCenter()
 
 void SettingsView::_setClickableItems()
 {
-    // TODO - CHANGE THIS TO MAKE SURE IF THERE ARE MULTIPLE PAGES IT WILL STILL WORK
-    if (_amountOfEditableSettings >= 1)
+    for (int i = 0; i < _amountOfSettingsPerPage; i++)
+    {
+        _items[i].x = 0;
+        _items[i].y = 0;
+        _items[i].width = 0;
+        _items[i].height = 0;
+    }
+
+    if (_editableSettings[0 + (_amountOfSettingsPerPage * _verticalPageIndex)].displayName != "")
     {
         _items[0].type = ClickableItemType::SETTING;
         _items[0].x = (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder));
@@ -17,7 +24,7 @@ void SettingsView::_setClickableItems()
         _items[0].height = _settingsHeight;
     }
 
-    if (_amountOfEditableSettings >= 2)
+    if (_editableSettings[1 + (_amountOfSettingsPerPage * _verticalPageIndex)].displayName != "")
     {
         _items[1].type = ClickableItemType::SETTING;
         _items[1].x = (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder));
@@ -26,7 +33,7 @@ void SettingsView::_setClickableItems()
         _items[1].height = _settingsHeight;
     }
 
-    if (_amountOfEditableSettings >= 3)
+    if (_editableSettings[2 + (_amountOfSettingsPerPage * _verticalPageIndex)].displayName != "")
     {
         _items[2].type = ClickableItemType::SETTING;
         _items[2].x = (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder));
@@ -144,6 +151,34 @@ ClickableItem *SettingsView::getListOfClickableItems(int *arraySize)
 {
     *arraySize = sizeof(_items) / sizeof(_items[0]);
     return &_items[0];
+}
+
+void SettingsView::pageDown()
+{
+    _verticalPageIndex++;
+
+    if (_editableSettings[0 + (_amountOfSettingsPerPage * _verticalPageIndex)].displayName == "")
+    {
+        _verticalPageIndex--;
+        return;
+    }
+
+    _setClickableItems();
+    draw(true);
+}
+
+void SettingsView::pageUp()
+{
+    _verticalPageIndex--;
+
+    if (_verticalPageIndex < 0)
+    {
+        _verticalPageIndex = 0;
+        return;
+    }
+
+    _setClickableItems();
+    draw(true);
 }
 
 void SettingsView::editSetting(int index)

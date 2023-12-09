@@ -39,6 +39,8 @@ public:
     ViewTypes getViewType() const override;
     int getViewState() const override;
     ClickableItem *getListOfClickableItems(int *arraySize) override;
+    void pageDown();
+    void pageUp();
     void editSetting(int index);
     void stopEditing();
     void incrementValue();

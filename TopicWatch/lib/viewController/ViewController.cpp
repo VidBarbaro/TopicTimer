@@ -155,6 +155,7 @@ void ViewController::nextUp()
     if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
     {
         SettingsView *sView = (SettingsView *)_views[_viewIndex];
+        sView->pageUp();
     }
 }
 
@@ -163,6 +164,7 @@ void ViewController::nextDown()
     if (_views[_viewIndex]->getViewType() == ViewTypes::SETTINGS)
     {
         SettingsView *sView = (SettingsView *)_views[_viewIndex];
+        sView->pageDown();
     }
 }
 
