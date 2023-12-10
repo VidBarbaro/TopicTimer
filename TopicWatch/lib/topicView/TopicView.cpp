@@ -43,10 +43,10 @@ void TopicView::_drawIdle(int clearScreen)
     _border->set(100, _topic.color);
 
     _tft->setSwapBytes(true);
-    _tft->pushImage((WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder)),
-                    _tft->height() - (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + (WatchSettings::get<int>(iconSize) * 2) + WatchSettings::get<int>(iconMargin)),
-                    WatchSettings::get<int>(iconSize), WatchSettings::get<int>(iconSize),
-                    *_hasBluetoothConnnection ? Bluetooth : NoBluetooth,
+    _tft->pushImage(_tft->width() - (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + WatchSettings::get<int>(iconSizeSmall) - 4), // the image is 4 pixels off, so we manually add those
+                    (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder)),
+                    WatchSettings::get<int>(iconSizeSmall), WatchSettings::get<int>(iconSizeSmall),
+                    *_hasBluetoothConnnection ? BluetoothSmall : NoBluetoothSmall,
                     TFT_PINK);
     _tft->pushImage((WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder)),
                     _tft->height() - (WatchSettings::get<int>(borderSize) + WatchSettings::get<int>(marginFromBorder) + WatchSettings::get<int>(iconSize)),

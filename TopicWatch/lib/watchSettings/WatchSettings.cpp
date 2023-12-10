@@ -49,60 +49,64 @@ void WatchSettings::initializeSettings()
     _settings[8].type = WatchSettingType::INT;
     set<int>(iconSize, 35);
 
-    _settings[9].name = iconMargin;
+    _settings[9].name = iconSizeSmall;
     _settings[9].type = WatchSettingType::INT;
+    set<int>(iconSizeSmall, 25);
+
+    _settings[10].name = iconMargin;
+    _settings[10].type = WatchSettingType::INT;
     set<int>(iconMargin, 5);
 
-    _settings[10].name = topicTimer_GREEN;
-    _settings[10].type = WatchSettingType::UINT16_T;
+    _settings[11].name = topicTimer_GREEN;
+    _settings[11].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_GREEN, HexHelper::convertTo565(WatchSettings::topicTimer_GREEN_HEX));
 
-    _settings[11].name = topicTimer_ORANGE;
-    _settings[11].type = WatchSettingType::UINT16_T;
+    _settings[12].name = topicTimer_ORANGE;
+    _settings[12].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_ORANGE, HexHelper::convertTo565(WatchSettings::topicTimer_ORANGE_HEX));
 
-    _settings[12].name = topicTimer_BLUE;
-    _settings[12].type = WatchSettingType::UINT16_T;
+    _settings[13].name = topicTimer_BLUE;
+    _settings[13].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_BLUE, HexHelper::convertTo565(WatchSettings::topicTimer_BLUE_HEX));
 
-    _settings[13].name = topicTimer_GRAY;
-    _settings[13].type = WatchSettingType::UINT16_T;
+    _settings[14].name = topicTimer_GRAY;
+    _settings[14].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_GRAY, HexHelper::convertTo565(WatchSettings::topicTimer_GRAY_HEX));
 
-    _settings[14].name = topicTimer_BLACK;
-    _settings[14].type = WatchSettingType::UINT16_T;
+    _settings[15].name = topicTimer_BLACK;
+    _settings[15].type = WatchSettingType::UINT16_T;
     set<uint16_t>(topicTimer_BLACK, HexHelper::convertTo565(WatchSettings::topicTimer_BLACK_HEX));
 
-    _settings[15].name = vibrationLevel;
-    _settings[15].type = WatchSettingType::INT;
-    _settings[15].editable = true;
-    _settings[15].displayName = "Vibration level";
-    _settings[15].maxValue.intValue = 10;
-    _settings[15].minValue.intValue = 0;
-    set<int>(vibrationLevel, 5);
-
-    _settings[16].name = vibrationPattern;
+    _settings[16].name = vibrationLevel;
     _settings[16].type = WatchSettingType::INT;
     _settings[16].editable = true;
-    _settings[16].displayName = "Vibration pattern";
-    _settings[16].maxValue.intValue = 5;
-    _settings[16].minValue.intValue = 1;
-    set<int>(vibrationPattern, 1);
+    _settings[16].displayName = "Vibration level";
+    _settings[16].maxValue.intValue = 10;
+    _settings[16].minValue.intValue = 0;
+    set<int>(vibrationLevel, 5);
 
-    _settings[17].name = soundLevel;
+    _settings[17].name = vibrationPattern;
     _settings[17].type = WatchSettingType::INT;
     _settings[17].editable = true;
-    _settings[17].displayName = "Sound level";
-    _settings[17].maxValue.intValue = 10;
-    _settings[17].minValue.intValue = 0;
-    set<int>(soundLevel, 5);
+    _settings[17].displayName = "Vibration pattern";
+    _settings[17].maxValue.intValue = 5;
+    _settings[17].minValue.intValue = 1;
+    set<int>(vibrationPattern, 1);
 
-    _settings[18].name = soundPattern;
+    _settings[18].name = soundLevel;
     _settings[18].type = WatchSettingType::INT;
     _settings[18].editable = true;
-    _settings[18].displayName = "Sound pattern";
-    _settings[18].maxValue.intValue = 5;
-    _settings[18].minValue.intValue = 1;
+    _settings[18].displayName = "Sound level";
+    _settings[18].maxValue.intValue = 10;
+    _settings[18].minValue.intValue = 0;
+    set<int>(soundLevel, 5);
+
+    _settings[19].name = soundPattern;
+    _settings[19].type = WatchSettingType::INT;
+    _settings[19].editable = true;
+    _settings[19].displayName = "Sound pattern";
+    _settings[19].maxValue.intValue = 5;
+    _settings[19].minValue.intValue = 1;
     set<int>(soundPattern, 1);
 }
 

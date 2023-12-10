@@ -27,6 +27,7 @@ enum WatchSettingNames
     marginFromBorder,
     textMargin,
     iconSize,
+    iconSizeSmall,
     iconMargin,
     topicTimer_GREEN,
     topicTimer_ORANGE,
