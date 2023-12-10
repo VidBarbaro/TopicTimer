@@ -199,6 +199,7 @@ void ViewController::editTopic(int index, Topic topic)
 
 void ViewController::removeTopic(int index)
 {
+    // TODO FIX CRASH BUG, AGAIN
     if (_activeViewCount < WatchSettings::get<int>(amountOfNonTopicViews) ||
         index < WatchSettings::get<int>(amountOfNonTopicViews) ||
         index > WatchSettings::get<int>(maxAmountOfViews) - 1)
