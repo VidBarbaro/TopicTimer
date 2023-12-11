@@ -3,11 +3,12 @@
 #include "ScreenProvider.h"
 #include "VirtualRTCProvider.h"
 #include "pwmWrite.h"
+// #include "FeedbackProvider.h"
 
 BLEProvider bleProvider;
 VirtualRTCProvider vrp;
 ScreenProvider sp;
-Pwm pwm;
+// Pwm pwm;
 
 void setup()
 {
@@ -27,4 +28,5 @@ void loop()
 {
     sp.update();
     bleProvider.update();
+    FeedbackProvider::update();
 }

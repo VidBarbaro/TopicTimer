@@ -38,6 +38,8 @@ enum WatchSettingNames
     vibrationPattern,
     soundLevel,
     soundPattern,
+    vibrationMotorPin,
+    buzzerPin,
     AMOUNT_OF_SETTINGS // MAKE SURE THIS IS ALWAYS THE LAST ENUM
 };
 
@@ -70,8 +72,14 @@ public:
     static void initializeSettings();
     static WatchSetting *getEditableSettings(int *amountOfEditableSettings);
 
+    /*
+     * Get a watch setting
+     *
+     * @param name The name of the setting defined by WatchSettingNames
+     * @param whichValue -1 == min value, 0 = value, 1 = max value
+     */
     template <typename T>
-    static const T get(int index, bool getMaxValue = false)
+    static const T get(int index, int whichValue = 0)
     {
         if (index < 0 || index >= AMOUNT_OF_SETTINGS)
         {
@@ -83,22 +91,30 @@ public:
         switch (setting.type)
         {
         case INT:
-            return getMaxValue ? (T)setting.maxValue.intValue : (T)setting.value.intValue;
+            return whichValue == 1 ? (T)setting.maxValue.intValue : whichValue == 0 ? (T)setting.value.intValue
+                                                                                    : (T)setting.minValue.intValue;
         case UINT16_T:
-            return getMaxValue ? (T)setting.maxValue.uint16_tValue : (T)setting.value.uint16_tValue;
+            return whichValue == 1 ? (T)setting.maxValue.uint16_tValue : whichValue == 0 ? (T)setting.value.uint16_tValue
+                                                                                         : (T)setting.minValue.uint16_tValue;
         default:
             return T{};
         }
     }
 
+    /*
+     * Get a watch setting
+     *
+     * @param name The name of the setting defined by WatchSettingNames
+     * @param whichValue -1 == min value, 0 = value, 1 = max value
+     */
     template <typename T>
-    static const T get(WatchSettingNames name, bool getMaxValue = false)
+    static const T get(WatchSettingNames name, int whichValue = 0)
     {
         for (int i = 0; i < AMOUNT_OF_SETTINGS; ++i)
         {
             if (_settings[i].name == name)
             {
-                return get<T>(i, getMaxValue);
+                return get<T>(i, whichValue);
             }
         }
 

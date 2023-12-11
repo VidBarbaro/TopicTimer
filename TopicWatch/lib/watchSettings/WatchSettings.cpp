@@ -108,6 +108,14 @@ void WatchSettings::initializeSettings()
     _settings[19].maxValue.intValue = 5;
     _settings[19].minValue.intValue = 1;
     set<int>(soundPattern, 1);
+
+    _settings[20].name = vibrationMotorPin;
+    _settings[20].type = WatchSettingType::INT;
+    set<int>(vibrationMotorPin, 2);
+
+    _settings[21].name = buzzerPin;
+    _settings[21].type = WatchSettingType::INT;
+    set<int>(buzzerPin, 3);
 }
 
 WatchSetting *WatchSettings::getEditableSettings(int *amountOfEditableSettings)

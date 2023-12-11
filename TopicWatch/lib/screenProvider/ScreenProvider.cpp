@@ -68,6 +68,8 @@ void ScreenProvider::onTouch(CST816Touch *pTouch, int x, int y, bool bReleasedSc
 
     ScreenProvider *instance = (ScreenProvider *)_instance;
     instance->_viewController.click(x, y);
+
+    FeedbackProvider::playPattern(new VibrationPattern_1());
 }
 
 void ScreenProvider::init(VirtualRTCProvider *vRTCProvider, BLEProvider *bleProvider)

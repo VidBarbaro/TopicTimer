@@ -12,6 +12,8 @@
 #include "ViewController.h"
 #include "WatchSettings.h"
 #include <Wire.h>
+#include "FeedbackProvider.h"
+#include "VibrationPattern_1.h"
 
 using namespace MDO;
 
