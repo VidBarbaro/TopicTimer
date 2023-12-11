@@ -97,7 +97,7 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
     {
         if (error = DeserializationError::NoMemory)
         {
-            Serial.println("Json doc too small (NoMemory)");
+            Serial.println("[ERROR] Json doc too small (NoMemory)");
             return false;
         }
 

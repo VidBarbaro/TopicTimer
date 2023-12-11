@@ -2,6 +2,7 @@
 #define TOPIC_VIEW
 
 #include "View.h"
+#include "TrackInfoBuffer.h"
 
 struct Topic
 {

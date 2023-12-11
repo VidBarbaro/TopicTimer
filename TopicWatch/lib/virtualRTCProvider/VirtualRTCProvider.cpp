@@ -177,6 +177,8 @@ TrackingInfo VirtualRTCProvider::stopTopicTimer()
     {
         _trackingInfo.endTime = _dateTime;
     }
+
+    _trackingInfo.topicId = "Yet to be set"; // gets set in function: TopicView::stopTracking()
     _isTracking = false;
     return _trackingInfo;
 }

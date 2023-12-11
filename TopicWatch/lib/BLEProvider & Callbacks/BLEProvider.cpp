@@ -1,5 +1,9 @@
 #include "BLEProvider.h"
 
+static long currentTime = 0;
+static long pastTime = 0;
+const long interval = 3000;
+
 void BLEProvider::init()
 {
     _instance = this;
@@ -59,26 +63,38 @@ void BLEProvider::sendTopicsRequest(void)
 
 void BLEProvider::sendTrackedTimes(void)
 {
-    StaticJsonDocument<300> doc;
-    // Dummy data
-    doc["command"] = "setTrackedTime";
-    doc["data"]["topic"]["id"] = 1;
-    doc["data"]["beginTime"]["time"]["hours"] = 11;
-    doc["data"]["beginTime"]["time"]["minutes"] = 22;
-    doc["data"]["beginTime"]["time"]["seconds"] = 33;
-    doc["data"]["beginTime"]["date"]["year"] = 2023;
-    doc["data"]["beginTime"]["date"]["month"] = 06;
-    doc["data"]["beginTime"]["date"]["day"] = 03;
+    if (trackedTimesBuffer.getCount() == 0)
+    {
+        return;
+    }
+    StaticJsonDocument<512> doc;
+    TrackingInfo *newInfo = trackedTimesBuffer.consume();
 
-    doc["data"]["endTime"]["time"]["hours"] = 12;
-    doc["data"]["endTime"]["time"]["minutes"] = 44;
-    doc["data"]["endTime"]["time"]["seconds"] = 55;
-    doc["data"]["endTime"]["date"]["year"] = 2023;
-    doc["data"]["endTime"]["date"]["month"] = 06;
-    doc["data"]["endTime"]["date"]["day"] = 03;
+    if (newInfo == nullptr)
+    {
+        // Something went wrong gathering the tracked times...
+        return;
+    }
+
+    doc["command"] = "setTrackedTime";
+    doc["data"]["topic"]["id"] = newInfo->topicId;
+    doc["data"]["beginTime"]["time"]["hours"] = newInfo->startTime.hours;
+    doc["data"]["beginTime"]["time"]["minutes"] = newInfo->startTime.minutes;
+    doc["data"]["beginTime"]["time"]["seconds"] = newInfo->startTime.seconds;
+    doc["data"]["beginTime"]["date"]["year"] = newInfo->startTime.year;
+    doc["data"]["beginTime"]["date"]["month"] = newInfo->startTime.month;
+    doc["data"]["beginTime"]["date"]["day"] = newInfo->startTime.day;
+
+    doc["data"]["endTime"]["time"]["hours"] = newInfo->endTime.hours;
+    doc["data"]["endTime"]["time"]["minutes"] = newInfo->endTime.minutes;
+    doc["data"]["endTime"]["time"]["seconds"] = newInfo->endTime.seconds;
+    doc["data"]["endTime"]["date"]["year"] = newInfo->endTime.year;
+    doc["data"]["endTime"]["date"]["month"] = newInfo->endTime.month;
+    doc["data"]["endTime"]["date"]["day"] = newInfo->endTime.day;
 
     String message = " ";
     serializeJson(doc, message);
+    Serial.println(message);
     write(message, _pCharacteristicTopic);
 }
 
@@ -120,4 +136,13 @@ int BLEProvider::getConnectionState()
     int returnValue = _stateChanged ? _connectionState : -1;
     _stateChanged = false;
     return returnValue;
+}
+
+void BLEProvider::update()
+{
+    if (trackedTimesBuffer.getCount() > 0 && _connectionState)
+    {
+        Serial.println("Trying to consume new tracked times message");
+        sendTrackedTimes();
+    }
 }
