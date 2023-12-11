@@ -173,6 +173,14 @@ void TopicView::startTracking()
 void TopicView::stopTracking()
 {
     _viewState = TopicViewState::IDLE;
-    _vRTCProvider->stopTopicTimer();
+    // Make sure the variable still exist because we're referencing it, (declared static)
+    static TrackingInfo newInfo;
+    newInfo = _vRTCProvider->stopTopicTimer();
+    // Add topic id to TrackingInfo struct
+    newInfo.topicId = _topic.id;
+    Serial.println("Stopped tracking the topic");
+    Serial.println(newInfo.endTime.seconds);
+    Serial.println(newInfo.endTime.minutes);
+    trackedTimesBuffer.add(&newInfo);
     draw(true);
 }

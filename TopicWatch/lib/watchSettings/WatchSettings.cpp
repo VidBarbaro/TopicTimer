@@ -25,7 +25,7 @@ void WatchSettings::initializeSettings()
     _settings[4].editable = false;
     _settings[4].displayName = "Minimal tracking minutes";
     _settings[4].type = WatchSettingType::INT;
-    _settings[4].maxValue.intValue = 5;
+    _settings[4].maxValue.intValue = 1;
     _settings[4].minValue.intValue = 0;
     set<int>(minimalTrackingMinutes, 1);
 

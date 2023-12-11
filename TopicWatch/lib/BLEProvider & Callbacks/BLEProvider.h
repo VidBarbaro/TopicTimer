@@ -7,6 +7,7 @@
 #include "CharacteristicCallbacks.h"
 #include "ServerCallbacks.h"
 #include "VirtualRTCProvider.h"
+#include "TrackInfoBuffer.h"
 #include <list.h>
 
 class BLEProvider
@@ -23,12 +24,13 @@ public:
     BLEProvider() = default;
     ~BLEProvider() = default;
     void init();
-    bool write(String value, NimBLECharacteristic* characteristic);
+    bool write(String value, NimBLECharacteristic *characteristic);
     void sendTimeRequest(void);
     void sendTopicsRequest(void);
     void sendTrackedTimes(void);
     void setConnectionState(bool newState);
     int getConnectionState(void);
+    void update(void);
 };
 
 #endif

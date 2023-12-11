@@ -3,22 +3,7 @@
 
 #include "Arduino.h"
 #include "WatchSettings.h"
-
-struct DateTime
-{
-    int hours = 0;
-    int minutes = 0;
-    int seconds = 0;
-    int year = 0;
-    int month = 0;
-    int day = 0;
-};
-
-struct TrackingInfo
-{
-    DateTime startTime;
-    DateTime endTime;
-};
+#include "TrackingInfo.h"
 
 class VirtualRTCProvider
 {
