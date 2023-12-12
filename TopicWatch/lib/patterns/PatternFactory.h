@@ -2,7 +2,11 @@
 #define PATTERN_FACTORY
 
 #include "FeedbackPattern.h"
+
 #include "VibrationPattern_1.h"
+#include "VibrationPattern_2.h"
+
+#include "SoundPattern_1.h"
 
 enum PatternTypes
 {

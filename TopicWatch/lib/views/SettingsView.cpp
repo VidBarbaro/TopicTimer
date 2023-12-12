@@ -107,6 +107,8 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
     int selectedSoundPattern = WatchSettings::get<int>(soundPattern);
     FeedbackPattern *pattern = nullptr;
     FeedbackProvider::cancel();
+
+    Serial.println(setting.name);
     switch (setting.name)
     {
     case vibrationPattern:

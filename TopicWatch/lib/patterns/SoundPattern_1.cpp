@@ -1,18 +1,18 @@
-#include "VibrationPattern_1.h"
+#include "SoundPattern_1.h"
 
-void VibrationPattern_1::start()
+void SoundPattern_1::start()
 {
-    if (WatchSettings::get<int>(vibrationLevel) == 0)
+    if (WatchSettings::get<int>(soundLevel) == 0)
     {
         return;
     }
 
     _currentActionIndex = 0;
     _patternStarted = true;
-    _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin), &_pwm);
+    _actions[_currentActionIndex]->start(WatchSettings::get<int>(buzzerPin), &_pwm);
 }
 
-void VibrationPattern_1::update()
+void SoundPattern_1::update()
 {
     if (_patternStarted)
     {
@@ -23,7 +23,7 @@ void VibrationPattern_1::update()
 
             if (_currentActionIndex < _amountOfActions && _actions[_currentActionIndex] != nullptr)
             {
-                _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin), &_pwm);
+                _actions[_currentActionIndex]->start(WatchSettings::get<int>(buzzerPin), &_pwm);
             }
             else
             {
@@ -33,17 +33,17 @@ void VibrationPattern_1::update()
     }
 }
 
-void VibrationPattern_1::cancel()
+void SoundPattern_1::cancel()
 {
     if (_patternStarted)
     {
         _actions[_currentActionIndex]->cancel();
         _patternStarted = false;
-        _pwm.detach(WatchSettings::get<int>(vibrationMotorPin));
+        _pwm.detach(WatchSettings::get<int>(buzzerPin));
     }
 }
 
-bool VibrationPattern_1::isFinished() const
+bool SoundPattern_1::isFinished() const
 {
     return !_patternStarted;
 }

@@ -14,7 +14,6 @@ private:
 
 public:
     FeedbackProvider() = delete;
-    ~FeedbackProvider();
 
     static void playPattern(FeedbackPattern *pattern);
     static void update();

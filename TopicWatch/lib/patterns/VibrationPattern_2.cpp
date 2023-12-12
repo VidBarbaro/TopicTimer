@@ -1,6 +1,6 @@
-#include "VibrationPattern_1.h"
+#include "VibrationPattern_2.h"
 
-void VibrationPattern_1::start()
+void VibrationPattern_2::start()
 {
     if (WatchSettings::get<int>(vibrationLevel) == 0)
     {
@@ -12,7 +12,7 @@ void VibrationPattern_1::start()
     _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin), &_pwm);
 }
 
-void VibrationPattern_1::update()
+void VibrationPattern_2::update()
 {
     if (_patternStarted)
     {
@@ -33,7 +33,7 @@ void VibrationPattern_1::update()
     }
 }
 
-void VibrationPattern_1::cancel()
+void VibrationPattern_2::cancel()
 {
     if (_patternStarted)
     {
@@ -43,7 +43,7 @@ void VibrationPattern_1::cancel()
     }
 }
 
-bool VibrationPattern_1::isFinished() const
+bool VibrationPattern_2::isFinished() const
 {
     return !_patternStarted;
 }

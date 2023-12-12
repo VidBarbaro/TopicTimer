@@ -2,6 +2,11 @@
 
 FeedbackPattern *PatternFactory::createPattern(int patternValue, PatternTypes patternType)
 {
+    Serial.print("Creating pattern of type: ");
+    Serial.print(patternType);
+    Serial.print(" with value: ");
+    Serial.println(patternValue);
+
     switch (patternType)
     {
     case VIBRATION:
@@ -9,16 +14,16 @@ FeedbackPattern *PatternFactory::createPattern(int patternValue, PatternTypes pa
         {
         case 1:
             return new VibrationPattern_1();
-        // case 2:
-        //     return new VibrationPattern_2();
+        case 2:
+            return new VibrationPattern_2();
         default:
             return nullptr;
         }
     case SOUND:
         switch (patternValue)
         {
-        // case 1:
-        //     return new SoundPattern_1();
+        case 1:
+            return new SoundPattern_1();
         // case 2:
         //     return new SoundPattern_2();
         default:

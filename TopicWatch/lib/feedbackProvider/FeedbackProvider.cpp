@@ -2,12 +2,6 @@
 
 FeedbackPattern *FeedbackProvider::_currentPattern = nullptr;
 
-FeedbackProvider::~FeedbackProvider()
-{
-    delete _currentPattern;
-    _currentPattern = nullptr;
-}
-
 void FeedbackProvider::playPattern(FeedbackPattern *pattern)
 {
     if (_currentPattern == nullptr && pattern != nullptr)
@@ -25,8 +19,7 @@ void FeedbackProvider::update()
 
         if (_currentPattern->isFinished())
         {
-            delete _currentPattern;
-            _currentPattern = nullptr;
+            cancel();
         }
     }
 }
