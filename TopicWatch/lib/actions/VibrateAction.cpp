@@ -2,7 +2,7 @@
 
 void VibrateAction::start(int pin)
 {
-    int mappedStrength = WatchSettings::get<int>(vibrationLevel) > 0 ? map(WatchSettings::get<int>(vibrationLevel), WatchSettings::get<int>(vibrationLevel, -1), WatchSettings::get<int>(vibrationLevel, 1), 100, 255) : 0;
+    int mappedStrength = map(WatchSettings::get<int>(vibrationLevel), WatchSettings::get<int>(vibrationLevel, -1), WatchSettings::get<int>(vibrationLevel, 1), 100, 255);
     analogWrite(pin, mappedStrength);
     _pin = pin;
     _startTime = millis();
