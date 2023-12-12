@@ -1,12 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/pages/mobile/history_graph.dart';
 
-class HistoryCalendarComp extends StatelessWidget {
-  HistoryCalendarComp({super.key});
+class HistoryCalendarComp extends StatefulWidget {
+  @override
+  _HistoryCalendarCompState createState() => _HistoryCalendarCompState();
+}
 
-@override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('History Calendar'),
-        );
+class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
+  DateTime selectedDate = DateTime.now();
+
+  List<_BarData> myDataList = [
+    const _BarData(Colors.yellow, 18, 18),
+    const _BarData(Colors.green, 17, 8),
+    const _BarData(Colors.orange, 10, 15),
+    // Add more data items as needed...
+  ];
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              _selectDate(context);
+            },
+            child: Container(
+              padding: EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.calendar_today),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'Selected Date: ${selectedDate.toString().substring(0, 10)}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        // Correct the instantiation of HistoryGraphComp with named parameter syntax
+        HistoryGraphComp(),
+      ],
+    );
+  }
+}
+
+class _BarData {
+  const _BarData(this.color, this.value, this.shadowValue);
+  final Color color;
+  final double value;
+  final double shadowValue;
 }
