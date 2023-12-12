@@ -9,7 +9,7 @@ void VibrationPattern_2::start()
 
     _currentActionIndex = 0;
     _patternStarted = true;
-    _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin), &_pwm);
+    _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin));
 }
 
 void VibrationPattern_2::update()
@@ -23,7 +23,7 @@ void VibrationPattern_2::update()
 
             if (_currentActionIndex < _amountOfActions && _actions[_currentActionIndex] != nullptr)
             {
-                _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin), &_pwm);
+                _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin));
             }
             else
             {
@@ -39,7 +39,6 @@ void VibrationPattern_2::cancel()
     {
         _actions[_currentActionIndex]->cancel();
         _patternStarted = false;
-        _pwm.detach(WatchSettings::get<int>(vibrationMotorPin));
     }
 }
 

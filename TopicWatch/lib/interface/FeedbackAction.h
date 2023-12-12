@@ -4,7 +4,7 @@
 class FeedbackAction
 {
 public:
-    virtual void start(int pin, Pwm *pwm) = 0;
+    virtual void start(int pin) = 0;
     virtual void update() = 0;
     virtual void cancel() = 0;
     virtual bool isFinished() = 0;

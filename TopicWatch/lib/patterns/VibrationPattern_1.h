@@ -18,7 +18,6 @@ private:
         new WaitAction(0)};
     int _currentActionIndex;
     bool _patternStarted;
-    Pwm _pwm;
 
 public:
     VibrationPattern_1() : _currentActionIndex(0), _patternStarted(false){};
