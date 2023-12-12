@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'package:topictimer_flutter_application/pages/mobile/history_graph.dart';
 
 class HistoryCalendarComp extends StatefulWidget {
@@ -9,10 +10,10 @@ class HistoryCalendarComp extends StatefulWidget {
 class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
   DateTime selectedDate = DateTime.now();
 
-  List<_BarData> myDataList = [
-    const _BarData(Colors.yellow, 18, 18),
-    const _BarData(Colors.green, 17, 8),
-    const _BarData(Colors.orange, 10, 15),
+  List<BarData> myDataList = [
+    const BarData(Colors.yellow, 18, 18, 'Mat'),
+    const BarData(Colors.green, 17, 8, 'Bio'),
+    const BarData(Colors.orange, 10, 15, 'Che'),
     // Add more data items as needed...
   ];
 
@@ -61,16 +62,9 @@ class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
           ),
         ),
         SizedBox(height: 20),
-        // Correct the instantiation of HistoryGraphComp with named parameter syntax
-        HistoryGraphComp(),
+        // Change HistoryGraphComp so that it can take a dataList as its parameter
+        HistoryGraphComp(dataList: myDataList,),
       ],
     );
   }
-}
-
-class _BarData {
-  const _BarData(this.color, this.value, this.shadowValue);
-  final Color color;
-  final double value;
-  final double shadowValue;
 }

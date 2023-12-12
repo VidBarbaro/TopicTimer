@@ -1,17 +1,42 @@
+// import 'package:fl_chart/fl_chart.dart';
+// import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
+
+// class HistoryGraphComp extends StatelessWidget {
+//   final List<BarData> dataList;
+
+//   const HistoryGraphComp({
+//     Key? key,
+//     required this.dataList
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: BarChart(
+//         BarChartData(
+          
+//         )
+//       ),
+//     );
+//   }
+  
+// }
+
 import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class HistoryGraphComp extends StatefulWidget {
-  HistoryGraphComp({super.key});
+  final List<BarData> dataList;
+
+  const HistoryGraphComp({
+    Key? key,
+    required this.dataList
+  }) : super(key: key);
 
   final shadowColor = const Color(0xFFCCCCCC);
-  final dataList = [
-    const _BarData(Colors.yellow, 18, 18, 'Mat'),
-    const _BarData(Colors.green, 17, 8, 'Bio'),
-    const _BarData(Colors.orange, 10, 15, 'Che'),
-  ];
 
   @override
   State<HistoryGraphComp> createState() => _HistoryGraphCompState();
