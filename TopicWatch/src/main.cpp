@@ -3,7 +3,7 @@
 #include "ScreenProvider.h"
 #include "VirtualRTCProvider.h"
 #include "pwmWrite.h"
-// #include "FeedbackProvider.h"
+#include "FeedbackProvider.h"
 
 BLEProvider bleProvider;
 VirtualRTCProvider vrp;
@@ -18,7 +18,7 @@ void setup()
     bleProvider.init();
     sp.init(&vrp, &bleProvider);
 
-    // EXAMPLE VIBRATOR MOTOR CODE <- MAKE THIS A CLASS WITH DIFFERENT VIBRATION PATTERNS AND MAKE THE "POWER" A SETTING
+    // EXAMPLE VIBRATOR MOTOR CODE
     // pwm.write(2, 100);
     // delay(1000);
     // pwm.write(2, 255);

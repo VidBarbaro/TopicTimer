@@ -101,6 +101,33 @@ void SettingsView::_drawEditingView()
     }
 }
 
+void SettingsView::_playUpdatedPattern(WatchSetting setting)
+{
+    int selectedVibrationPattern = WatchSettings::get<int>(vibrationPattern);
+    int selectedSoundPattern = WatchSettings::get<int>(soundPattern);
+    FeedbackPattern *pattern = nullptr;
+    FeedbackProvider::cancel();
+    switch (setting.name)
+    {
+    case vibrationPattern:
+        pattern = PatternFactory::createPattern(selectedVibrationPattern, PatternTypes::VIBRATION);
+        if (pattern != nullptr)
+        {
+            FeedbackProvider::playPattern(pattern);
+        }
+        break;
+    case soundPattern:
+        pattern = PatternFactory::createPattern(selectedSoundPattern, PatternTypes::SOUND);
+        if (pattern != nullptr)
+        {
+            FeedbackProvider::playPattern(pattern);
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 void SettingsView::init(TFT_eSPI *tft, Border *border, VirtualRTCProvider *vRTCProvider, int *hasBluetoothConnnection, int *amountOfActiveViews, int *currentViewIndex)
 {
     _tft = tft;
@@ -197,6 +224,7 @@ void SettingsView::stopEditing()
 {
     _viewState = SettingViewState::IDLE;
     _editSettingsIndex = -1;
+    FeedbackProvider::cancel();
     draw(true);
 }
 
@@ -226,6 +254,11 @@ void SettingsView::incrementValue()
         break;
     default:
         break;
+    }
+
+    if (setting.name == vibrationPattern || setting.name == soundPattern)
+    {
+        _playUpdatedPattern(setting);
     }
 
     _editableSettings = WatchSettings::getEditableSettings(&_amountOfEditableSettings);
@@ -258,6 +291,11 @@ void SettingsView::decreaseValue()
         break;
     default:
         break;
+    }
+
+    if (setting.name == vibrationPattern || setting.name == soundPattern)
+    {
+        _playUpdatedPattern(setting);
     }
 
     _editableSettings = WatchSettings::getEditableSettings(&_amountOfEditableSettings);

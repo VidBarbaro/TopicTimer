@@ -12,6 +12,8 @@
 #include "TFT_eSPI.h"
 #include "VirtualRTCProvider.h"
 #include "WatchSettings.h"
+#include "FeedbackProvider.h"
+#include "PatternFactory.h"
 
 #include "NotoSansBold15.h"
 #include "NotoSansBold36.h"

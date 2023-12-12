@@ -1,16 +1,13 @@
-#ifndef FEEDBACK_ACTION
-#define FEEDBACK_ACTION
-
-#include "pwmWrite.h"
-#include "WatchSettings.h"
+#ifndef FEEDBACK_ACTION_INTERFACE
+#define FEEDBACK_ACTION_INTERFACE
 
 class FeedbackAction
 {
 public:
-    virtual void start(int pin) = 0;
+    virtual void start(int pin, Pwm *pwm) = 0;
     virtual void update() = 0;
-    virtual bool isFinished() const = 0;
-    virtual ~FeedbackAction();
+    virtual void cancel() = 0;
+    virtual bool isFinished() = 0;
 };
 
 #endif

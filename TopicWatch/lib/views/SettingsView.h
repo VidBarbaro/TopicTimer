@@ -29,6 +29,7 @@ private:
     void _setClickableItems();
     void _drawSelectionView();
     void _drawEditingView();
+    void _playUpdatedPattern(WatchSetting setting);
 
 public:
     SettingsView() = default;

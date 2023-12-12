@@ -2,6 +2,10 @@
 #define FEEDBACK_PROVIDER
 
 #include "FeedbackPattern.h"
+#include "VibrationPattern_1.h"
+#include "VibrateAction.h"
+#include "BuzzAction.h"
+#include "WaitAction.h"
 
 class FeedbackProvider
 {
@@ -14,6 +18,7 @@ public:
 
     static void playPattern(FeedbackPattern *pattern);
     static void update();
+    static void cancel();
 };
 
 #endif

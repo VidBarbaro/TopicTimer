@@ -178,9 +178,6 @@ void TopicView::stopTracking()
     newInfo = _vRTCProvider->stopTopicTimer();
     // Add topic id to TrackingInfo struct
     newInfo.topicId = _topic.id;
-    Serial.println("Stopped tracking the topic");
-    Serial.println(newInfo.endTime.seconds);
-    Serial.println(newInfo.endTime.minutes);
     trackedTimesBuffer.add(&newInfo);
     draw(true);
 }
