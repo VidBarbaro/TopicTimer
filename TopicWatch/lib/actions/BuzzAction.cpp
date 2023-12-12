@@ -2,7 +2,7 @@
 
 void BuzzAction::start(int pin)
 {
-    int mappedStrength = map(WatchSettings::get<int>(soundLevel), WatchSettings::get<int>(soundLevel, -1), WatchSettings::get<int>(soundLevel, 1), 0, 200);
+    int mappedStrength = map(WatchSettings::get<int>(soundLevel), WatchSettings::get<int>(soundLevel, -1), WatchSettings::get<int>(soundLevel, 1), 0, 50);
     analogWrite(pin, mappedStrength);
     _pin = pin;
     _startTime = millis();

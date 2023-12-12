@@ -111,6 +111,7 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
     Serial.println(setting.name);
     switch (setting.name)
     {
+    case vibrationLevel:
     case vibrationPattern:
         pattern = PatternFactory::createPattern(selectedVibrationPattern, PatternTypes::VIBRATION);
         if (pattern != nullptr)
@@ -118,6 +119,7 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
             FeedbackProvider::playPattern(pattern);
         }
         break;
+    case soundLevel:
     case soundPattern:
         pattern = PatternFactory::createPattern(selectedSoundPattern, PatternTypes::SOUND);
         if (pattern != nullptr)
@@ -258,7 +260,8 @@ void SettingsView::incrementValue()
         break;
     }
 
-    if (setting.name == vibrationPattern || setting.name == soundPattern)
+    if (setting.name == vibrationPattern || setting.name == soundPattern ||
+        setting.name == vibrationLevel || setting.name == soundLevel)
     {
         _playUpdatedPattern(setting);
     }
@@ -295,7 +298,8 @@ void SettingsView::decreaseValue()
         break;
     }
 
-    if (setting.name == vibrationPattern || setting.name == soundPattern)
+    if (setting.name == vibrationPattern || setting.name == soundPattern ||
+        setting.name == vibrationLevel || setting.name == soundLevel)
     {
         _playUpdatedPattern(setting);
     }
