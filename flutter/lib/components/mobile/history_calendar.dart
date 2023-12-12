@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 import 'package:topictimer_flutter_application/pages/mobile/history_graph.dart';
 
 class HistoryCalendarComp extends StatefulWidget {
@@ -11,10 +12,32 @@ class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
   DateTime selectedDate = DateTime.now();
 
   List<BarData> myDataList = [
-    const BarData(Colors.yellow, 18, 18, 'Mat'),
-    const BarData(Colors.green, 17, 8, 'Bio'),
-    const BarData(Colors.orange, 10, 15, 'Che'),
+    BarData(Colors.yellow, 10, 18, 'Mat', DateTime(2023, 12, 12)),
+    BarData(Colors.green, 10, 8, 'Bio', DateTime(2023, 12, 11)),
+    BarData(Colors.orange, 10, 15, 'Che', DateTime(2023, 12, 10)),
     // Add more data items as needed...
+  ];
+
+  List<BarData> newDataList = [
+    BarData(Colors.yellow, 17, 18, 'Mat', DateTime(2023, 12, 12)),
+    BarData(Colors.green, 15, 8, 'Bio', DateTime(2023, 12, 11)),
+    BarData(Colors.orange, 10, 15, 'Che', DateTime(2023, 12, 10)),
+    // Add more data items as needed...
+  ];
+
+
+
+  List<List<BarData>> dataList = [
+    [
+      BarData(Colors.yellow, 10, 18, 'Mat', DateTime(2023, 12, 10)),
+      BarData(Colors.green, 10, 8, 'Bio', DateTime(2023, 12, 10)),
+      BarData(Colors.orange, 10, 15, 'Che', DateTime(2023, 12, 10)),
+    ],
+    [
+      BarData(Colors.yellow, 17, 18, 'Mat', DateTime(2023, 12, 11)),
+      BarData(Colors.green, 15, 8, 'Bio', DateTime(2023, 12, 11)),
+      BarData(Colors.orange, 10, 15, 'Che', DateTime(2023, 12, 11)),
+    ]
   ];
 
   Future<void> _selectDate(BuildContext context) async {
@@ -28,7 +51,25 @@ class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
       setState(() {
         selectedDate = picked;
       });
+      updateDataList(newDataList, selectedDate);
     }
+  }
+
+  void updateDataList(List<BarData> newDataList, DateTime selectedDate) {
+    DateTime targetDate = selectedDate; // Replace this with your target date
+    newDataList.clear();
+    for (var outerList in dataList) {
+      for (var item in outerList) {
+        if (item.date.isAtSameMomentAs(targetDate)) {
+          // Perform actions if the date matches the target date
+          newDataList.add(item);
+        }
+      }
+    }
+    print(newDataList);
+    setState(() {
+      myDataList = newDataList;
+  });
   }
 
   @override
