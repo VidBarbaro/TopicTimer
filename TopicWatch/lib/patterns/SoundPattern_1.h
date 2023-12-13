@@ -1,11 +1,11 @@
 #ifndef SOUND_PATTERN_1
 #define SOUND_PATTERN_1
 
-#include "FeedbackPattern.h"
+#include "SoundFeedbackPattern.h"
 #include "BuzzAction.h"
 #include "WaitAction.h"
 
-class SoundPattern_1 : public FeedbackPattern
+class SoundPattern_1 : public SoundFeedbackPattern
 {
 private:
     static const int _amountOfActions = 6;

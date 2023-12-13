@@ -1,11 +1,11 @@
 #ifndef VIBRATION_PATTERN_1
 #define VIBRATION_PATTERN_1
 
-#include "FeedbackPattern.h"
+#include "VibrationFeedbackPattern.h"
 #include "VibrateAction.h"
 #include "WaitAction.h"
 
-class VibrationPattern_1 : public FeedbackPattern
+class VibrationPattern_1 : public VibrationFeedbackPattern
 {
 private:
     static const int _amountOfActions = 6;
