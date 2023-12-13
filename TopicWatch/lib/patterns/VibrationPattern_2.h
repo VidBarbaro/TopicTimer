@@ -8,14 +8,13 @@
 class VibrationPattern_2 : public VibrationFeedbackPattern
 {
 private:
-    static const int _amountOfActions = 6;
+    static const int _amountOfActions = 5;
     FeedbackAction *_actions[_amountOfActions] = {
         new VibrateAction(500),
         new WaitAction(250),
         new VibrateAction(500),
         new WaitAction(250),
-        new VibrateAction(750),
-        new WaitAction(0)};
+        new VibrateAction(750)};
     int _currentActionIndex;
     bool _patternStarted;
     bool _isPlaying = false;

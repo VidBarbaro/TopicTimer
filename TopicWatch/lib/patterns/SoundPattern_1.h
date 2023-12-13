@@ -8,14 +8,13 @@
 class SoundPattern_1 : public SoundFeedbackPattern
 {
 private:
-    static const int _amountOfActions = 6;
+    static const int _amountOfActions = 5;
     FeedbackAction *_actions[_amountOfActions] = {
         new BuzzAction(250),
         new WaitAction(250),
         new BuzzAction(250),
         new WaitAction(250),
-        new BuzzAction(750),
-        new WaitAction(0)};
+        new BuzzAction(750)};
     int _currentActionIndex;
     bool _patternStarted;
     bool _isPlaying = false;
