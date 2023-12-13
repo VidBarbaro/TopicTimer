@@ -19,6 +19,7 @@ bool VibrationPattern_2::start()
     _currentActionIndex = 0;
     _patternStarted = true;
     _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin));
+    _isPlaying = true;
     return true;
 }
 
@@ -37,7 +38,7 @@ void VibrationPattern_2::update()
             }
             else
             {
-                _patternStarted = false;
+                _isPlaying = false;
             }
         }
     }
@@ -49,10 +50,16 @@ void VibrationPattern_2::cancel()
     {
         _actions[_currentActionIndex]->cancel();
         _patternStarted = false;
+        _isPlaying = false;
     }
 }
 
-bool VibrationPattern_2::isFinished() const
+bool VibrationPattern_2::isFinished()
 {
-    return !_patternStarted;
+    if (!_isPlaying && _patternStarted)
+    {
+        _patternStarted = false;
+        return true;
+    }
+    return false;
 }

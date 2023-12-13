@@ -1,29 +1,26 @@
 #include "PatternFactory.h"
 
-FeedbackPattern *PatternFactory::createPattern(int patternValue, PatternTypes patternType)
+VibrationFeedbackPattern *PatternFactory::createVibrationPattern(int patternValue)
 {
-    switch (patternType)
+    switch (patternValue)
     {
-    case VIBRATION:
-        switch (patternValue)
-        {
-        case 1:
-            return new VibrationPattern_1();
-        case 2:
-            return new VibrationPattern_2();
-        default:
-            return nullptr;
-        }
-    case SOUND:
-        switch (patternValue)
-        {
-        case 1:
-            return new SoundPattern_1();
-        // case 2:
-        //     return new SoundPattern_2();
-        default:
-            return nullptr;
-        }
+    case 1:
+        return new VibrationPattern_1();
+    case 2:
+        return new VibrationPattern_2();
+    default:
+        return nullptr;
+    }
+}
+
+SoundFeedbackPattern *PatternFactory::createSoundPattern(int patternValue)
+{
+    switch (patternValue)
+    {
+    case 1:
+        return new SoundPattern_1();
+    // case 2:
+    //     return new SoundPattern_2();
     default:
         return nullptr;
     }

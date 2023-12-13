@@ -15,6 +15,9 @@ void setup()
 
     bleProvider.init();
     sp.init(&vrp, &bleProvider);
+
+    FeedbackProvider::setVibrationPattern(PatternFactory::createVibrationPattern(WatchSettings::get<int>(vibrationPattern)));
+    FeedbackProvider::setSoundPattern(PatternFactory::createSoundPattern(WatchSettings::get<int>(soundPattern)));
 }
 
 void loop()

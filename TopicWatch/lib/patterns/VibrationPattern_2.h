@@ -18,6 +18,7 @@ private:
         new WaitAction(0)};
     int _currentActionIndex;
     bool _patternStarted;
+    bool _isPlaying = false;
 
 public:
     VibrationPattern_2() : _currentActionIndex(0), _patternStarted(false){};
@@ -25,7 +26,7 @@ public:
     bool start() override;
     void update() override;
     void cancel() override;
-    bool isFinished() const override;
+    bool isFinished() override;
 };
 
 #endif

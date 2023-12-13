@@ -112,7 +112,7 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
     {
     case vibrationLevel:
     case vibrationPattern:
-        pattern = PatternFactory::createPattern(selectedVibrationPattern, PatternTypes::VIBRATION);
+        pattern = PatternFactory::createVibrationPattern(selectedVibrationPattern);
         if (pattern != nullptr)
         {
             FeedbackProvider::playPattern(pattern);
@@ -120,7 +120,7 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
         break;
     case soundLevel:
     case soundPattern:
-        pattern = PatternFactory::createPattern(selectedSoundPattern, PatternTypes::SOUND);
+        pattern = PatternFactory::createSoundPattern(selectedSoundPattern);
         if (pattern != nullptr)
         {
             FeedbackProvider::playPattern(pattern);
@@ -259,10 +259,24 @@ void SettingsView::incrementValue()
         break;
     }
 
-    if (setting.name == vibrationPattern || setting.name == soundPattern ||
-        setting.name == vibrationLevel || setting.name == soundLevel)
+    switch (setting.name)
     {
+    case vibrationPattern:
+        FeedbackProvider::setVibrationPattern(PatternFactory::createVibrationPattern(WatchSettings::get<int>(vibrationPattern)));
         _playUpdatedPattern(setting);
+        break;
+    case vibrationLevel:
+        _playUpdatedPattern(setting);
+        break;
+    case soundPattern:
+        FeedbackProvider::setSoundPattern(PatternFactory::createSoundPattern(WatchSettings::get<int>(soundPattern)));
+        _playUpdatedPattern(setting);
+        break;
+    case soundLevel:
+        _playUpdatedPattern(setting);
+        break;
+    default:
+        break;
     }
 
     _editableSettings = WatchSettings::getEditableSettings(&_amountOfEditableSettings);

@@ -19,7 +19,7 @@ bool SoundPattern_1::start()
     _currentActionIndex = 0;
     _patternStarted = true;
     _actions[_currentActionIndex]->start(WatchSettings::get<int>(buzzerPin));
-
+    _isPlaying = true;
     return true;
 }
 
@@ -38,7 +38,7 @@ void SoundPattern_1::update()
             }
             else
             {
-                _patternStarted = false;
+                _isPlaying = false;
             }
         }
     }
@@ -50,10 +50,16 @@ void SoundPattern_1::cancel()
     {
         _actions[_currentActionIndex]->cancel();
         _patternStarted = false;
+        _isPlaying = false;
     }
 }
 
-bool SoundPattern_1::isFinished() const
+bool SoundPattern_1::isFinished()
 {
-    return !_patternStarted;
+    if (!_isPlaying && _patternStarted)
+    {
+        _patternStarted = false;
+        return true;
+    }
+    return false;
 }
