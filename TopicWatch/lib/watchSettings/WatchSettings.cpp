@@ -91,7 +91,7 @@ void WatchSettings::initializeSettings()
     _settings[17].displayName = "Vibration pattern";
     _settings[17].maxValue.intValue = 5;
     _settings[17].minValue.intValue = 1;
-    set<int>(vibrationPattern, 2);
+    set<int>(vibrationPattern, 1);
 
     _settings[18].name = soundLevel;
     _settings[18].type = WatchSettingType::INT;
