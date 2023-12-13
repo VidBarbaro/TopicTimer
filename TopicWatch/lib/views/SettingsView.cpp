@@ -108,7 +108,6 @@ void SettingsView::_playUpdatedPattern(WatchSetting setting)
     FeedbackPattern *pattern = nullptr;
     FeedbackProvider::cancel();
 
-    Serial.println(setting.name);
     switch (setting.name)
     {
     case vibrationLevel:

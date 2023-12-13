@@ -2,11 +2,6 @@
 
 FeedbackPattern *PatternFactory::createPattern(int patternValue, PatternTypes patternType)
 {
-    Serial.print("Creating pattern of type: ");
-    Serial.print(patternType);
-    Serial.print(" with value: ");
-    Serial.println(patternValue);
-
     switch (patternType)
     {
     case VIBRATION:
