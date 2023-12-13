@@ -7,7 +7,10 @@ void FeedbackProvider::playPattern(FeedbackPattern *pattern)
     if (_currentPattern == nullptr && pattern != nullptr)
     {
         _currentPattern = pattern;
-        _currentPattern->start(); // TODO MAKE SURE THIS KNOWS WHEN IT DID NOT START BECAUSE OF LEVEL SETTING
+        if (_currentPattern->start())
+        {
+            cancel();
+        }
     }
 }
 

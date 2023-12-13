@@ -21,11 +21,11 @@ private:
 
 public:
     VibrationPattern_2() : _currentActionIndex(0), _patternStarted(false){};
-    void start() override;
+    ~VibrationPattern_2();
+    bool start() override;
     void update() override;
     void cancel() override;
     bool isFinished() const override;
-    ~VibrationPattern_2() = default;
 };
 
 #endif

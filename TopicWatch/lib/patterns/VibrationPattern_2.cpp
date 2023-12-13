@@ -1,15 +1,25 @@
 #include "VibrationPattern_2.h"
 
-void VibrationPattern_2::start()
+VibrationPattern_2::~VibrationPattern_2()
+{
+    for (int i = 0; i < _amountOfActions; i++)
+    {
+        delete _actions[i];
+        _actions[i] = nullptr;
+    }
+}
+
+bool VibrationPattern_2::start()
 {
     if (WatchSettings::get<int>(vibrationLevel) == 0)
     {
-        return;
+        return false;
     }
 
     _currentActionIndex = 0;
     _patternStarted = true;
     _actions[_currentActionIndex]->start(WatchSettings::get<int>(vibrationMotorPin));
+    return true;
 }
 
 void VibrationPattern_2::update()

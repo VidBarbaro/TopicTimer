@@ -21,11 +21,11 @@ private:
 
 public:
     SoundPattern_1() : _currentActionIndex(0), _patternStarted(false){};
-    void start() override;
+    ~SoundPattern_1();
+    bool start() override;
     void update() override;
     void cancel() override;
     bool isFinished() const override;
-    ~SoundPattern_1() = default;
 };
 
 #endif

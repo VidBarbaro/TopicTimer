@@ -1,15 +1,26 @@
 #include "SoundPattern_1.h"
 
-void SoundPattern_1::start()
+SoundPattern_1::~SoundPattern_1()
+{
+    for (int i = 0; i < _amountOfActions; i++)
+    {
+        delete _actions[i];
+        _actions[i] = nullptr;
+    }
+}
+
+bool SoundPattern_1::start()
 {
     if (WatchSettings::get<int>(soundLevel) == 0)
     {
-        return;
+        return false;
     }
 
     _currentActionIndex = 0;
     _patternStarted = true;
     _actions[_currentActionIndex]->start(WatchSettings::get<int>(buzzerPin));
+
+    return true;
 }
 
 void SoundPattern_1::update()

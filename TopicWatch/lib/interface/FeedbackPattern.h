@@ -6,7 +6,7 @@
 class FeedbackPattern
 {
 public:
-    virtual void start() = 0;
+    virtual bool start() = 0;
     virtual void update() = 0;
     virtual void cancel() = 0;
     virtual bool isFinished() const = 0;
