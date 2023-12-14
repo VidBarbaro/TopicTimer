@@ -5,57 +5,93 @@ import 'package:topictimer_flutter_application/components/mobile/models/topic_mo
 //In this file all JSON objects are mentioned
 
 class Time {
-  int _hours = 0;
-  int get hours => _hours;
-  int _minutes = 0;
-  int get minutes => _minutes;
-  int _seconds = 0;
-  int get seconds => _seconds;
+  int _hour = 0;
+  int get hour => _hour;
+  int _minute = 0;
+  int get minute => _minute;
+  int _second = 0;
+  int get second => _second;
 
-  Time({required hours, required minutes, required seconds}) {
-    _hours = hours;
-    _minutes = minutes;
-    _seconds = seconds;
+  void setHour(int h) {
+    if (h > 0) {
+      _hour = h;
+    }
+  }
+
+  void setMinute(int m) {
+    if (m > 0) {
+      _minute = m;
+    }
+  }
+
+  void setSecond(int s) {
+    if (s > 0) {
+      _second = s;
+    }
+  }
+
+  Time({required hour, required minute, required second}) {
+    _hour = hour;
+    _minute = minute;
+    _second = second;
   }
 
   Time.empty() {
-    _hours = 0;
-    _minutes = 0;
-    _seconds = 0;
+    _hour = 0;
+    _minute = 0;
+    _second = 0;
   }
 
   Map<String, dynamic> toJson() =>
-      {'"hours"': _hours, '"minutes"': _minutes, '"seconds"': _seconds};
+      {'"hour"': _hour, '"minute"': _minute, '"second"': _second};
 }
 
 class Date {
-  int _years = 0;
-  int get years => _years;
-  int _months = 0;
-  int get months => _months;
-  int _days = 0;
-  int get days => _days;
+  int _year = 0;
+  int get year => _year;
+  int _month = 0;
+  int get month => _month;
+  int _day = 0;
+  int get day => _day;
 
-  Date({required years, required months, required days}) {
-    _years = years;
-    _months = months;
-    _days = days;
+  void setYear(int y) {
+    if (y > 0) {
+      _year = y;
+    }
+  }
+
+  void setMonth(int m) {
+    if (m > 0) {
+      _month = m;
+    }
+  }
+
+  void setDay(int d) {
+    if (d > 0) {
+      _day = d;
+    }
+  }
+
+  Date({required year, required month, required day}) {
+    _year = year;
+    _month = month;
+    _day = day;
   }
 
   Date.empty() {
-    _years = 0;
-    _months = 0;
-    _days = 0;
+    _year = 0;
+    _month = 0;
+    _day = 0;
   }
 
   Map<String, dynamic> toJson() =>
-      {'"year"': _years, '"month"': _months, '"day"': _days};
+      {'"year"': _year, '"month"': _month, '"day"': _day};
 }
 
 class DateTimeJSON {
-  Time _time = Time(hours: 0, minutes: 0, seconds: 0);
+  Time _time = Time(hour: 0, minute: 0, second: 0);
   Time get time => _time;
-  Date _date = Date(years: 0, months: 0, days: 0);
+  Date _date = Date(year: 0, month: 0, day: 0);
   Date get date => _date;
 
   DateTimeJSON({required time, required date}) {
@@ -70,13 +106,13 @@ class DateTimeJSON {
 
   DateTimeJSON.now() {
     _time = Time(
-        hours: DateTime.now().hour,
-        minutes: DateTime.now().minute,
-        seconds: DateTime.now().second);
+        hour: DateTime.now().hour,
+        minute: DateTime.now().minute,
+        second: DateTime.now().second);
     _date = Date(
-        days: DateTime.now().day,
-        months: DateTime.now().month,
-        years: DateTime.now().year);
+        day: DateTime.now().day,
+        month: DateTime.now().month,
+        year: DateTime.now().year);
   }
 
   setTime(Time newTime) {
@@ -92,8 +128,8 @@ class SetTimeMessage {
   final String _command = '"setTime"';
   String get command => _command;
   DateTimeJSON _data = DateTimeJSON(
-      time: Time(hours: 0, minutes: 0, seconds: 0),
-      date: Date(years: 0, months: 0, days: 0));
+      time: Time(hour: 0, minute: 0, second: 0),
+      date: Date(year: 0, month: 0, day: 0));
   DateTimeJSON get data => _data;
 
   SetTimeMessage({required Time time, required Date date}) {
@@ -106,8 +142,8 @@ class SetTimeMessage {
 }
 
 class TopicData {
-  int _id = 0;
-  int get id => _id;
+  String _id = '_';
+  String get id => _id;
 
   DateTimeJSON _beginTime = DateTimeJSON.empty();
   DateTimeJSON get beginTime => _beginTime;
@@ -124,9 +160,26 @@ class TopicData {
   }
 
   TopicData.empty() {
-    _id = 0;
+    _id = '_';
     _beginTime = DateTimeJSON.empty();
     _endTime = DateTimeJSON.empty();
+  }
+
+  TopicData.fromJson(Map<String, dynamic> json) {
+    json['topic']['id'] = _id;
+    _beginTime._time.setHour(json['beg']['t']['h']);
+    _beginTime._time.setMinute(json['beg']['t']['m']);
+    _beginTime._time.setSecond(json['beg']['t']['s']);
+    _beginTime._date.setYear(json['beg']['d']['Y']);
+    _beginTime._date.setMonth(json['beg']['d']['M']);
+    _beginTime._date.setDay(json['beg']['d']['D']);
+
+    _endTime._time.setHour(json['end']['t']['h']);
+    _endTime._time.setMinute(json['end']['t']['m']);
+    _endTime._time.setSecond(json['end']['t']['s']);
+    _endTime._date.setYear(json['end']['d']['Y']);
+    _endTime._date.setMonth(json['end']['d']['M']);
+    _endTime._date.setDay(json['end']['d']['D']);
   }
 
   Map<String, dynamic> toJson() => {

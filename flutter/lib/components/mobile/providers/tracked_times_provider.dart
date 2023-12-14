@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class TrackedTimesProvider with ChangeNotifier {
-  List<TopicData> _trackedTimes = List<TopicData>.empty();
+  final List<TopicData> _trackedTimes = List<TopicData>.empty(growable: true);
+  List<TopicData> get trackedTimes => _trackedTimes;
 
-  List<TopicData> getTrackedTimes(int topicID) {
-    List<TopicData> gatheredData = List<TopicData>.empty();
+  List<TopicData> getTrackTimes() {
+    return _trackedTimes;
+  }
+
+  List<TopicData> getTrackedTimesOnTopicId(int topicID) {
+    final List<TopicData> gatheredData = List<TopicData>.empty();
     for (int i = 0; i < _trackedTimes.length; i++) {
       if (topicID == _trackedTimes[i].id) {
         gatheredData.add(_trackedTimes[i]);
@@ -13,6 +18,23 @@ class TrackedTimesProvider with ChangeNotifier {
     }
     notifyListeners();
     return gatheredData;
+  }
+
+  List<TopicData> getTrackedTimesOnDate(Date date) {
+    final List<TopicData> gatheredData = List<TopicData>.empty();
+    for (int i = 0; i < _trackedTimes.length; i++) {
+      if (date.day == _trackedTimes[i].endTime.date.day &&
+          date.month == _trackedTimes[i].endTime.date.month &&
+          date.year == _trackedTimes[i].endTime.date.year) {
+        gatheredData.add(_trackedTimes[i]);
+      }
+    }
+    notifyListeners();
+    return gatheredData;
+  }
+
+  int getAmountOfTimes() {
+    return _trackedTimes.length;
   }
 
   bool addTrackedTime(TopicData newData) {

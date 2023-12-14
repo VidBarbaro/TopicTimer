@@ -10,6 +10,7 @@ import 'package:topictimer_flutter_application/components/mobile/providers/bluet
 import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 import 'package:topictimer_flutter_application/pages/mobile/home.dart';
 import 'package:topictimer_flutter_application/routes/desktop.dart';
 import 'package:topictimer_flutter_application/routes/website.dart';
@@ -68,6 +69,9 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ChangeNotifierProvider(
                   create: (context) => TopicProvider(),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => TrackedTimesProvider(),
                 )
               ],
               child: const MaterialApp(
