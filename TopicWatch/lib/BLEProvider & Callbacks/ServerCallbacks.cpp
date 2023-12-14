@@ -27,5 +27,7 @@ void ServerCallbacks::onDisconnect(NimBLEServer *pServer)
 
     bleProvider->setConnectionState(false);
 
+    VirtualRTCProvider::clearDateTime();
+
     NimBLEDevice::startAdvertising();
 }

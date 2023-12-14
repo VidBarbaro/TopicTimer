@@ -53,9 +53,9 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
         if (doc["command"] == "setTime")
         {
             Serial.println("Command found");
-            int h = doc["data"]["time"]["hours"];
-            int m = doc["data"]["time"]["minutes"];
-            int s = doc["data"]["time"]["seconds"];
+            int h = doc["data"]["time"]["hour"];
+            int m = doc["data"]["time"]["minute"];
+            int s = doc["data"]["time"]["second"];
 
             int y = doc["data"]["date"]["year"];
             int mo = doc["data"]["date"]["month"];

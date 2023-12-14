@@ -76,21 +76,22 @@ void BLEProvider::sendTrackedTimes(void)
         return;
     }
 
+    // Can't write full key values because of BLE message size restrictions, MTU size already maxed: 247
     doc["command"] = "setTrackedTime";
-    doc["data"]["topic"]["id"] = newInfo->topicId;
-    doc["data"]["beginTime"]["time"]["hours"] = newInfo->startTime.hours;
-    doc["data"]["beginTime"]["time"]["minutes"] = newInfo->startTime.minutes;
-    doc["data"]["beginTime"]["time"]["seconds"] = newInfo->startTime.seconds;
-    doc["data"]["beginTime"]["date"]["year"] = newInfo->startTime.year;
-    doc["data"]["beginTime"]["date"]["month"] = newInfo->startTime.month;
-    doc["data"]["beginTime"]["date"]["day"] = newInfo->startTime.day;
+    doc["topic"]["id"] = newInfo->topicId;
+    doc["beg"]["t"]["h"] = newInfo->startTime.hours;
+    doc["beg"]["t"]["m"] = newInfo->startTime.minutes;
+    doc["beg"]["t"]["s"] = newInfo->startTime.seconds;
+    doc["beg"]["d"]["Y"] = newInfo->startTime.year;
+    doc["beg"]["d"]["M"] = newInfo->startTime.month;
+    doc["beg"]["d"]["D"] = newInfo->startTime.day;
 
-    doc["data"]["endTime"]["time"]["hours"] = newInfo->endTime.hours;
-    doc["data"]["endTime"]["time"]["minutes"] = newInfo->endTime.minutes;
-    doc["data"]["endTime"]["time"]["seconds"] = newInfo->endTime.seconds;
-    doc["data"]["endTime"]["date"]["year"] = newInfo->endTime.year;
-    doc["data"]["endTime"]["date"]["month"] = newInfo->endTime.month;
-    doc["data"]["endTime"]["date"]["day"] = newInfo->endTime.day;
+    doc["end"]["t"]["h"] = newInfo->endTime.hours;
+    doc["end"]["t"]["m"] = newInfo->endTime.minutes;
+    doc["end"]["t"]["s"] = newInfo->endTime.seconds;
+    doc["end"]["d"]["Y"] = newInfo->endTime.year;
+    doc["end"]["d"]["M"] = newInfo->endTime.month;
+    doc["end"]["d"]["D"] = newInfo->endTime.day;
 
     String message = " ";
     serializeJson(doc, message);
