@@ -27,6 +27,7 @@ public:
     VirtualRTCProvider();
     ~VirtualRTCProvider() = default;
     static void setTime(int hours, int minutes, int seconds, int year, int month, int day);
+    static void clearTrackTime(void);
     DateTime *getTime();
     DateTime *getTrackingTime();
     void startTopicTimer();

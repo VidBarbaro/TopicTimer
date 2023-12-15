@@ -136,6 +136,25 @@ void VirtualRTCProvider::setTime(int hours, int minutes, int seconds, int year, 
     _dateTime.day = day;
 }
 
+void VirtualRTCProvider::clearTrackTime()
+{
+    _trackingInfo.startTime.hours = 0;
+    _trackingInfo.startTime.minutes = 0;
+    _trackingInfo.startTime.seconds = 0;
+    _trackingInfo.startTime.year = 0;
+    _trackingInfo.startTime.month = 0;
+    _trackingInfo.startTime.day = 0;
+
+    _trackingInfo.endTime.hours = 0;
+    _trackingInfo.endTime.minutes = 0;
+    _trackingInfo.endTime.seconds = 0;
+    _trackingInfo.endTime.year = 0;
+    _trackingInfo.endTime.month = 0;
+    _trackingInfo.endTime.day = 0;
+
+    _trackingInfo.topicId = "";
+}
+
 DateTime *VirtualRTCProvider::getTime()
 {
     return &_dateTime;
