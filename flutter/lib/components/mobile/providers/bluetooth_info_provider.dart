@@ -5,6 +5,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
 class BluetoothInfoProvider with ChangeNotifier {
   static DiscoveredDevice? _device;
@@ -199,13 +200,13 @@ class BluetoothInfoProvider with ChangeNotifier {
   static Future<void> sendTime() async {
     SetTimeMessage messageJSON = SetTimeMessage(
         date: Date(
-            years: DateTime.now().year,
-            months: DateTime.now().month,
-            days: DateTime.now().day),
+            year: DateTime.now().year,
+            month: DateTime.now().month,
+            day: DateTime.now().day),
         time: Time(
-            hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,
-            seconds: DateTime.now().second));
+            hour: DateTime.now().hour,
+            minute: DateTime.now().minute,
+            second: DateTime.now().second));
     await writeMessage(messageJSON.toJson().toString(), _timeCharacteristic);
   }
 
@@ -277,6 +278,8 @@ class BluetoothInfoProvider with ChangeNotifier {
     }
     Map<String, dynamic> messageJSON = jsonDecode(message);
 
+    print(messageJSON.toString());
+
     if (messageJSON.isEmpty) {
       //empty message with no command received, ignore the message
       return;
@@ -290,6 +293,9 @@ class BluetoothInfoProvider with ChangeNotifier {
         print('[BLE] Received: getTopics command');
         await sendRemoveAllTopics();
         await sendAllTopics(TopicProvider.getTopics());
+      } else if (messageJSON['command'] == 'setTrackedTime') {
+        print('setTrackedTimes command found');
+        TrackedTimesProvider().addTrackedTime(TopicData.fromJson(messageJSON));
       } else {
         print('Unhandled message');
       }
