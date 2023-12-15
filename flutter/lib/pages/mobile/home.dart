@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
@@ -101,6 +102,8 @@ class HomePageMobileState extends State<HomePageMobile> {
 
   @override
   Widget build(BuildContext context) {
+    //When building the home page, also fetch the topics from the local storage
+    context.read<TopicProvider>().checkLocalStorage();
     return Consumer<ThemeChangeProvider>(
         builder: (context, themeChangeProvider, child) {
       context.read<BluetoothInfoProvider>().bluetoothEnabled();
