@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+
 class HistoryGraphComp extends StatefulWidget {
   final List<BarData> dataList;
 
@@ -64,7 +65,7 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
             titlesData: FlTitlesData(
               show: true,
               leftTitles: AxisTitles(
-                drawBelowEverything: true,
+                drawBehindEverything: true,
                 sideTitles: SideTitles(
                   showTitles: true,
                   reservedSize: 30,
@@ -89,8 +90,8 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
                   },
                 ),
               ),
-              rightTitles: const AxisTitles(),
-              topTitles: const AxisTitles(),
+              rightTitles:  AxisTitles(),
+              topTitles:  AxisTitles(),
             ),
             gridData: FlGridData(
               show: true,
