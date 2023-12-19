@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="test_application"
+        android:label="TopicTimer"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/topictimeremblem">
         <activity
             android:name=".MainActivity"
             android:exported="true"
