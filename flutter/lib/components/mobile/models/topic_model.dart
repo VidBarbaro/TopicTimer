@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class TopicModel {
   TopicModel(this.name, this.color);
   TopicModel.empty();
-  UniqueKey id = UniqueKey();
+  TopicModel.withId(
+      {required this.id, required this.name, required this.color});
+  String id = UniqueKey().toString();
   String name = 'This topic was not initialized correctly';
   Color color = Colors.transparent;
 
