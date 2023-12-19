@@ -185,6 +185,11 @@ ClickableItem *SettingsView::getListOfClickableItems(int *arraySize)
 
 void SettingsView::pageDown()
 {
+    if (_viewState == SettingViewState::EDITING)
+    {
+        return;
+    }
+
     _verticalPageIndex++;
 
     if (_editableSettings[0 + (_amountOfSettingsPerPage * _verticalPageIndex)].displayName == "")
@@ -199,6 +204,11 @@ void SettingsView::pageDown()
 
 void SettingsView::pageUp()
 {
+    if (_viewState == SettingViewState::EDITING)
+    {
+        return;
+    }
+
     _verticalPageIndex--;
 
     if (_verticalPageIndex < 0)
