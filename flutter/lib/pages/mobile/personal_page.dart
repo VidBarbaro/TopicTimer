@@ -14,15 +14,23 @@ class MobilePersonalPage extends StatelessWidget {
         TopBar(
           key: super.key,
         ),
-        // ProfileDetailsComp
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+// ProfileDetailsComp
         ProfileDetailsComp(key: super.key),
         // SchoolDetailsComp
         SchoolDetailsComp(key: super.key),
-        SizedBox(
+                const SizedBox(
           height: 10,
         ),
         // PasswordChangeComp
-        Expanded(child: PasswordChangeComp(key: super.key))
+                PasswordChangeComp(key: super.key)
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
