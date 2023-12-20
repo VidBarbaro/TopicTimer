@@ -33,7 +33,7 @@ class _PlannedGoalsCompState extends State<PlannedGoalsComp> {
                     child: ListTile(
                       title: Text(goal.topic),
                       subtitle: Text(
-                        'Date: ${goal.date.toString()} \nDuration: ${goal.duration.toStringAsFixed(2)} minutes',
+                        'Duration: ${goal.duration.toStringAsFixed(2)} minutes',
                       ),
                     ),
                   ),

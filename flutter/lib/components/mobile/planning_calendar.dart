@@ -104,7 +104,8 @@ class _PlanningCalendarCompState extends State<PlanningCalendarComp> {
         SizedBox(height: 0),
         // Change HistoryGraphComp so that it can take a dataList as its parameter
         // HistoryGraphComp(dataList: myDataList,),
-        PlannedGoalsComp(dataList: myDataList)
+        PlannedGoalsComp(dataList: myDataList),
+        
       ],
     );
   }
