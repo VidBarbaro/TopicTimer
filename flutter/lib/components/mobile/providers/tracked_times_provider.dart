@@ -12,7 +12,7 @@ class TrackedTimesProvider with ChangeNotifier {
   List<TopicData> getTrackedTimesOnTopicId(int topicID) {
     final List<TopicData> gatheredData = List<TopicData>.empty();
     for (int i = 0; i < _trackedTimes.length; i++) {
-      if (topicID == _trackedTimes[i].id) {
+      if (topicID.toString() == _trackedTimes[i].id) {
         gatheredData.add(_trackedTimes[i]);
       }
     }
