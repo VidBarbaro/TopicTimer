@@ -296,7 +296,9 @@ class BluetoothInfoProvider with ChangeNotifier {
         await sendAllTopics(TopicProvider.getTopics());
       } else if (messageJSON['command'] == 'setTrackedTime') {
         print('setTrackedTimes command found');
-        TrackedTimesProvider().addTrackedTime(TopicData.fromJson(messageJSON));
+        TrackedTimesProvider().addTrackedTime(TopicData.fromJson(messageJSON))
+            ? print('Added tracked time')
+            : print('Failed to add tracked time');
       } else {
         print('Unhandled message');
       }
