@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class TrackedTimesProvider with ChangeNotifier {
-  final List<TopicData> _trackedTimes = List<TopicData>.empty(growable: true);
+  static final List<TopicData> _trackedTimes = List<TopicData>.empty(growable: true);
   List<TopicData> get trackedTimes => _trackedTimes;
 
   List<TopicData> getTrackTimes() {
@@ -21,15 +21,16 @@ class TrackedTimesProvider with ChangeNotifier {
   }
 
   List<TopicData> getTrackedTimesOnDate(Date date) {
-    final List<TopicData> gatheredData = List<TopicData>.empty();
+    final List<TopicData> gatheredData = List<TopicData>.empty(growable: true);
     for (int i = 0; i < _trackedTimes.length; i++) {
+      print('Searching for: ${date.day}, found: ${_trackedTimes[i].endTime.date.day}');
       if (date.day == _trackedTimes[i].endTime.date.day &&
           date.month == _trackedTimes[i].endTime.date.month &&
           date.year == _trackedTimes[i].endTime.date.year) {
         gatheredData.add(_trackedTimes[i]);
       }
     }
-    notifyListeners();
+    // notifyListeners();
     return gatheredData;
   }
 

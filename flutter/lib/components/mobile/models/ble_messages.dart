@@ -166,7 +166,7 @@ class TopicData {
   }
 
   TopicData.fromJson(Map<String, dynamic> json) {
-    json['topic']['id'] = _id;
+    _id = json['topic']['id'];
     _beginTime._time.setHour(json['beg']['t']['h']);
     _beginTime._time.setMinute(json['beg']['t']['m']);
     _beginTime._time.setSecond(json['beg']['t']['s']);
