@@ -37,7 +37,7 @@ class TopicProvider with ChangeNotifier {
     return true;
   }
 
-  TopicModel getTopicById(UniqueKey id) =>
+  TopicModel getTopicById(String id) =>
       _topicList.firstWhere((topic) => topic.id == id);
 
   static List<TopicModel> getTopics() {
