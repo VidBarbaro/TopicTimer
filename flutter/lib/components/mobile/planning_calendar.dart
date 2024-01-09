@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
-import 'package:topictimer_flutter_application/components/mobile/models/topic_goals_data.dart';
-import 'package:topictimer_flutter_application/components/mobile/history_graph.dart';
 import 'package:topictimer_flutter_application/components/mobile/planned_goals.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
@@ -14,33 +11,6 @@ class PlanningCalendarComp extends StatefulWidget {
 
 class _PlanningCalendarCompState extends State<PlanningCalendarComp> {
   Date selectedDate = Date(day: DateTime.now().day, month: DateTime.now().month, year: DateTime.now().year);
-
-  List<TopicGoals> myDataList = [
-    TopicGoals("Math", DateTime(2023, 12, 12), 60),
-    TopicGoals("Biology", DateTime(2023, 12, 12), 45),
-    TopicGoals("Chemistry", DateTime(2023, 12, 12), 30),
-  ];
-
-  List<TopicGoals> newDataList = [
-    TopicGoals("Math", DateTime(2023, 12, 12), 60),
-    TopicGoals("Biology", DateTime(2023, 12, 12), 45),
-    TopicGoals("Chemistry", DateTime(2023, 12, 12), 30),
-  ];
-
-
-
-  List<List<TopicGoals>> dataList = [
-    [
-      TopicGoals("PE", DateTime(2023, 12, 12), 30),
-      TopicGoals("Software", DateTime(2023, 12, 12), 55),
-      TopicGoals("Technology", DateTime(2023, 12, 12), 10),
-    ],
-    [
-      TopicGoals("Break", DateTime(2023, 12, 12), 70),
-      TopicGoals("Infrastructure", DateTime(2023, 12, 12), 95),
-      TopicGoals("Chemistry", DateTime(2023, 12, 12), 5),
-    ]
-  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -55,26 +25,8 @@ class _PlanningCalendarCompState extends State<PlanningCalendarComp> {
         selectedDate.setMonth(picked.month);
         selectedDate.setYear(picked.year);
       });
-      // updateDataList(newDataList, selectedDate);
     }
   }
-
-  // void updateDataList(List<TopicGoals> newDataList, Date selectedDate) {
-  //   DateTime targetDate = selectedDate; // Replace this with your target date
-  //   newDataList.clear();
-  //   for (var outerList in dataList) {
-  //     for (var item in outerList) {
-  //       if (item.date.isAtSameMomentAs(targetDate)) {
-  //         // Perform actions if the date matches the target date
-  //         newDataList.add(item);
-  //       }
-  //     }
-  //   }
-  //   print(newDataList);
-  //   setState(() {
-  //     myDataList = newDataList;
-  // });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +62,6 @@ class _PlanningCalendarCompState extends State<PlanningCalendarComp> {
           ),
           SizedBox(height: 0),
           // Change HistoryGraphComp so that it can take a dataList as its parameter
-          // HistoryGraphComp(dataList: myDataList,),
           PlannedGoalsComp(dataList: context.read<TrackedTimesProvider>().getTrackedTimesOnDate(selectedDate)),
           
         ],

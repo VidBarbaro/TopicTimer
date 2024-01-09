@@ -1,11 +1,15 @@
+import 'package:provider/provider.dart';
+import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
 
 class HistoryGraphComp extends StatefulWidget {
-  final List<BarData> dataList;
+  final List<TopicData> dataList;
 
   const HistoryGraphComp({
     Key? key,
@@ -43,120 +47,145 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
     );
   }
 
+
   int touchedGroupIndex = -1;
+
+
+  double calculateTimeDifference(TopicData data) {
+    // Calculate the total seconds from a DateTimeJSON instance
+    double startSeconds = (data.beginTime.time.hour * 3600 +
+        data.beginTime.time.minute * 60 +
+        data.beginTime.time.second).toDouble();
+
+    double endSeconds = (data.endTime.time.hour * 3600 +
+        data.endTime.time.minute * 60 +
+        data.endTime.time.second).toDouble();
+
+    double differenceInSeconds = endSeconds - startSeconds;
+
+    // Format the difference into a human-readable string
+    // String formattedDifference = _formatDuration(differenceInSeconds);
+
+    return differenceInSeconds;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: AspectRatio(
-        aspectRatio: 1.4,
-        child: BarChart(
-          BarChartData(
-            alignment: BarChartAlignment.spaceBetween,
-            borderData: FlBorderData(
-              show: true,
-              border: Border.symmetric(
-                horizontal: BorderSide(
+    return Consumer<TrackedTimesProvider>(
+      builder: (context, trackedTimesProvider, child) {
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: AspectRatio(
+          aspectRatio: 1.4,
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceBetween,
+              borderData: FlBorderData(
+                show: true,
+                border: Border.symmetric(
+                  horizontal: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              titlesData: FlTitlesData(
+                show: true,
+                leftTitles: AxisTitles(
+                  drawBehindEverything: true,
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        value.toInt().toString(),
+                        textAlign: TextAlign.left,
+                      );
+                    },
+                  ),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 36,
+                    getTitlesWidget: (value, meta) {
+                      final index = value.toInt();
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        child: Text(context.read<TopicProvider>().getTopicById(widget.dataList[index].id).name),
+                        // child: Text(widget.dataList[index].) //asdasds
+                      );
+                    },
+                  ),
+                ),
+                rightTitles:  AxisTitles(),
+                topTitles:  AxisTitles(),
+              ),
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: false,
+                getDrawingHorizontalLine: (value) => FlLine(
                   color: Colors.black,
+                  strokeWidth: 1,
                 ),
               ),
-            ),
-            titlesData: FlTitlesData(
-              show: true,
-              leftTitles: AxisTitles(
-                drawBehindEverything: true,
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 30,
-                  getTitlesWidget: (value, meta) {
-                    return Text(
-                      value.toInt().toString(),
-                      textAlign: TextAlign.left,
+              barGroups: widget.dataList.asMap().entries.map((e) {
+                final index = e.key;
+                final data = e.value;
+                return generateBarGroup(
+                  index,
+                  context.read<TopicProvider>().getTopicById(widget.dataList[index].id).color,
+                  calculateTimeDifference(widget.dataList[index]),
+                  0,
+                );
+              }).toList(),
+              maxY: 20,
+              barTouchData: BarTouchData(
+                enabled: true,
+                handleBuiltInTouches: false,
+                touchTooltipData: BarTouchTooltipData(
+                  tooltipBgColor: Colors.transparent,
+                  tooltipMargin: 0,
+                  getTooltipItem: (
+                    BarChartGroupData group,
+                    int groupIndex,
+                    BarChartRodData rod,
+                    int rodIndex,
+                  ) {
+                    return BarTooltipItem(
+                      rod.toY.toString(),
+                      TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: rod.color,
+                        fontSize: 18,
+                        shadows: const [
+                          Shadow(
+                            color: Colors.black26,
+                            blurRadius: 12,
+                          )
+                        ],
+                      ),
                     );
                   },
                 ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 36,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt();
-                    return SideTitleWidget(
-                      axisSide: meta.axisSide,
-                      child: Text(widget.dataList[index].subject)
-                    );
-                  },
-                ),
-              ),
-              rightTitles:  AxisTitles(),
-              topTitles:  AxisTitles(),
-            ),
-            gridData: FlGridData(
-              show: true,
-              drawVerticalLine: false,
-              getDrawingHorizontalLine: (value) => FlLine(
-                color: Colors.black,
-                strokeWidth: 1,
-              ),
-            ),
-            barGroups: widget.dataList.asMap().entries.map((e) {
-              final index = e.key;
-              final data = e.value;
-              return generateBarGroup(
-                index,
-                data.color,
-                data.value,
-                data.shadowValue,
-              );
-            }).toList(),
-            maxY: 20,
-            barTouchData: BarTouchData(
-              enabled: true,
-              handleBuiltInTouches: false,
-              touchTooltipData: BarTouchTooltipData(
-                tooltipBgColor: Colors.transparent,
-                tooltipMargin: 0,
-                getTooltipItem: (
-                  BarChartGroupData group,
-                  int groupIndex,
-                  BarChartRodData rod,
-                  int rodIndex,
-                ) {
-                  return BarTooltipItem(
-                    rod.toY.toString(),
-                    TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: rod.color,
-                      fontSize: 18,
-                      shadows: const [
-                        Shadow(
-                          color: Colors.black26,
-                          blurRadius: 12,
-                        )
-                      ],
-                    ),
-                  );
+                touchCallback: (event, response) {
+                  if (event.isInterestedForInteractions &&
+                      response != null &&
+                      response.spot != null) {
+                    setState(() {
+                      touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+                    });
+                  } else {
+                    setState(() {
+                      touchedGroupIndex = -1;
+                    });
+                  }
                 },
               ),
-              touchCallback: (event, response) {
-                if (event.isInterestedForInteractions &&
-                    response != null &&
-                    response.spot != null) {
-                  setState(() {
-                    touchedGroupIndex = response.spot!.touchedBarGroupIndex;
-                  });
-                } else {
-                  setState(() {
-                    touchedGroupIndex = -1;
-                  });
-                }
-              },
             ),
           ),
         ),
-      ),
+      );
+      }
     );
   }
 }

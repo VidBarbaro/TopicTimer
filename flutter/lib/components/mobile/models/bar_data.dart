@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+ 
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 
 class BarData {
