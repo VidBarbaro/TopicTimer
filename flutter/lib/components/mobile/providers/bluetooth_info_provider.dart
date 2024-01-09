@@ -185,8 +185,9 @@ class BluetoothInfoProvider with ChangeNotifier {
         Uuid.parse(_bleUuidServiceTime),
         Uuid.parse(_bleUuidServiceTopic)
       ], scanMode: ScanMode.balanced).listen((device) {
-        print('[startScan] Found device with given services');
+        // if (device.name == 'TopicWatch-2') {
         connectToDevice(device);
+        // }
       }, onError: (Object error) {
         String sError = error.toString();
         print('[startScan] error: $sError');

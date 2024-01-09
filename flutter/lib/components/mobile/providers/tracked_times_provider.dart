@@ -54,7 +54,7 @@ class TrackedTimesProvider with ChangeNotifier {
       return false;
     }
     for (int i = 0; i < _trackedTimes.length; i++) {
-      if (topicID == _trackedTimes[i].id) {
+      if (topicID.toString() == _trackedTimes[i].id) {
         _trackedTimes.removeAt(i);
       }
     }
