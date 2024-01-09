@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
-import 'package:topictimer_flutter_application/pages/mobile/history_graph.dart';
+import 'package:topictimer_flutter_application/components/mobile/history_graph.dart';
 
 class HistoryCalendarComp extends StatefulWidget {
   @override
