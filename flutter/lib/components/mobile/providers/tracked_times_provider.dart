@@ -10,28 +10,18 @@ class TrackedTimesProvider with ChangeNotifier {
   }
 
   List<TopicData> getTrackedTimesOnTopicId(int topicID) {
-    final List<TopicData> gatheredData = List<TopicData>.empty();
-    for (int i = 0; i < _trackedTimes.length; i++) {
-      if (topicID.toString() == _trackedTimes[i].id) {
-        gatheredData.add(_trackedTimes[i]);
-      }
-    }
-    notifyListeners();
-    return gatheredData;
+    return _trackedTimes
+        .where((data) => topicID.toString() == data.id)
+        .toList();
   }
 
   List<TopicData> getTrackedTimesOnDate(Date date) {
-    final List<TopicData> gatheredData = List<TopicData>.empty(growable: true);
-    for (int i = 0; i < _trackedTimes.length; i++) {
-      print('Searching for: ${date.day}, found: ${_trackedTimes[i].endTime.date.day}');
-      if (date.day == _trackedTimes[i].endTime.date.day &&
-          date.month == _trackedTimes[i].endTime.date.month &&
-          date.year == _trackedTimes[i].endTime.date.year) {
-        gatheredData.add(_trackedTimes[i]);
-      }
-    }
-    // notifyListeners();
-    return gatheredData;
+    return _trackedTimes
+        .where((data) =>
+            date.day == data.endTime.date.day &&
+            date.month == data.endTime.date.month &&
+            date.year == data.endTime.date.year)
+        .toList();
   }
 
   int getAmountOfTimes() {

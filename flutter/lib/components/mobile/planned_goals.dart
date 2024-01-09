@@ -3,21 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_goals_data.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_date_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
-class PlannedGoalsComp extends StatefulWidget {
-  final List<TopicData> dataList;
-
+class PlannedGoalsComp extends StatelessWidget {
   const PlannedGoalsComp({
     Key? key,
-    required this.dataList,
   }) : super(key: key);
-
-  @override
-  State<PlannedGoalsComp> createState() => _PlannedGoalsCompState();
-}
-
-class _PlannedGoalsCompState extends State<PlannedGoalsComp> {
 
   String calculateTimeDifference(TopicData data) {
     // Calculate the total seconds from a DateTimeJSON instance
@@ -72,7 +64,11 @@ class _PlannedGoalsCompState extends State<PlannedGoalsComp> {
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: widget.dataList.map((goal) {
+                children: context
+                    .read<TrackedTimesProvider>()
+                    .getTrackedTimesOnDate(
+                        context.read<PlanningSelectedDateProvider>().get())
+                    .map((goal) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Card(

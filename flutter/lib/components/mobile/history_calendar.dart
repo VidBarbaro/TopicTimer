@@ -3,43 +3,42 @@ import 'package:provider/provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 import 'package:topictimer_flutter_application/components/mobile/history_graph.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_date_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
-class HistoryCalendarComp extends StatefulWidget {
-  @override
-  _HistoryCalendarCompState createState() => _HistoryCalendarCompState();
-}
+class HistoryCalendarComp extends StatelessWidget {
 
-class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
-  Date selectedDate = Date(day: DateTime.now().day, month: DateTime.now().month, year: DateTime.now().year);
-
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context,
+      PlanningSelectedDateProvider selectedDateProvider) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate.setDay(picked.day);
-        selectedDate.setMonth(picked.month);
-        selectedDate.setYear(picked.year);
-      });
+
+    if (picked != null &&
+        (picked.day != selectedDateProvider.get().day ||
+            picked.month != selectedDateProvider.get().month ||
+            picked.year != selectedDateProvider.get().year)) {
+      Date pickedDate =
+          Date(year: picked.year, month: picked.month, day: picked.day);
+      selectedDateProvider.set(pickedDate);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TrackedTimesProvider>(
-      builder: (context, trackedTimesProvider, child) { 
+    return Consumer<PlanningSelectedDateProvider>(
+        builder: (context, planningSelectedDateProvider, child) { 
         return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
             child: GestureDetector(
               onTap: () {
-                _selectDate(context);
+                _selectDate(
+                    context, context.read<PlanningSelectedDateProvider>());
               },
               child: Container(
                 padding: EdgeInsets.all(12.0),
@@ -53,7 +52,7 @@ class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
                     Icon(Icons.calendar_today),
                     SizedBox(width: 8.0),
                     Text(
-                      'Selected Date: ${selectedDate.day} - ${selectedDate.month} - ${selectedDate.year}',
+                      'Selected Date: ${context.read<PlanningSelectedDateProvider>().get().day} - ${context.read<PlanningSelectedDateProvider>().get().month} - ${context.read<PlanningSelectedDateProvider>().get().year}',
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -63,7 +62,7 @@ class _HistoryCalendarCompState extends State<HistoryCalendarComp> {
           ),
           SizedBox(height: 20),
           // Change HistoryGraphComp so that it can take a dataList as its parameter
-          HistoryGraphComp(dataList: context.read<TrackedTimesProvider>().getTrackedTimesOnDate(selectedDate)),
+          HistoryGraphComp(),
         ],
       );
       }

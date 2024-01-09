@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_date_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_view_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/theme_change_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
@@ -73,6 +75,12 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ChangeNotifierProvider(
                   create: (context) => TrackedTimesProvider(),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => PlanningSelectedDateProvider(),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => PlanningSelectedViewProvider(),
                 )
               ],
               child: const MaterialApp(

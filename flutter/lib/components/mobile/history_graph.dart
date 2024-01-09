@@ -5,15 +5,14 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_date_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
 
 class HistoryGraphComp extends StatefulWidget {
-  final List<TopicData> dataList;
 
   const HistoryGraphComp({
     Key? key,
-    required this.dataList
   }) : super(key: key);
 
   final shadowColor = const Color(0xFFCCCCCC);
@@ -73,6 +72,10 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
   Widget build(BuildContext context) {
     return Consumer<TrackedTimesProvider>(
       builder: (context, trackedTimesProvider, child) {
+      final dataList = context
+          .read<TrackedTimesProvider>()
+          .getTrackedTimesOnDate(
+              context.read<PlanningSelectedDateProvider>().get());
       return Padding(
         padding: const EdgeInsets.all(24),
         child: AspectRatio(
@@ -111,8 +114,11 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
                       final index = value.toInt();
                       return SideTitleWidget(
                         axisSide: meta.axisSide,
-                        child: Text(context.read<TopicProvider>().getTopicById(widget.dataList[index].id).name),
-                        // child: Text(widget.dataList[index].) //asdasds
+                        child: Text(context
+                            .read<TopicProvider>()
+                            .getTopicById(dataList[index].id)
+                            .name),
+                        // child: Text(dataList[index].) //asdasds
                       );
                     },
                   ),
@@ -128,13 +134,16 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
                   strokeWidth: 1,
                 ),
               ),
-              barGroups: widget.dataList.asMap().entries.map((e) {
+              barGroups: dataList.asMap().entries.map((e) {
                 final index = e.key;
                 final data = e.value;
                 return generateBarGroup(
                   index,
-                  context.read<TopicProvider>().getTopicById(widget.dataList[index].id).color,
-                  calculateTimeDifference(widget.dataList[index]),
+                  context
+                      .read<TopicProvider>()
+                      .getTopicById(dataList[index].id)
+                      .color,
+                  calculateTimeDifference(dataList[index]),
                   0,
                 );
               }).toList(),
