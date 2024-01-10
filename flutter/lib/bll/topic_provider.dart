@@ -90,11 +90,23 @@ class TopicProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTopic(TopicModel topic) {
+  void updateTopicInLocalStorage() async {
+    final SharedPreferences prefs = await _prefs;
+    List<String> topics = List<String>.empty(growable: true);
+
+    _topicList.forEach((topic) {
+      topics.add(topic.toJson().toString());
+    });
+
+    prefs.setStringList('topics', topics);
+  }
+
+  void updateTopic(TopicModel topic) async {
     int indexToUpdate =
         _topicList.indexWhere((topicitem) => topicitem.id == topic.id);
     _topicList[indexToUpdate] = topic;
     BluetoothInfoProvider.sendTopic(indexToUpdate, _topicList);
+    updateTopicInLocalStorage();
     notifyListeners();
   }
 }
