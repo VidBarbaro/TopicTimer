@@ -9,6 +9,8 @@ class TopicProvider with ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   static final List<TopicModel> _topicList =
       List<TopicModel>.empty(growable: true);
+  List<TopicModel> get topicList => _topicList;
+
 
   TopicProvider() {}
 

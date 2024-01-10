@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/planning_selected_date_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/tracked_times_provider.dart';
 
@@ -70,8 +71,8 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TrackedTimesProvider>(
-      builder: (context, trackedTimesProvider, child) {
+    return Consumer<BluetoothInfoProvider>(
+        builder: (context, bluetoothInfoProvider, child) {
       final dataList = context
           .read<TrackedTimesProvider>()
           .getTrackedTimesOnDate(
@@ -117,7 +118,8 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
                         child: Text(context
                             .read<TopicProvider>()
                             .getTopicById(dataList[index].id)
-                            .name),
+                            .name
+                            .substring(0, 3)),
                         // child: Text(dataList[index].) //asdasds
                       );
                     },

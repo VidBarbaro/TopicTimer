@@ -299,6 +299,7 @@ class BluetoothInfoProvider with ChangeNotifier {
         TrackedTimesProvider().addTrackedTime(TopicData.fromJson(messageJSON))
             ? print('Added tracked time')
             : print('Failed to add tracked time');
+        notifyListeners();
       } else {
         print('Unhandled message');
       }

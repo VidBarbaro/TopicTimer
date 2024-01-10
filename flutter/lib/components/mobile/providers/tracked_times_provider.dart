@@ -30,7 +30,9 @@ class TrackedTimesProvider with ChangeNotifier {
 
   bool addTrackedTime(TopicData newData) {
     if (newData.beginTime.toString().isNotEmpty &&
-        newData.endTime.toString().isNotEmpty) {
+        newData.endTime.toString().isNotEmpty &&
+        _checkIfDataIsValid(newData.beginTime) &&
+        _checkIfDataIsValid(newData.endTime)) {
       _trackedTimes.add(newData);
       notifyListeners();
       return true;
@@ -49,6 +51,19 @@ class TrackedTimesProvider with ChangeNotifier {
         _trackedTimes.removeAt(i);
       }
     }
+    return true;
+  }
+
+  bool _checkIfDataIsValid(DateTimeJSON data) {
+    if (data.time.hour == 0 &&
+        data.time.minute == 0 &&
+        data.time.second == 0 &&
+        data.date.day == 0 &&
+        data.date.month == 0 &&
+        data.date.year == 0) {
+      return false;
+    }
+
     return true;
   }
 }

@@ -13,7 +13,8 @@ class TimerComp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Consumer<TopicProvider>(builder: (context, topicProvider, child) {
+      return SizedBox(
         height: 60.h,
         width: 80.w,
         child: Column(
@@ -46,7 +47,7 @@ class TimerComp extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Consumer<TimerInfoProvider>(
                             builder: (context, timerInfoProvider, child) {
-                          if (TopicProvider.getTopics().isNotEmpty) {
+                          if (topicProvider.topicList.isNotEmpty) {
                             return Text(
                               timerInfoProvider.toString(),
                               style: TextStyle(fontSize: 16.w),
@@ -107,6 +108,8 @@ class TimerComp extends StatelessWidget {
               return const Text('');
             })
           ],
-        ));
+        ),
+      );
+    });
   }
 }
