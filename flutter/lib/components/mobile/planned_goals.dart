@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/ble_messages.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_goals_data.dart';
@@ -58,43 +59,48 @@ class PlannedGoalsComp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: SizedBox(
-          height: 300, // Adjust this height as needed
-          child: Scrollbar(
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              child: Consumer<BluetoothInfoProvider>(
-                  builder: (context, bluetoothInfoProvider, child) {
-                List<TopicData> filteredList =
-                    context.read<TrackedTimesProvider>().trackedTimes;
-
-                return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var data in filteredList)
-                        Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      elevation: 2,
-                      child: ListTile(
-                              title: Text(context
-                                  .read<TopicProvider>()
-                                  .getTopicById(data.id)
-                                  .name),
-                        subtitle: Text(
-                                'Start: ${_formatDateTime(data.beginTime)}\nEnd: ${_formatDateTime(data.endTime)}\nDuration: ${calculateTimeDifference(data)}',
-                        ),
-                      ),
-                    ),
-                        )
-                    ]
-                );
-              }),
+    if (context.read<TrackedTimesProvider>().trackedTimes.isNotEmpty) {
+return Padding(
+          padding: const EdgeInsets.all(24),
+          child: SizedBox(
+            height: 300, // Adjust this height as needed
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                child: Consumer<BluetoothInfoProvider>(
+                    builder: (context, bluetoothInfoProvider, child) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var data in context
+                            .read<TrackedTimesProvider>()
+                            .trackedTimes)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Card(
+                              elevation: 2,
+                              child: ListTile(
+                                title: Text(context
+                                    .read<TopicProvider>()
+                                    .getTopicById(data.id)
+                                    .name),
+                                subtitle: Text(
+                                  'Start: ${_formatDateTime(data.beginTime)}\nEnd: ${_formatDateTime(data.endTime)}\nDuration: ${calculateTimeDifference(data)}',
+                                ),
+                              ),
+                            ),
+                          )
+                      ]);
+                }),
+              ),
             ),
-          ),
-        )
-    );
+          ));
+    } else {
+      return Text(
+        "It seems like you don't have any data to display yet, record some data and it will show up here!",
+        style: TextStyle(fontSize: 5.w),
+        textAlign: TextAlign.center,
+      );
+    }
   }
 }

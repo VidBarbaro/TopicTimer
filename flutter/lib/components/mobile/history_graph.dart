@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/bar_data.dart';
 import 'dart:math' as math;
@@ -50,23 +51,82 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
 
   int touchedGroupIndex = -1;
 
-
   double calculateTimeDifference(TopicData data) {
-    // Calculate the total seconds from a DateTimeJSON instance
     double startSeconds = (data.beginTime.time.hour * 3600 +
-        data.beginTime.time.minute * 60 +
-        data.beginTime.time.second).toDouble();
+            data.beginTime.time.minute * 60 +
+            data.beginTime.time.second)
+        .toDouble();
 
     double endSeconds = (data.endTime.time.hour * 3600 +
-        data.endTime.time.minute * 60 +
-        data.endTime.time.second).toDouble();
+            data.endTime.time.minute * 60 +
+            data.endTime.time.second)
+        .toDouble();
 
     double differenceInSeconds = endSeconds - startSeconds;
 
-    // Format the difference into a human-readable string
-    // String formattedDifference = _formatDuration(differenceInSeconds);
-
     return differenceInSeconds;
+  }
+
+  String _calculateTimeDifference(TopicData data) {
+    // Calculate the total seconds from a DateTimeJSON instance
+    int startSeconds = data.beginTime.time.hour * 3600 +
+        data.beginTime.time.minute * 60 +
+        data.beginTime.time.second;
+
+    int endSeconds = data.endTime.time.hour * 3600 +
+        data.endTime.time.minute * 60 +
+        data.endTime.time.second;
+
+    int differenceInSeconds = endSeconds - startSeconds;
+
+    // Format the difference into a human-readable string
+    String formattedDifference = _formatDuration(differenceInSeconds);
+
+    return formattedDifference;
+  }
+
+  String _formatDuration(int seconds) {
+    int hours = seconds ~/ 3600;
+    int remainingMinutes = (seconds % 3600) ~/ 60;
+    int remainingSeconds = seconds % 60;
+
+    List<String> parts = [];
+
+    if (hours > 0) {
+      parts.add('$hours ${hours == 1 ? 'hour' : 'hours'}');
+    }
+
+    if (remainingMinutes > 0) {
+      parts.add(
+          '$remainingMinutes ${remainingMinutes == 1 ? 'minute' : 'minutes'}');
+    }
+
+    if (remainingSeconds > 0 || parts.isEmpty) {
+      parts.add(
+          '$remainingSeconds ${remainingSeconds == 1 ? 'second' : 'seconds'}');
+    }
+
+    return parts.join(' and ');
+  }
+
+  double formatTimeDifference(
+      double differenceInSeconds, double maxDifference) {
+    Duration maxDuration = Duration(seconds: maxDifference.toInt());
+
+    if (maxDuration.inSeconds < 60) {
+      // If the difference is less than 60 seconds, return seconds
+      return differenceInSeconds;
+    } else if (maxDuration.inMinutes < 60) {
+      // If the difference is less than 60 minutes, return minutes
+      return differenceInSeconds / 60;
+    } else {
+      // If the difference is 60 minutes or more, return hours
+      return differenceInSeconds / 3600;
+    }
+  }
+
+  String _formatDateTime(DateTimeJSON data) {
+    return '${data.date.day}-${data.date.month}-${data.date.year} at ${data.time.hour.toString().padLeft(2, '0')}:${data.time.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -77,126 +137,155 @@ class _HistoryGraphCompState extends State<HistoryGraphComp> {
           .read<TrackedTimesProvider>()
           .getTrackedTimesOnDate(
               context.read<PlanningSelectedDateProvider>().get());
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: AspectRatio(
-          aspectRatio: 1.4,
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceBetween,
-              borderData: FlBorderData(
-                show: true,
-                border: Border.symmetric(
-                  horizontal: BorderSide(
+      if (dataList.isNotEmpty) {
+        double maxDifference = dataList
+            .map((data) => calculateTimeDifference(data))
+            .reduce((value, element) => value > element ? value : element);
+return Padding(
+          padding: const EdgeInsets.all(30),
+          child: AspectRatio(
+            aspectRatio: 1.4,
+            child: BarChart(
+              BarChartData(
+                alignment: BarChartAlignment.center,
+                groupsSpace: 15,
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  leftTitles: AxisTitles(
+                    drawBehindEverything: true,
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: maxDifference >= 60
+                          ? maxDifference >= 600
+                              ? maxDifference >= 3600
+                                  ? 1
+                                  : 10
+                              : 1
+                          : 10,
+                      getTitlesWidget: (value, meta) {
+                        return Text(
+                          maxDifference >= 60
+                              ? value.toStringAsFixed(2)
+                              : value.toInt().toString(),
+                          textAlign: TextAlign.left,
+                        );
+                      },
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 36,
+                      getTitlesWidget: (value, meta) {
+                        final index = value.toInt();
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          child: Text(context
+                              .read<TopicProvider>()
+                              .getTopicById(dataList[index].id)
+                              .name
+                              .substring(0, 3)),
+                        );
+                      },
+                    ),
+                  ),
+                  rightTitles: AxisTitles(),
+                  topTitles: AxisTitles(),
+                ),
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: false,
+                  getDrawingHorizontalLine: (value) => FlLine(
                     color: Colors.black,
+                    strokeWidth: 1,
                   ),
                 ),
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                leftTitles: AxisTitles(
-                  drawBehindEverything: true,
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 30,
-                    getTitlesWidget: (value, meta) {
-                      return Text(
-                        value.toInt().toString(),
-                        textAlign: TextAlign.left,
-                      );
-                    },
-                  ),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 36,
-                    getTitlesWidget: (value, meta) {
-                      final index = value.toInt();
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        child: Text(context
-                            .read<TopicProvider>()
-                            .getTopicById(dataList[index].id)
-                            .name
-                            .substring(0, 3)),
-                        // child: Text(dataList[index].) //asdasds
-                      );
-                    },
-                  ),
-                ),
-                rightTitles:  AxisTitles(),
-                topTitles:  AxisTitles(),
-              ),
-              gridData: FlGridData(
-                show: true,
-                drawVerticalLine: false,
-                getDrawingHorizontalLine: (value) => FlLine(
-                  color: Colors.black,
-                  strokeWidth: 1,
-                ),
-              ),
-              barGroups: dataList.asMap().entries.map((e) {
-                final index = e.key;
-                final data = e.value;
-                return generateBarGroup(
-                  index,
-                  context
-                      .read<TopicProvider>()
-                      .getTopicById(dataList[index].id)
-                      .color,
-                  calculateTimeDifference(dataList[index]),
-                  0,
-                );
-              }).toList(),
-              maxY: 20,
-              barTouchData: BarTouchData(
-                enabled: true,
-                handleBuiltInTouches: false,
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.transparent,
-                  tooltipMargin: 0,
-                  getTooltipItem: (
-                    BarChartGroupData group,
-                    int groupIndex,
-                    BarChartRodData rod,
-                    int rodIndex,
-                  ) {
-                    return BarTooltipItem(
-                      rod.toY.toString(),
-                      TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: rod.color,
-                        fontSize: 18,
-                        shadows: const [
-                          Shadow(
-                            color: Colors.black26,
-                            blurRadius: 12,
-                          )
+                barGroups: dataList.asMap().entries.map((e) {
+                  final index = e.key;
+                  final data = e.value;
+                  return generateBarGroup(
+                    index,
+                    context
+                        .read<TopicProvider>()
+                        .getTopicById(dataList[index].id)
+                        .color,
+                    formatTimeDifference(
+                        calculateTimeDifference(dataList[index]),
+                        maxDifference),
+                    0,
+                  );
+                }).toList(),
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  handleBuiltInTouches: false,
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: Colors.blueGrey,
+                    getTooltipItem: (
+                      BarChartGroupData group,
+                      int groupIndex,
+                      BarChartRodData rod,
+                      int rodIndex,
+                    ) {
+                      return BarTooltipItem(
+                        '${context.read<TopicProvider>().getTopicById(dataList[groupIndex].id).name}\n',
+                        TextStyle(
+                          color: context
+                              .read<TopicProvider>()
+                              .getTopicById(dataList[groupIndex].id)
+                              .color,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 9,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                'Start: ${_formatDateTime(dataList[groupIndex].beginTime)}\nEnd: ${_formatDateTime(dataList[groupIndex].endTime)}\nDuration: ${_calculateTimeDifference(dataList[groupIndex])}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ],
-                      ),
-                    );
+                      );
+                    },
+                  ),
+                  touchCallback: (event, response) {
+                    if (event.isInterestedForInteractions &&
+                        response != null &&
+                        response.spot != null) {
+                      setState(() {
+                        touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+                      });
+                    } else {
+                      setState(() {
+                        touchedGroupIndex = -1;
+                      });
+                    }
                   },
                 ),
-                touchCallback: (event, response) {
-                  if (event.isInterestedForInteractions &&
-                      response != null &&
-                      response.spot != null) {
-                    setState(() {
-                      touchedGroupIndex = response.spot!.touchedBarGroupIndex;
-                    });
-                  } else {
-                    setState(() {
-                      touchedGroupIndex = -1;
-                    });
-                  }
-                },
               ),
             ),
           ),
-        ),
-      );
+        );
       }
+      else {
+        return Text(
+          "It seems like you don't have any data to display yet, record some data and it will show up here!",
+          style: TextStyle(fontSize: 5.w),
+          textAlign: TextAlign.center,
+        );
+      }
+    }
     );
   }
 }

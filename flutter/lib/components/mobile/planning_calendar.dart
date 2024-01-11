@@ -60,7 +60,7 @@ class PlanningCalendarComp extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 0),
+            SizedBox(height: 20),
             // Change HistoryGraphComp so that it can take a dataList as its parameter
             PlannedGoalsComp(),
           ],
