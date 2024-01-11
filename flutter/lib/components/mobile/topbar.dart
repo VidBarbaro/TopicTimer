@@ -10,6 +10,7 @@ import 'package:topictimer_flutter_application/components/mobile/providers/topba
 import 'package:topictimer_flutter_application/theme/color_provider.dart';
 import 'package:topictimer_flutter_application/theme/custom_color.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key});
@@ -47,6 +48,9 @@ class TopBar extends StatelessWidget {
                         textAlign: TextAlign.center,
                         decoration:
                             InputDecoration(hintText: 'Enter the topic name'),
+                            inputFormatters: [
+    RemoveEmojiInputFormatter()
+  ],
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(7, 10, 7, 7),

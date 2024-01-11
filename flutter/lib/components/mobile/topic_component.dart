@@ -6,6 +6,7 @@ import 'package:topictimer_flutter_application/bll/topic_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
 import 'package:topictimer_flutter_application/theme/custom_color.dart';
 import 'package:topictimer_flutter_application/theme/color_provider.dart';
+import 'package:remove_emoji_input_formatter/remove_emoji_input_formatter.dart';
 
 class TopicWidget extends StatefulWidget {
   const TopicWidget({Key? key, required this.topic}) : super(key: key);
@@ -52,6 +53,9 @@ class _TopicWidgetState extends State<TopicWidget> {
                   decoration: const InputDecoration(
                     hintText: 'Enter the topic name',
                   ),
+                  inputFormatters: [
+    RemoveEmojiInputFormatter()
+  ],
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(7, 10, 7, 7),
