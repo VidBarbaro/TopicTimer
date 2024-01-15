@@ -18,7 +18,7 @@ void WatchSettings::initializeSettings()
 
     _settings[3].name = maxAmountOfViews;
     _settings[3].type = WatchSettingType::INT;
-    set<int>(maxAmountOfViews, 100 + get<int>(amountOfNonTopicViews)); // IF THIS EVERY CHANGES DON'T FORGET TO CHANGE ViewController.h
+    set<int>(maxAmountOfViews, 100 + get<int>(amountOfNonTopicViews)); // IF THIS EVER CHANGES DON'T FORGET TO CHANGE ViewController.h
 
     _settings[4].name = minimalTrackingMinutes;
     _settings[4].type = WatchSettingType::INT;
