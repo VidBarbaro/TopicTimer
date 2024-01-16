@@ -70,6 +70,18 @@ class TimerInfoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int getHours() {
+    return _hours;
+  }
+
+  int getMinutes() {
+    return _minutes;
+  }
+
+  int getSeconds() {
+    return _seconds;
+  }
+
   @override
   String toString() {
     String outputString = '';

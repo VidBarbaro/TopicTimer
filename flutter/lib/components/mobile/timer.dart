@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:topictimer_flutter_application/bll/topic_provider.dart';
+import 'package:topictimer_flutter_application/components/mobile/providers/bluetooth_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/timer_info_provider.dart';
 import 'package:topictimer_flutter_application/components/mobile/providers/topbar_content_provider.dart';
 
@@ -10,6 +11,25 @@ class TimerComp extends StatelessWidget {
   TimerComp({super.key});
   final ButtonStyle timerControlButtonStyle =
       ElevatedButton.styleFrom(backgroundColor: Colors.white);
+
+  void simulateTrackedTimeMessage(BuildContext context) {
+    DateTime startTime = DateTime.now().subtract(Duration(
+      hours: context.read<TimerInfoProvider>().getHours(),
+      minutes: context.read<TimerInfoProvider>().getMinutes(),
+      seconds: context.read<TimerInfoProvider>().getSeconds(),
+    ));
+    String message = '{';
+    message += '"command":"setTrackedTime",';
+    message +=
+        '"topic":{"id":"${context.read<TopBarConentProvider>().getSelectedTopic().id}"},';
+    message +=
+        '"beg":{"t":{"h":${startTime.hour},"m":${startTime.minute},"s":${startTime.second}},"d":{"D":${startTime.day},"M":${startTime.month},"Y":${startTime.year}}},';
+    message +=
+        '"end":{"t":{"h":${DateTime.now().hour},"m":${DateTime.now().minute},"s":${DateTime.now().second}},"d":{"D":${DateTime.now().day},"M":${DateTime.now().month},"Y":${DateTime.now().year}}}';
+    message += '}';
+
+    context.read<BluetoothInfoProvider>().handleMessage(message);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +117,7 @@ class TimerComp extends StatelessWidget {
                           child: const Icon(Icons.pause)),
                       ElevatedButton(
                           onPressed: () {
+                            simulateTrackedTimeMessage(context);
                             context.read<TimerInfoProvider>().resetTimer();
                             context.read<TimerInfoProvider>().disableTimer();
                           },
