@@ -18,6 +18,7 @@ class TimerComp extends StatelessWidget {
       minutes: context.read<TimerInfoProvider>().getMinutes(),
       seconds: context.read<TimerInfoProvider>().getSeconds(),
     ));
+    
     String message = '{';
     message += '"command":"setTrackedTime",';
     message +=
