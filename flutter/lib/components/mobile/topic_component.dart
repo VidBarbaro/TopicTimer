@@ -25,9 +25,15 @@ class _TopicWidgetState extends State<TopicWidget> {
     Future updateTopic() {
       TextEditingController topicnameController = TextEditingController();
       Color pickerColor = const Color(0xff029eff);
+      final TextEditingController feedbackIntervalController =
+          TextEditingController();
+      final TextEditingController feedbackIntervalPeriodController =
+          TextEditingController();
+      String? selectedFeedbackIntervalPeriod;
 
       topicnameController.text = widget.topic.name;
       pickerColor = widget.topic.color;
+      feedbackIntervalController.text = widget.topic.intervalTime.toString();
 
       return showDialog(
         context: context,
@@ -77,6 +83,59 @@ class _TopicWidgetState extends State<TopicWidget> {
                   enableAlpha: false,
                   labelTypes: [],
                 ),
+                Text(
+                  'Feedback interval:',
+                  style: TextStyle(
+                    color: ColorProvider.get(CustomColor.text),
+                    fontSize: 5.w,
+                  ),
+                ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: feedbackIntervalController,
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter a duration',
+                              contentPadding: EdgeInsets.all(0.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Expanded(
+                          child: DropdownMenu<String>(
+                            initialSelection:
+                                '${widget.topic.intervalPeriod[0].toUpperCase()}${widget.topic.intervalPeriod.substring(1)}',
+                            controller: feedbackIntervalPeriodController,
+                            onSelected: (String? period) {
+                              setState(() {
+                                selectedFeedbackIntervalPeriod =
+                                    period!.toLowerCase();
+                              });
+                            },
+                            dropdownMenuEntries: const [
+                              DropdownMenuEntry(
+                                  value: 'Seconds', label: 'Seconds'),
+                              DropdownMenuEntry(
+                                  value: 'Minutes', label: 'Minutes'),
+                              DropdownMenuEntry(value: 'Hours', label: 'Hours')
+                            ],
+                            inputDecorationTheme: const InputDecorationTheme(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -94,12 +153,20 @@ class _TopicWidgetState extends State<TopicWidget> {
             TextButton(
               onPressed: () {
                 if (topicnameController.text.isEmpty) {
-                  TopicModel returntopic = TopicModel('No Name', pickerColor);
+                  TopicModel returntopic = TopicModel(
+                      'No Name',
+                      pickerColor,
+                      int.tryParse(feedbackIntervalController.text) ?? 0,
+                      selectedFeedbackIntervalPeriod ?? 'seconds');
                   returntopic.id = widget.topic.id;
                   context.read<TopicProvider>().updateTopic(returntopic);
                 } else {
                   TopicModel returntopic =
-                      TopicModel(topicnameController.text, pickerColor);
+                      TopicModel(
+                      topicnameController.text,
+                      pickerColor,
+                      int.tryParse(feedbackIntervalController.text) ?? 0,
+                      selectedFeedbackIntervalPeriod ?? 'seconds');
                   returntopic.id = widget.topic.id;
                   context.read<TopicProvider>().updateTopic(returntopic);
                 }
@@ -188,6 +255,7 @@ class _TopicWidgetState extends State<TopicWidget> {
           color: ColorProvider.get(CustomColor.background),
           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -292,22 +360,31 @@ class _TopicWidgetState extends State<TopicWidget> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.topic.name,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: ColorProvider.get(CustomColor.text),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Feedback: ',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: ColorProvider.get(CustomColor.text),
+                              ),
+                            ),
+                            TextSpan(
+                              text: widget.topic.intervalTime > 0
+                                  ? 'every ${widget.topic.intervalTime} ${widget.topic.intervalPeriod[0].toUpperCase()}${widget.topic.intervalPeriod.substring(1)}'
+                                  : 'never',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: ColorProvider.get(CustomColor.text),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Text(
-                        'Additional Topic information is displayed here',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: ColorProvider.get(CustomColor.text),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),

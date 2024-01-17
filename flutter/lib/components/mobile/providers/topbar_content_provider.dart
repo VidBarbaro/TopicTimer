@@ -40,7 +40,7 @@ class TopBarConentProvider with ChangeNotifier {
     if (topics.isNotEmpty) {
       return topics[_selectedTopicIndex];
     }
-    return TopicModel('No topics', Colors.transparent);
+    return TopicModel('No topics', Colors.transparent, 0, 'seconds');
   }
 
   List<TopicModel> getTopics() => topics;

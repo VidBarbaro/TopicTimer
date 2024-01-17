@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topictimer_flutter_application/components/mobile/models/topic_model.dart';
@@ -58,7 +57,11 @@ class TopicProvider with ChangeNotifier {
     Color c = Color(jsonObject['color']);
 
     TopicModel newTopic = TopicModel.withId(
-        id: jsonObject['id'], name: jsonObject['name'], color: c);
+        id: jsonObject['id'],
+        name: jsonObject['name'],
+        color: c,
+        intervalTime: jsonObject['intervalTime'],
+        intervalPeriod: jsonObject['intervalPeriod']);
 
     createTopic(newTopic, saveToLocal: false);
   }
