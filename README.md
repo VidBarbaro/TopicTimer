@@ -52,10 +52,13 @@ After choosing the name and color of your new topic, the user can press the crea
 <img src="./images/TopicsScreen2_1_.jpg" alt="TopicsScreen2" width="200"/>  
 At this point the topics are editable and removable with the help of the 2 buttons located right from each topics name.
 
-### Planning Screen
+### Planning screen
+The Planning screen is the second choice from the left side of the mobile apps navigational bar. In the Planning screen the user can view his tracked data in 2 different graphical views. The user can select a date with the calendar selector module and see which topics did he track and for how long did he track those topics for on that particular day.  
+<img src="./images/PlanningScreenHistory_1_.jpg" alt="PlanningScreenHistory" width="200"/>
+<img src="./images/PlanningScreenGraph_1_.jpg" alt="PlanningScreenGraph" width="200"/>
 
-### Timer Screen
+### Timer screen
 
-### Personal Screen
+### Personal screen
 
-### Settings Screen
+### Settings screen
