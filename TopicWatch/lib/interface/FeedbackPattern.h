@@ -1,8 +1,6 @@
 #ifndef FEEDBACK_PATTERN_INTERFACE
 #define FEEDBACK_PATTERN_INTERFACE
 
-#include "WatchSettings.h"
-
 class FeedbackPattern
 {
 public:

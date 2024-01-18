@@ -2,6 +2,8 @@
 #define VIBRATION_FEEDBACK_PATTERN_INTERFACE
 
 #include "FeedbackPattern.h"
+// #include "VibrateAction.h"
+// #include "WaitAction.h"
 
 class VibrationFeedbackPattern : public FeedbackPattern
 {

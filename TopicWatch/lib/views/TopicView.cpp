@@ -166,7 +166,18 @@ Topic TopicView::getTopic()
 void TopicView::startTracking()
 {
     _viewState = TopicViewState::TRACKING;
-    _vRTCProvider->startTopicTimer();
+    if (_topic.intervalTime > 0)
+    {
+        String intper = _topic.intervalPeriod;
+        int time = _topic.intervalTime;
+        int intervalTimeInSeconds = intper == "seconds" ? time : intper == "minutes" ? time * 60
+                                                                                     : time * 3600;
+        _vRTCProvider->startTopicTimer(intervalTimeInSeconds);
+    }
+    else
+    {
+        _vRTCProvider->startTopicTimer();
+    }
     draw(true);
 }
 

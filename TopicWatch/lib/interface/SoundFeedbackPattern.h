@@ -2,6 +2,8 @@
 #define SOUND_FEEDBACK_PATTERN_INTERFACE
 
 #include "FeedbackPattern.h"
+// #include "BuzzAction.h"
+// #include "WaitAction.h"
 
 class SoundFeedbackPattern : public FeedbackPattern
 {

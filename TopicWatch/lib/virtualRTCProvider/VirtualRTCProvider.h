@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "WatchSettings.h"
 #include "TrackingInfo.h"
+#include "FeedbackProvider.h"
 
 class VirtualRTCProvider
 {
@@ -15,12 +16,15 @@ private:
     static TrackingInfo _trackingInfo;
     static int _isTracking;
     static int _trackingIsPaused;
+    static int _intervalTimeInSeconds;
+    static int _intervalTime;
 
     static void IRAM_ATTR onTimer();
     static void increaseTime();
     static void increaseDate();
     static void increaseTrackingTime();
     static void increaseTrackingDate();
+    static void tickFeedbackInterval();
     void clearDateTime(DateTime *dateTimeToClear);
 
 public:
@@ -31,6 +35,7 @@ public:
     DateTime *getTime();
     DateTime *getTrackingTime();
     void startTopicTimer();
+    void startTopicTimer(int intervalTimeInSeconds);
     void togglePauseTopicTimer();
     TrackingInfo stopTopicTimer();
 };

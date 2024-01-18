@@ -6,6 +6,8 @@ DateTime VirtualRTCProvider::_trackingDateTime;
 TrackingInfo VirtualRTCProvider::_trackingInfo;
 int VirtualRTCProvider::_isTracking = false;
 int VirtualRTCProvider::_trackingIsPaused = false;
+int VirtualRTCProvider::_intervalTimeInSeconds = 0;
+int VirtualRTCProvider::_intervalTime = 0;
 
 VirtualRTCProvider::VirtualRTCProvider()
 {
@@ -24,6 +26,7 @@ void IRAM_ATTR VirtualRTCProvider::onTimer()
     if (_isTracking)
     {
         increaseTrackingTime();
+        tickFeedbackInterval();
     }
 }
 
@@ -116,6 +119,20 @@ void VirtualRTCProvider::increaseTrackingDate()
     }
 }
 
+void VirtualRTCProvider::tickFeedbackInterval()
+{
+    if (_intervalTimeInSeconds > 0)
+    {
+        _intervalTime++;
+
+        if (_intervalTime >= _intervalTimeInSeconds)
+        {
+            _intervalTime = 0;
+            FeedbackProvider::playPattern();
+        }
+    }
+}
+
 void VirtualRTCProvider::clearDateTime(DateTime *dateTimeToClear)
 {
     dateTimeToClear->hours = 0;
@@ -177,6 +194,16 @@ void VirtualRTCProvider::startTopicTimer()
     _isTracking = true;
 }
 
+void VirtualRTCProvider::startTopicTimer(int intervalTimeInSeconds)
+{
+    if (intervalTimeInSeconds > 0)
+    {
+        _intervalTimeInSeconds = intervalTimeInSeconds;
+    }
+
+    startTopicTimer();
+}
+
 void VirtualRTCProvider::togglePauseTopicTimer()
 {
     if (_isTracking)
@@ -199,5 +226,7 @@ TrackingInfo VirtualRTCProvider::stopTopicTimer()
 
     _trackingInfo.topicId = "Yet to be set"; // gets set in function: TopicView::stopTracking()
     _isTracking = false;
+    _intervalTimeInSeconds = 0;
+    _intervalTime = 0;
     return _trackingInfo;
 }

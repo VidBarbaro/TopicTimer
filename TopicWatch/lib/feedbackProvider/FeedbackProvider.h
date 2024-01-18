@@ -1,12 +1,8 @@
 #ifndef FEEDBACK_PROVIDER
 #define FEEDBACK_PROVIDER
 
-#include "FeedbackPattern.h"
 #include "VibrationFeedbackPattern.h"
 #include "SoundFeedbackPattern.h"
-#include "VibrateAction.h"
-#include "BuzzAction.h"
-#include "WaitAction.h"
 
 class FeedbackProvider
 {

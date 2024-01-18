@@ -70,6 +70,8 @@ bool CharacteristicCallbacks::handleMessage(String message, NimBLECharacteristic
             tmpTopic.id = doc["data"]["id"].as<String>();
             tmpTopic.name = doc["data"]["name"].as<String>();
             tmpTopic.color = HexHelper::convertTo565(doc["data"]["color"].as<uint32_t>());
+            tmpTopic.intervalPeriod = doc["data"]["intervalPeriod"].as<String>();
+            tmpTopic.intervalTime = doc["data"]["intervalTime"].as<int>();
 
             int topicIndex = doc["index"].as<int>();
             topicIndex >= 0 ? ViewController::editTopic(topicIndex + WatchSettings::get<int>(amountOfNonTopicViews), tmpTopic) : ViewController::addTopic(tmpTopic);

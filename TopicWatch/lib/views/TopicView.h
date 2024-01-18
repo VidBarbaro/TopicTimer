@@ -9,6 +9,8 @@ struct Topic
     String id = "";
     String name = "";
     uint16_t color;
+    String intervalPeriod = "";
+    int intervalTime = 0;
 };
 
 enum class TopicViewState
