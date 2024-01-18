@@ -375,7 +375,7 @@ class _TopicWidgetState extends State<TopicWidget> {
                             ),
                             TextSpan(
                               text: widget.topic.intervalTime > 0
-                                  ? 'every ${widget.topic.intervalTime} ${widget.topic.intervalPeriod[0].toUpperCase()}${widget.topic.intervalPeriod.substring(1)}'
+                                  ? 'every ${widget.topic.intervalTime} ${widget.topic.intervalTime > 1 ? widget.topic.intervalPeriod : widget.topic.intervalPeriod.substring(0, widget.topic.intervalPeriod.length - 1)}'
                                   : 'never',
                               style: TextStyle(
                                 fontSize: 15,
