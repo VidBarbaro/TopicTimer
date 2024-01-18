@@ -46,10 +46,10 @@ The TopicTimer Mobile App is an additional tool that completes the functionaliti
 
 ### Topics screen
 The Topics screen is the far left choice in the mobile apps navigational bar. In the Topics screen the user can add new topics he wants to track with the "+" button in the top-right corner of the screen.
-![alt text](https://git.fhict.nl/I468771/topictimer/-/blob/main/images/TopicsScreen_1_.jpg)
+![alt text](./images/TopicsScreen_1_.jpg)
 After choosing the name and color of your new topic, the user can press the create button in the pop up module and a new topic is created and added to the current list of that users topics.
-![alt text](https://git.fhict.nl/I468771/topictimer/-/blob/main/images/TopicsScreenPopUp_1_.jpg)
-![alt text](https://git.fhict.nl/I468771/topictimer/-/blob/main/images/TopicsScreen2_1_.jpg)
+![alt text](./images/TopicsScreenPopUp_1_.jpg)
+![alt text](./images/TopicsScreen2_1_.jpg)
 At this point the topics are editable and removable with the help of the 2 buttons located right from each topics name.
 
 ### Planning Screen
