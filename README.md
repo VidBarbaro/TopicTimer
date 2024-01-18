@@ -2,13 +2,13 @@
 
 ## TopicWatch
 
-The TopicWatch is a watch like embedded device for the TopicTimer. It connects to the mobile app using BLE technology. The device is a [lilygo t-display-s3](https://github.com/Xinyuan-LilyGO/T-Display-S3), an ESP with a touchscreen display mounted on it. Every sreen that can be seen is custom made by us. Navigation the screens can be done using the touchscreen.
+The TopicWatch is a watch like embedded device for the TopicTimer. It connects to the mobile app using BLE technology. The device is a [lilygo t-display-s3](https://github.com/Xinyuan-LilyGO/T-Display-S3), an ESP with a touchscreen display mounted on it. Every screen that can be seen is custom made. Navigation through the multiple screens can be done using gestures on the touchscreen.
 
 ### Home screen
-The home screen is a basic screen that displays four things. In the middle the time is displayed, this time is synced with the mobile app everytime they connect. The same goes for the date, which can be seen on the bottom of the screen. In the top right corner of the watch the connection status is shown. Lastly, on the bottom left a settings icon is visible. Clicking this will make the settings screen visible.
-To quickly change your screen back to the home screen, the home button that is present on the device can be clicked.
+The home screen is the base screen that displays four things. In the middle the time is displayed, this time is synced with the mobile app everytime they connect. The same goes for the date, which can be seen on the bottom of the screen. In the top right corner of the watch the connection status is shown. Lastly, on the bottom left a settings icon is visible. Clicking this will make the settings screen visible.
+To quickly change your screen back to the home screen, the home button that is present on the [lilygo t-display-s3](https://github.com/Xinyuan-LilyGO/T-Display-S3) can be clicked.
 
-Navigation on this screen is as followes:
+Navigation on this screen while being on the home screen is as follows:
 
 |Left to right|Right to left|Top to bottom|Bottom to top|
 |-------------|-------------|-------------|-------------|
@@ -28,14 +28,14 @@ The options availbe to customize are:
 |Sound level|0|10|The strength of the sound (0 is off).|
 |Sound pattern|1|5|The sound pattern to play when feedback is being given|
 
-Navigation on this screen is as followes:
+Navigation on this screen is as follows:
 
 |Left to right|Right to left|Top to bottom|Bottom to top|
 |-------------|-------------|-------------|-------------|
 |Nothing|Open home screen|Previous settings screen|Next settings screen|
 
 ### Topic screen
-A topic screen has the same information shown as the home screen and more. Besides the home screen content, this screen also shows you the information about a topic. These topics can be made/edited using the mobile app. The border (if not set to 0 in the settings) has the color that the user choose in the app, this is so that it can be easier to tell which topic is currently selected.  In the middel at the top the user can also see how far along their topic list they currently are (e.g. 1/3) and the topic name. When viewing a topic screen, the user can **double tap** to start tracking that topic. The display will now show the time just above the date and in the middel, the time they have been tracking for is shown. By simply **double tapping** again, the tracking will stop, the data will be send to the phone if there is a connection and the amount of time was bigger than set in the settings. If there is no connection at the time the tracking is stopped, the data will be stored in a buffer and will be send once there is a connection.
+A topic screen has the same information shown as the home screen and more. Besides the home screen content, this screen also shows you the information about a topic. These topics can be made/edited using the mobile app. The border (if not set to 0 in the settings) has the color of the topic that the user choose in the app. This is so that it can be easier to tell which topic is currently selected.  In the middle section at the top the user can also see how far along their topic list they currently are (e.g. 1/3) and the topic name. When viewing a topic screen, the user can **double tap** to start tracking that topic. The display will now show the time just above the date and in the middle, the time they have been tracking for is shown. By simply **double tapping** again, the tracking will stop, the data will be send to the phone if there is a connection and the amount of time was bigger than set in the settings. If there is no connection at the time the tracking is stopped, the data will be stored in a buffer and will be send once there is a connection.
 
 |Left to right|Right to left|Top to bottom|Bottom to top|
 |-------------|-------------|-------------|-------------|
