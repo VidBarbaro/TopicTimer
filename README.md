@@ -46,10 +46,10 @@ The TopicTimer Mobile App is an additional tool that completes the functionaliti
 
 ### Topics screen
 The Topics screen is the far left choice in the mobile apps navigational bar. In the Topics screen the user can add new topics he wants to track with the "+" button in the top-right corner of the screen.
-![alt text](./images/TopicsScreen_1_.jpg)
+<img src="./images/TopicsScreen_1_.jpg" alt="TopicsScreen" width="200"/>
 After choosing the name and color of your new topic, the user can press the create button in the pop up module and a new topic is created and added to the current list of that users topics.
-![alt text](./images/TopicsScreenPopUp_1_.jpg)
-![alt text](./images/TopicsScreen2_1_.jpg)
+<img src="./images/TopicsScreenPopUp_1_.jpg" alt="TopicsScreePopUp" width="200"/>
+<img src="./images/TopicsScreen2_1_.jpg" alt="TopicsScreen2" width="200"/>
 At this point the topics are editable and removable with the help of the 2 buttons located right from each topics name.
 
 ### Planning Screen
