@@ -67,3 +67,7 @@ The Personal screen is the fourth choice from the left side of the mobile apps n
 " alt="PersonalScreen" width="200"/>
 
 ### Settings screen
+The Settings screen is the fifth choice from the left side or the far right choice of the mobile apps navigational bar. Here the user can switch the mobile app theme from default to dark or any other custom theme and the other way around. This is done by selecting one of the available themes from the dropdown menu.  
+<img src="./images/SettingsScreenDefault_1_.jpg" alt="SettingsScreenDefault" width="200"/>
+<img src="./images/SettingsScreenDark_1_.jpg
+" alt="SettingsScreenDark" width="200"/>
