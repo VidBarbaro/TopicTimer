@@ -42,32 +42,33 @@ A topic screen has the same information shown as the home screen and more. Besid
 |Open previous topic or open home screen|Open next topic (if available)|Nothing|Nothing|
 
 ## TopicTimer Mobile App
-The TopicTimer Mobile App is an additional tool that completes the functionalities of the TopicWatch. It connects to the TopicWatch using BLE technology. It was developed using Darts Flutter framework.
+The TopicTimer Mobile App is a companion tool that enhances the capabilities of TopicWatch. It seamlessly connects to TopicWatch using BLE technology and was developed using Dart's Flutter framework.
+
 
 ### Topics screen
-The Topics screen is the far left choice in the mobile apps navigational bar. In the Topics screen the user can add new topics he wants to track with the "+" button in the top-right corner of the screen.  
+The Topics screen is the far-left option in the mobile app's navigational bar. Here, users can effortlessly add new topics to track by simply tapping the "+" button in the top-right corner of the screen.  
 <img src="./images/TopicsScreen_1_.jpg" alt="TopicsScreen" width="200"/>  
-After choosing the name and color of your new topic, the user can press the create button in the pop up module and a new topic is created and added to the current list of that users topics.  
+After selecting a name and color for the new topic, users can create it by pressing the "create" button in the pop-up module. The newly created topic is then added to the user's current list of topics.  
 <img src="./images/TopicsScreenPopUp_1_.jpg" alt="TopicsScreePopUp" width="200"/>
 <img src="./images/TopicsScreen2_1_.jpg" alt="TopicsScreen2" width="200"/>  
-At this point the topics are editable and removable with the help of the 2 buttons located right from each topics name.
+At this point, topics become editable and removable through the use of two buttons located to the right of each topic's name.
 
 ### Planning screen
-The Planning screen is the second choice from the left side of the mobile apps navigational bar. In the Planning screen the user can view his tracked data in 2 different graphical views. The user can select a date with the calendar selector module and see which topics did he track and for how long did he track those topics for on that particular day.  
+The Planning screen, the second option from the left in the navigational bar, allows users to view tracked data through two different graphical views. Users can choose a date using the calendar selector module to see which topics they tracked and for how long on that specific day.  
 <img src="./images/PlanningScreenHistory_1_.jpg" alt="PlanningScreenHistory" width="200"/>
 <img src="./images/PlanningScreenGraph_1_.jpg" alt="PlanningScreenGraph" width="200"/>
 
 ### Timer screen
-The Timer screen is the third choice from the left side or the middle option of the mobile apps navigational bar. The Timer screen contains a timer module which serves as a replacement for the physical TopicWatch. Different topics can be changed in the top bar of the mobile app. Once the selected topic is locked in, the user can start tracking the time spent studying/working on that topic by clicking the far left play button. The user can pause the time tracking with the middle pause button, and he can finalize tracking that topic by clicking the far right stop button. Once the stop button is pressed, the tracked time data from the tracked topic will be added in the planning page.  
+The Timer screen, situated in the middle of the mobile app's navigational bar, features a timer module that serves as a replacement for the physical TopicWatch. Users can select different topics in the top bar and start tracking time by clicking the play button. Pausing and finalizing tracking is accomplished with the middle pause and far-right stop buttons, respectively. Tracked time data is then added to the planning page.  
 <img src="./images/TimerScreen_1_.jpg" alt="TimerScreen" width="200"/>
 
 ### Personal screen
-The Personal screen is the fourth choice from the left side of the mobile apps navigational bar. Here the user can view and change his profile image, name, school and account password.  
+The Personal screen, the fourth option from the left, provides users with the ability to view and modify their profile image, name, school, and account password.  
 <img src="./images/PersonalScreen_1_.jpg
 " alt="PersonalScreen" width="200"/>
 
 ### Settings screen
-The Settings screen is the fifth choice from the left side or the far right choice of the mobile apps navigational bar. Here the user can switch the mobile app theme from default to dark or any other custom theme and the other way around. This is done by selecting one of the available themes from the dropdown menu.  
+The Settings screen, the far-right option in the mobile app's navigational bar, enables users to switch between default, dark, or custom themes. This can be done by selecting a theme from the dropdown menu.  
 <img src="./images/SettingsScreenDefault_1_.jpg" alt="SettingsScreenDefault" width="200"/>
 <img src="./images/SettingsScreenDark_1_.jpg
 " alt="SettingsScreenDark" width="200"/>
