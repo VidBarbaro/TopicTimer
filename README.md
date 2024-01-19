@@ -58,6 +58,8 @@ The Planning screen is the second choice from the left side of the mobile apps n
 <img src="./images/PlanningScreenGraph_1_.jpg" alt="PlanningScreenGraph" width="200"/>
 
 ### Timer screen
+The Timer screen is the third choice from the left side or the middle option of the mobile apps navigational bar. The Timer screen contains a timer module which serves as a replacement for the physical TopicWatch. Different topics can be changed in the top bar of the mobile app. Once the selected topic is locked in, the user can start tracking the time spent studying/working on that topic by clicking the far left play button. The user can pause the time tracking with the middle pause button, and he can finalize tracking that topic by clicking the far right stop button. Once the stop button is pressed, the tracked time data from the tracked topic will be added in the planning page.  
+<img src="./images/TimerScreen_1_.jpg" alt="TimerScreen" width="200"/>
 
 ### Personal screen
 
