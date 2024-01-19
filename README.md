@@ -62,5 +62,8 @@ The Timer screen is the third choice from the left side or the middle option of 
 <img src="./images/TimerScreen_1_.jpg" alt="TimerScreen" width="200"/>
 
 ### Personal screen
+The Personal screen is the fourth choice from the left side of the mobile apps navigational bar. Here the user can view and change his profile image, name, school and account password.  
+<img src="./images/PersonalScreen_1_.jpg
+" alt="PersonalScreen" width="200"/>
 
 ### Settings screen
