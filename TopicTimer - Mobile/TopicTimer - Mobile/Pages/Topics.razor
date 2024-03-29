@@ -1,0 +1,33 @@
+﻿@page "/topics"
+<div class="d-flex justify-content-around tt-primary pt-3 pb-2">
+
+    <p class="display-1 p-1 ">
+        <span class="oi oi-arrow-circle-right pt-3" style="color: #009688"></span>
+    </p>
+
+    <h1 class="pt-4 tt-sub w-50 text-center">Topics</h1>
+
+    <p class="display-1 p-1 " @onclick="AddNewSubject">
+        <span class="oi oi-plus pt-3 tt-icon-white"></span>
+    </p>
+</div>
+
+<ConnectedBar />
+<RestrictedSubjectBar SubjectName=@Subject3 SubjectColour="red" />
+<RestrictedSubjectBar SubjectName=@Subject4 SubjectColour="green" />
+
+<SubjectBar SubjectName=@Subject1 SubjectColour="blue" />
+<SubjectBar SubjectName=@Subject2 SubjectColour="black"/>
+
+@code {
+    //Dummy data of course 
+    private string Subject1 = "Sports";
+    private string Subject2 = "Gaming";
+    private string Subject3 = "Math";
+    private string Subject4 = "Biology";
+
+    private void AddNewSubject()
+    {
+        throw new NotImplementedException("Not yet implemented");
+    }
+}

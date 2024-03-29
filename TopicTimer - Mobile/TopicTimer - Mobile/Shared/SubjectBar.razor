@@ -1,0 +1,33 @@
+﻿<div class="d-flex justify-content-around pt-1">
+
+    <p class="display-1 p-1 ">
+        <span class="oi oi-media-record" style="color: @SubjectColour"></span>
+    </p>
+
+    <p class="p-3 tt-sub w-50 h-75 text-center">@SubjectName</p>
+
+    <p class="h1 p-1 " @onclick="EditSubject">
+        <span class="oi oi-pencil pt-2 tt-icon-black"></span>
+    </p>
+
+    <p class="h1 p-1 " @onclick="DeleteSubject">
+        <span class="oi oi-trash pt-2 tt-icon-black"></span>
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public string SubjectName { get; set; }
+
+    [Parameter]
+    public string SubjectColour { get; set; }
+
+    private void EditSubject()
+    {
+    }
+
+    private void DeleteSubject()
+    {
+
+    }
+}

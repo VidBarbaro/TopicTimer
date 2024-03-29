@@ -1,0 +1,112 @@
+﻿@page "/"
+
+<div class="d-flex justify-content-around tt-primary pt-3 pb-2">
+    <p class="display-1 p-1 " @onclick="SwitchSubjectLeft">
+        <span class="oi oi-arrow-circle-left pt-3 w-75 tt-icon-white"></span>
+    </p>
+
+    <h1 class="pt-4 tt-sub w-50 text-center"><span class="oi oi-media-record" style="color: @currentSubjectColor.ToString();"></span> @currentSubject.ToString()</h1>
+
+    <p class="display-1 p-1 " @onclick="SwitchSubjectRight">
+        <span class="oi oi-arrow-circle-right pt-3 tt-icon-white"></span>
+    </p>
+</div>
+<ConnectedBar />
+
+<div class="p-4" >
+    <div class="p-2" style="border-radius: 15px; background-color: @currentSubjectColor.ToString();">
+        <div class="tt-sub p-4 text-center display-1" style="border-radius: 15px;"><br />@today.ToLongTimeString()<br />&nbsp;</div>
+</div>
+</div>
+
+<div class="d-flex justify-content-around tt-icon-black px-5">
+    @if (!timerActive)
+    {
+        <p class="display-3">
+            <span class="oi oi-media-play" @onclick="(async () => {PlayTimer();})"></span>
+        </p>
+    }
+    else
+    {
+        <p class="display-3">
+            <span class="oi oi-media-pause" @onclick="(() => { timerActive = false;})"></span>
+        </p>
+    }
+    <p class="display-3">
+        <span class="oi oi-media-stop" @onclick="(() => { timerActive = false; today = DateTime.Today; StateHasChanged();})"></span>
+    </p>
+</div>
+
+@code {
+    DateTime today = DateTime.Today;
+    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+
+    bool timerActive = false;
+
+    enum Subjects
+    {
+        Gaming,
+        Math,
+        Biology,
+        Sports
+    };
+
+    enum SubjectsColor
+    {
+        black,
+        red,
+        green,
+        blue
+    };
+
+    private Subjects currentSubject = Subjects.Math;
+    private SubjectsColor currentSubjectColor = SubjectsColor.red;
+
+    private async Task PlayTimer()
+    {
+        timerActive = true;
+        while(timerActive)
+        {
+            await Task.Delay(1000);
+            if(timerActive)
+            {
+                today = today.AddSeconds(1);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void PauseTimer()
+    {
+        stopwatch.Stop();
+    }
+
+    private void SwitchSubjectLeft()
+    {
+        currentSubject--;
+        if (currentSubject < Subjects.Gaming)
+        {
+            currentSubject = Subjects.Sports;
+        }
+        currentSubjectColor--;
+        if (currentSubjectColor < SubjectsColor.black)
+        {
+            currentSubjectColor = SubjectsColor.blue;
+        }
+    }
+
+    private void SwitchSubjectRight()
+    {
+        currentSubject++;
+        if (currentSubject > Subjects.Sports)
+        {
+            currentSubject = Subjects.Gaming;
+        }
+        currentSubjectColor++;
+        if (currentSubjectColor > SubjectsColor.blue)
+        {
+            currentSubjectColor = SubjectsColor.black;
+        }
+    }
+}
+

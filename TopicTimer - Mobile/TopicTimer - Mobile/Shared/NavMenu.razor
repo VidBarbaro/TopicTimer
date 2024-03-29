@@ -1,0 +1,98 @@
+﻿@inject NavigationManager NavigationManager
+
+@code {
+    string uri = null;
+
+    protected override Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+        uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (String.IsNullOrEmpty(uri))
+        {
+            uri = "index";
+        }
+        return base.OnInitializedAsync();
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        uri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (String.IsNullOrEmpty(uri))
+        {
+            uri = "index";
+        }
+        StateHasChanged();
+    }
+}
+
+
+
+<div class="tt-primary fixed-bottom">
+    <NavLink href="/">
+        @if (uri == "index" || uri == "index?")
+        {
+            <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-secondary">
+                <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
+            </span>
+        }
+        else
+        {
+            <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill tt-sub" style="border-style: solid; border-color:#009688; border-width: medium;">
+                <h5 class="m-3 text-center">Timer <span class="oi oi-timer"></span></h5>
+            </span>
+        }
+
+ </NavLink>
+ <br/>
+    <div class="d-flex justify-content-around">
+        @if(uri == "topics" || uri == "topics?")
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="topics">
+                    <button class="h6 border-0 rounded-pill tt-secondary p-3">Topics <span class="oi oi-justify-left"></span></button>
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="topics">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">Topics <span class="oi oi-justify-left"></span></button>
+                </NavLink>
+            </div>
+        }
+        @if (uri == "history" || uri == "history?")
+        {
+        <div class="mt-4 mb-2">
+            <NavLink href="history">
+                <button class="h6 border-0 rounded-pill tt-secondary p-3">History <span class="oi oi-bar-chart"></span></button>
+            </NavLink>
+        </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="history">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">History <span class="oi oi-bar-chart"></span></button>
+                </NavLink>
+            </div>
+        }
+        @if (uri == "personal" || uri == "personal?")
+        {
+        <div class="mt-4 mb-2">
+            <NavLink href="personal">
+            <button class="h6 border-0 rounded-pill tt-secondary p-3">Personal <span class="oi oi-person"></span></button>
+            </NavLink>
+        </div>
+        }
+        else
+        {
+            <div class="mt-4 mb-2">
+                <NavLink href="personal">
+                    <button class="h6 border-0 rounded-pill tt-sub p-3">Personal <span class="oi oi-person"></span></button>
+                </NavLink>
+            </div>
+        }
+    </div>
+</div>
+
