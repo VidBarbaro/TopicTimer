@@ -1,5 +1,8 @@
 # TopicTimer
 
+## Website
+The TopicTimer website is a vue 3 website. The instructions to get started with it can be found in the [README.md](website/README.md) inside the [website folder](website).
+=======
 ## TopicWatch
 
 The TopicWatch is a watch like embedded device for the TopicTimer. It connects to the mobile app using BLE technology. The device is a [lilygo t-display-s3](https://github.com/Xinyuan-LilyGO/T-Display-S3), an ESP with a touchscreen display mounted on it. Every screen that can be seen is custom made. Navigation through the multiple screens can be done using gestures on the touchscreen.
@@ -72,3 +75,4 @@ The Settings screen, the far-right option in the mobile app's navigational bar, 
 <img src="./images/SettingsScreenDefault_1_.jpg" alt="SettingsScreenDefault" width="200"/>
 <img src="./images/SettingsScreenDark_1_.jpg
 " alt="SettingsScreenDark" width="200"/>
+

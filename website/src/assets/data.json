@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "name": "Math",
+        "shortName": "M",
+        "color": "#E3E807",
+        "info": "This topic is not editable as it is a mandatory part of the student curriculum",
+        "editable": false,
+        "trackTimes": [{
+            "start": "09-4-2023 08:23",
+            "end": "09-4-2023 13:57"
+        }, {
+            "start": "09-10-2023 13:09",
+            "end": "09-10-2023 14:42"
+        }, {
+            "start": "09-13-2023 08:38",
+            "end": "09-13-2023 10:12"
+        }]
+    },
+    {
+        "id": 2,
+        "name": "Biology",
+        "shortName": "B",
+        "color": "#07E846",
+        "info": "This topic is not editable as it is a mandatory part of the student curriculum",
+        "editable": false,
+        "trackTimes": [{
+            "start": "09-10-2023 10:41",
+            "end": "09-10-2023 11:18"
+        }, {
+            "start": "09-12-2023 15:52",
+            "end": "09-12-2023 17:27"
+        }, {
+            "start": "09-5-2023 13:27",
+            "end": "09-5-2023 15:53"
+        }]
+    },
+    {
+        "id": 3,
+        "name": "Cleaning my room",
+        "shortName": "C",
+        "color": "#E80707",
+        "info": "",
+        "editable": true,
+        "trackTimes": [{
+            "start": "09-11-2023 09:56",
+            "end": "09-11-2023 11:29"
+        }, {
+            "start": "09-14-2023 09:03",
+            "end": "09-14-2023 10:36"
+        }, {
+            "start": "09-14-2023 15:14",
+            "end": "09-14-2023 16:48"
+        }]
+    },
+    {
+        "id": 4,
+        "name": "Break",
+        "shortName": "BR",
+        "color": "#FF7EDB",
+        "info": "",
+        "editable": true,
+        "trackTimes": [{
+            "start": "09-11-2023 14:34",
+            "end": "09-11-2023 15:59"
+        }, {
+            "start": "09-12-2023 10:17",
+            "end": "09-12-2023 12:48"
+        }, {
+            "start": "09-14-2023 11:42",
+            "end": "09-14-2023 13:15"
+        }]
+    }
+]
